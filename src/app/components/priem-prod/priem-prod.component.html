@@ -1,0 +1,128 @@
+<div class="divPrihPriemGrid">
+  <ag-grid-angular
+    id="priemGrid" #priemGrid
+    style="width: 100%; height: 100%;"
+    class="ag-theme-alpine"
+    [columnDefs]="priemColumnDefs"
+    [rowData]=""
+    [alwaysShowHorizontalScroll]="true"
+    [alwaysShowVerticalScroll]="true"
+    [defaultColDef]="priemDefaultColDef"
+    [rowMultiSelectWithClick]="false"
+    [rowSelection]="'single'"
+    (cellKeyDown)="agCellKeyDown($event)"
+    (selectionChanged)="onPriemSelectionChanged($event)"
+    (cellClicked)="onPriemCellClicked($event)"
+    (gridReady)="onPriemGridReady($event)"
+    (rowDoubleClicked)="onRowDoubleClicked($event)"
+    (cellFocused)="onCellFocused($event)"
+    [tabToNextCell]="tabToNextCell"
+    ppKeyDownDirective
+  ></ag-grid-angular>
+</div>
+
+<div class="divRashProdGrid">
+  <ag-grid-angular
+    id="prodGrid" #prodGrid
+    style="width: 100%; height: 100%;"
+    class="ag-theme-alpine"
+    [columnDefs]="prodColumnDefs"
+    [rowData]=""
+    [alwaysShowHorizontalScroll]="true"
+    [alwaysShowVerticalScroll]="true"
+    [defaultColDef]="prodDefaultColDef"
+    [rowMultiSelectWithClick]="false"
+    [rowSelection]="'single'"
+    (cellKeyDown)="agCellKeyDown($event)"
+    (selectionChanged)="onProdSelectionChanged($event)"
+    (cellClicked)="onProdCellClicked($event)"
+    (gridReady)="onProdGridReady($event)"
+    (rowDoubleClicked)="onRowDoubleClicked($event)"
+    (cellFocused)="onCellFocused($event)"
+    [tabToNextCell]="tabToNextCell"
+    ppKeyDownDirective
+  ></ag-grid-angular>
+</div>
+
+<form [formGroup]="formPriemProd" (ngSubmit)="submitForm()">
+  <div class="divForm">
+
+    <div class="divRow">
+      <label>Операция</label><br>
+      <select formControlName="pp" #ppList id="ppList"
+              ppKeyDownDirective [nextRef]="vlListRef"
+              [formCon]="formPriemProd.controls.pp"
+      >
+        <option *ngFor="let op_item of pp" [ngValue]="op_item" >
+          {{op_item.obm}}
+        </option>
+      </select>
+    </div>
+
+    <div class="divRow">
+      <label>Валюта</label><br>
+      <select formControlName="vl" #ppVlList id="ppVlList"
+              ppKeyDownDirective [prevRef]="ppListRef" [nextRef]="smEditRef"
+              [formCon]="formPriemProd.controls.vl"
+      >
+        <option *ngFor="let val of vl" [ngValue]="val">
+          {{val.vl}}
+        </option>
+      </select>
+    </div>
+
+    <div class="divRow">
+      <label>Сумма</label><br>
+      <input formControlName="sm" type="text" autocomplete="off" #ppSmEdit id="ppSmEdit"
+             [ngClass]="{'input-has-error': formPriemProd.controls['sm'].invalid}"
+             ppKeyDownDirective [prevRef]="ppListRef" [nextRef]="krsEditRef"
+             (ngModelChange)="onSumKrsChange()" (focus)="onFocusSumEdit(smEditRef)"
+      />
+    </div>
+
+    <div class="divRow">
+      <label>Курс</label><br>
+      <input formControlName="krs" type="text" autocomplete="off" #ppKrsEdit id="ppKrsEdit"
+             [ngClass]="{'input-has-error': formPriemProd.controls['krs'].invalid}"
+             ppKeyDownDirective [prevRef]="ppListRef" [nextRef]="submButtonRef" [nextRef2]="updButtonRef"
+             (ngModelChange)="onSumKrsChange()" (focus)="onFocusKrsEdit(krsEditRef)"
+      />
+    </div>
+
+    <div class="divRow">
+      <label>Итого</label><br>
+      <div class="totalSum">
+        {{this.totalSum | number : '1.0-2' : 'fr'}}
+      </div>
+    </div>
+
+    <div class="divRow" *ngIf="this.ppNewRec.getMode(); else UpdDelCancel">
+      <button
+        class="addBtn" type="submit" #ppSubmButton id="ppSubmButton"
+        [disabled]="formPriemProd.invalid"
+        ppKeyDownDirective [prevRef]="ppListRef"
+      >Внести</button>
+    </div>
+
+    <ng-template #UpdDelCancel>
+      <button
+        class="updBtn" type="button" #ppUpdButton id="ppUpdButton"
+        [disabled]="formPriemProd.invalid" (click)="updateOperation()"
+        ppKeyDownDirective [prevRef]="ppListRef"
+      >Изменить</button>
+
+      <button
+        class="delBtn" type="button" #ppDelButton id="ppDelButton"
+        (click)="deleteOperation()"
+        ppKeyDownDirective [prevRef]="ppListRef"
+      >&times;</button>
+
+      <button
+        class="cancBtn" type="button" #ppCancButton id="ppCancButton"
+        (click)="cancel()"
+        ppKeyDownDirective [prevRef]="ppListRef"
+      >Отмена</button>
+    </ng-template>
+
+  </div>
+</form>

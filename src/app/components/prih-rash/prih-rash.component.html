@@ -1,0 +1,132 @@
+<div class="divPrihPriemGrid">
+  <ag-grid-angular
+    id="prihGrid" #prihGrid
+    style="width: 100%; height: 100%;"
+    class="ag-theme-alpine"
+    [columnDefs]="pColumnDefs"
+    [rowData]=""
+    [alwaysShowHorizontalScroll]="true"
+    [alwaysShowVerticalScroll]="true"
+    [defaultColDef]="pDefaultColDef"
+    [rowMultiSelectWithClick]="false"
+    [rowSelection]="'single'"
+    (cellKeyDown)="agCellKeyDown($event)"
+    (selectionChanged)="onPrihSelectionChanged($event)"
+    (cellClicked)="onPrihCellClicked($event)"
+    (gridReady)="onPrihGridReady($event)"
+    (rowDoubleClicked)="onRowDoubleClicked($event)"
+    (cellFocused)="onCellFocused($event)"
+    [tabToNextCell]="tabToNextCell"
+    prKeyDownDirective
+  ></ag-grid-angular>
+</div>
+
+<div class="divRashProdGrid">
+  <ag-grid-angular
+    id="rashGrid" #rashGrid
+    style="width: 100%; height: 100%;"
+    class="ag-theme-alpine"
+    [columnDefs]="rColumnDefs"
+    [rowData]=""
+    [alwaysShowHorizontalScroll]="true"
+    [alwaysShowVerticalScroll]="true"
+    [defaultColDef]="rDefaultColDef"
+    [rowMultiSelectWithClick]="false"
+    [rowSelection]="'single'"
+    (cellKeyDown)="agCellKeyDown($event)"
+    (selectionChanged)="onRashSelectionChanged($event)"
+    (cellClicked)="onRashCellClicked($event)"
+    (gridReady)="onRashGridReady($event)"
+    (rowDoubleClicked)="onRowDoubleClicked($event)"
+    (cellFocused)="onCellFocused($event)"
+    [tabToNextCell]="tabToNextCell"
+    prKeyDownDirective
+  ></ag-grid-angular>
+</div>
+
+<form [formGroup]="formPrihRash" (ngSubmit)="submitForm()">
+  <div class="divForm">
+
+    <div class="divRow">
+      <label>Операция</label><br>
+      <select formControlName="pr" #prList id="prList"
+              prKeyDownDirective [nextRef]="vlListRef"
+              [formCon]="formPrihRash.controls.pr"
+      >
+        <option *ngFor="let op_item of pr" [ngValue]="op_item" >
+          {{op_item.opr}}
+        </option>
+      </select>
+    </div>
+
+    <div class="divRow">
+      <label>Валюта</label><br>
+      <select formControlName="vl" #vlList id="vlList"
+              prKeyDownDirective [prevRef]="prListRef" [nextRef]="smEditRef"
+              [formCon]="formPrihRash.controls.vl"
+      >
+        <option *ngFor="let val of prVl" [ngValue]="val">
+          {{val.vl}}
+        </option>
+      </select>
+    </div>
+
+    <div class="divRow">
+      <label>Сумма</label><br>
+      <input formControlName="sm" type="text" autocomplete="off" #smEdit id="smEdit"
+             [ngClass]="{'input-has-error': formPrihRash.controls['sm'].invalid}"
+             prKeyDownDirective [prevRef]="prListRef" [nextRef]="ksListRef"
+             (focus)="onFocusSumPrimEdit(smEditRef)"
+      />
+    </div>
+
+    <div class="divRow">
+      <label>Статья</label><br>
+      <select formControlName="kf" #ksList id="ksList"
+              prKeyDownDirective [prevRef]="prListRef" [nextRef]="primEditRef"
+      >
+        <option *ngFor="let kf_item of kf" [ngValue]="kf_item">
+          {{kf_item.stat_cn}}
+        </option>
+      </select>
+    </div>
+
+    <div class="divRow">
+      <label>Примечание</label><br>
+      <input formControlName="prim" type="text" autocomplete="off" #primEdit id="primEdit"
+             [ngClass]="{'input-has-error': formPrihRash.controls['prim'].invalid}"
+             prKeyDownDirective [prevRef]="prListRef" [nextRef]="submButtonRef" [nextRef2]="updButtonRef"
+             (focus)="onFocusSumPrimEdit(primEditRef)"
+      />
+    </div>
+
+    <div class="divRow" *ngIf="this.prNewRec.getMode(); else UpdDelCancel">
+      <button
+        class="addBtn" type="submit" #submButton id="submButton"
+        [disabled]="formPrihRash.invalid"
+        prKeyDownDirective [prevRef]="prListRef"
+      >Внести</button>
+    </div>
+
+    <ng-template #UpdDelCancel>
+      <button
+        class="updBtn" type="button" #updButton id="updButton"
+        [disabled]="formPrihRash.invalid" (click)="updateOperation()"
+        prKeyDownDirective [prevRef]="prListRef"
+      >Изменить</button>
+
+      <button
+        class="delBtn" type="button" #delButton id="delButton"
+        (click)="deleteOperation()"
+        prKeyDownDirective [prevRef]="prListRef"
+      >&times;</button>
+
+      <button
+        class="cancBtn" type="button" #cancButton id="cancButton"
+        (click)="cancel()"
+        prKeyDownDirective [prevRef]="prListRef"
+      >Отмена</button>
+    </ng-template>
+
+  </div>
+</form>

@@ -1,0 +1,81 @@
+/* You can add global styles to this file, and also import other style files */
+
+/* Importing Bootstrap SCSS file. */
+@import 'bootstrap/scss/bootstrap';
+
+@import 'ag-grid-community/styles/ag-grid.css';
+@import 'ag-grid-community/styles/ag-theme-alpine.css';
+
+.input-has-error {
+  border-color: #ff0000;
+  box-shadow: 0 0 0 0.15rem rgba(255, 0, 0, 0.75);
+  &:focus {
+    border-color: #ff0000;
+    box-shadow: 0 0 0 0.15rem rgba(255, 0, 0, 0.75);
+  }
+}
+
+.divPrihPriemGrid {
+  position: absolute; top: 10%; left: 0; width: 50%; height: 80%;
+}
+
+.divRashProdGrid {
+  position: absolute; top: 10%; left: 50%; width: 50%; height: 80%;
+}
+
+.formInline {
+  display: inline;
+}
+
+.divRow {
+  display: inline-block;
+  margin-right: 0.5%;
+}
+
+.divRow2 {
+  display: inline-block;
+}
+
+.divForm {
+  text-align: center;
+  position: absolute; top: 90%; left: 0; width: 100%; height: 10%;
+}
+
+.addBtn {
+  border-color: #d9fdca;
+  border-radius: 5pt;
+  background-color: #d9fdca;
+  &:focus {
+    background-color: #7bfd5f;
+  }
+}
+
+.updBtn {
+  border-color: #ffffd8;
+  border-radius: 5pt;
+  margin-right: 0.5%;
+  background-color: #ffffd8;
+  &:focus {
+    background-color: #ffff40;
+  }
+}
+
+.delBtn {
+  border-color: rgb(255,200,200);
+  border-radius: 9pt;
+  margin-right: 0.5%;
+  background-color: rgb(255,200,200);
+  &:focus {
+    background-color: rgb(255, 75, 75);
+  }
+}
+
+.cancBtn {
+  border-color: rgb(232, 232, 232);
+  border-radius: 5pt;
+  margin-right: 0.5%;
+  background-color: rgb(232, 232, 232);
+  &:focus {
+    background-color: rgb(141, 141, 141);
+  }
+}

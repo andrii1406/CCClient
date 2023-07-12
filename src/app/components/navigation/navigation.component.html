@@ -1,0 +1,45 @@
+<nav>
+
+  <ul>
+    <form [formGroup]="formLogin" (ngSubmit)="onSubmit()">
+      <input formControlName="username" type="text" autocomplete="off" placeholder="Логин"
+             #loginEdit id="loginEdit"
+             navKeyDownDirective [nextRef]="passwordEditRef" [nextRef2]="loginEditRef"/>
+      <input formControlName="password" type="password" autocomplete="off" placeholder="Пароль"
+             #passwordEdit id="passwordEdit"
+             navKeyDownDirective [nextRef]="filialEditRef" [nextRef2]="loginEditRef"/>
+      <input formControlName="npo" class="input_num" type="text" autocomplete="off" placeholder="№"
+             #filialEdit id="filialEdit"
+             navKeyDownDirective [nextRef]="workDateRef" [nextRef2]="loginEditRef"/>
+      <input type="date" autocomplete="off" formControlName="dt"
+             #workDate id="workDate"
+             navKeyDownDirective [nextRef]="loginButtonRef" [nextRef2]="loginEditRef"/>
+
+      <button type="submit" #loginButton id="loginButton"
+              navKeyDownDirective [nextRef]="undefined" [nextRef2]="loginEditRef">
+        {{!isLoggedIn ? 'Вход' : 'Выход'}}
+      </button>
+    </form>
+
+    <li [hidden]="!isLoggedIn"><a routerLinkActive="act" routerLink="/opr" style="min-width: 7%">Операции</a></li>
+    <li [hidden]="!isLoggedIn"><a routerLinkActive="act" routerLink="/obm" style="min-width: 5%">Обмен</a></li>
+    <li [hidden]="!isLoggedIn"><a routerLinkActive="act" routerLink="/krs" style="min-width: 5%">Курсы</a></li>
+    <li [hidden]="!isLoggedIn"><a routerLinkActive="act" routerLink="/ost" style="min-width: 6%">Остатки</a></li>
+    <li [hidden]="!isLoggedIn"><a routerLinkActive="act" routerLink="/bal" style="min-width: 5%">Баланс</a></li>
+    <li [hidden]="!isLoggedIn"><a routerLinkActive="act" routerLink="/fil" style="min-width: 6%">Филиалы</a></li>
+    <li [hidden]="!isLoggedIn"><a routerLinkActive="act" routerLink="/vob" style="min-width: 6%">Оборот</a></li>
+    <li [hidden]="!isLoggedIn"><a routerLinkActive="act" routerLink="/tot" style="min-width: 5%">Общий</a></li>
+    <li [hidden]="!isLoggedIn"><a routerLinkActive="act" routerLink="/vub" style="min-width: 6%">Выборка</a></li>
+  </ul>
+
+  <div
+    style="text-align: center; color: red"
+    *ngIf="authService.errorMessage$ | async as error"
+  >
+    {{ error }}
+    <button
+      (click)="authService.errorMessage$.next('')"
+    >&times;</button>
+  </div>
+
+</nav>

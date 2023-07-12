@@ -1,0 +1,163 @@
+<div style="text-align: center">
+  <br>
+  <button class="buttonPrev"  (click)="onLoadPrevKurses()">Установить предыдущие курсы</button>
+</div>
+
+<div style="text-align: center">
+
+  <br>
+
+  <form [formGroup]="formNewKrs" (ngSubmit)="submitKrs()">
+
+      <div class="divRow" style="margin-left: 4%;">
+        <label>Приём</label><br>
+        <input formControlName="krs0" type="text" autocomplete="off" #nKrs0 id="nKrs0"
+               [ngClass]="{'input-has-error': formNewKrs.controls.krs0.invalid}"
+               (focus)="onFocusEdit(nKrs0Ref)"
+               krsKeyDownDirective [nextRef]="nKrs3Ref" [nextRef2]="nKrs0Ref"
+        />
+      </div>
+
+      <div class="divRow">
+        <select formControlName="krs3" #nKrs3 id="nKrs3"
+                krsKeyDownDirective [nextRef]="nKrs1Ref" [nextRef2]="nKrs0Ref"
+                                  [formCon]="formNewKrs.controls.krs3">
+          <option *ngFor="let k3 of ppVl" [ngValue]="k3"> {{k3.vl}} </option>
+        </select>
+      </div>
+
+      <div class="divRow">
+        <label>Продажа</label><br>
+        <input formControlName="krs1" type="text" autocomplete="off" #nKrs1 id="nKrs1"
+               [ngClass]="{'input-has-error': formNewKrs.controls.krs1.invalid}"
+               (focus)="onFocusEdit(nKrs1Ref)"
+               krsKeyDownDirective [nextRef]="nKrs2Ref" [nextRef2]="nKrs0Ref"
+        />
+      </div>
+
+      <div class="divRow">
+        <label>Опт</label><br>
+        <input formControlName="krs2" type="text" autocomplete="off" #nKrs2 id="nKrs2"
+               [ngClass]="{'input-has-error': formNewKrs.controls.krs2.invalid}"
+               (focus)="onFocusEdit(nKrs2Ref)"
+               krsKeyDownDirective [nextRef]="krsAddButtonRef" [nextRef2]="nKrs0Ref"
+        />
+      </div>
+
+      <div class="divRow">
+        <button class="addBtn" type="submit" #krsAddButton id="krsAddButton"
+                [disabled]="formNewKrs.invalid"
+                krsKeyDownDirective [nextRef]="nKrs0Ref" [nextRef2]="nKrs0Ref"
+        >Внести</button>
+      </div>
+  </form>
+
+  <br>
+
+  <form [formGroup]="formListKrs">
+    <div style="margin-left: 0;">
+
+      <div class="divRow">
+        <label>Приём</label><br>
+        <select class="kursesListSelect" formControlName="krs0" #lKrs0 [size]="listRows"
+                (focus)="onFocusList(0, lKrs0Ref)" (change)="onChangeList(0, lKrs0Ref)"
+                (dblclick)="onDblClickList(this.formListKrs.controls.krs0, nKrs0Ref, updKrsEditRef)"
+                krsKeyDownDirective [nextRef]="updKrsEditRef" [nextRef2]="lKrs0Ref"
+        >
+          <option *ngFor="let k0 of krs0" [ngValue]="k0"> {{krsOut(k0.krs)}} </option>
+        </select>
+      </div>
+
+      <div class="divRow" style="margin-left: 0.5%;">
+        <label></label><br>
+        <select  class="kursesListSelect" formControlName="krs3" #lKrs3 [size]="listRows"
+                (focus)="onFocusList(3, lKrs3Ref)" (change)="onChangeList(3, lKrs3Ref)"
+                 (dblclick)="onDblClickList(this.formListKrs.controls.krs0, nKrs0Ref, updKrsEditRef)"
+                krsKeyDownDirective [nextRef]="updKrsEditRef" [nextRef2]="lKrs0Ref"
+        >
+          <option *ngFor="let k3 of krs3" [ngValue]="k3"> {{k3.vl}} </option>
+        </select>
+      </div>
+
+      <div class="divRow" style="margin-left: 0.1%;">
+        <label>Продажа</label><br>
+        <select class="kursesListSelect" formControlName="krs1" #lKrs1 [size]="listRows"
+                (focus)="onFocusList(1, lKrs1Ref)" (change)="onChangeList(1, lKrs1Ref)"
+                (dblclick)="onDblClickList(this.formListKrs.controls.krs1, nKrs1Ref, updKrsEditRef)"
+                krsKeyDownDirective [nextRef]="updKrsEditRef" [nextRef2]="lKrs0Ref"
+        >
+          <option *ngFor="let k1 of krs1" [ngValue]="k1"> {{krsOut(k1.krs)}} </option>
+        </select>
+      </div>
+
+      <div class="divRow" style="margin-left: 2%;">
+        <label>Опт</label><br>
+        <select class="kursesListSelect" formControlName="krs2" #lKrs2 [size]="listRows"
+                (focus)="onFocusList(2, lKrs2Ref)" (change)="onChangeList(2, lKrs2Ref)"
+                (dblclick)="onDblClickList(this.formListKrs.controls.krs2, nKrs2Ref, updKrsEditRef)"
+                krsKeyDownDirective [nextRef]="updKrsEditRef" [nextRef2]="lKrs0Ref"
+        >
+          <option *ngFor="let k2 of krs2" [ngValue]="k2"> {{ krsOut(k2.krs) }} </option>
+        </select>
+      </div>
+
+    </div>
+  </form>
+
+  <br>
+
+  <form class="formInline" [formGroup]="formDisabled">
+
+      <div class="divRow">
+        <p>Изменить</p>
+      </div>
+
+      <div class="divRow">
+        <label>Операция</label><br>
+        <select formControlName="pp" #updPpList id="updPpList"
+        >
+          <option *ngFor="let op_item of krsOb" [ngValue]="op_item" >
+            {{op_item.obm}}
+          </option>
+        </select>
+      </div>
+
+      <div class="divRow">
+        <label>Валюта</label><br>
+        <select formControlName="vl" #updVlList id="updVlList"
+        >
+          <option *ngFor="let vl of ppVl" [ngValue]="vl"> {{vl.vl}} </option>
+        </select>
+      </div>
+
+      <div class="divRow">
+        <p>на</p>
+      </div>
+
+  </form>
+
+
+  <form class="formInline" [formGroup]="formUpdKrs" (ngSubmit)="updKrs()">
+
+    <div class="divRow">
+      <input formControlName="krs" type="text" autocomplete="off" #updKrsEdit id="updKrsEdit"
+             [ngClass]="{'input-has-error': formUpdKrs.controls.krs.invalid}"
+             (focus)="onFocusEdit(updKrsEditRef)"
+             krsKeyDownDirective [nextRef]="krsUpdButtonRef" [nextRef2]="lastFocusedListRef"
+      />
+    </div>
+
+    <div class="divRow">
+      <button
+        class="updBtn" type="button" #krsUpdButton id="krsUpdButton"
+        [disabled]="formUpdKrs.invalid" (click)="updKrs()"
+        krsKeyDownDirective [nextRef]="updKrsEditRef" [nextRef2]="updKrsEditRef"
+      >Изменить</button>
+    </div>
+
+  </form>
+
+</div>
+
+
+
