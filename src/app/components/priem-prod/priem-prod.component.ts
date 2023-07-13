@@ -1,5 +1,5 @@
 import {Component, ElementRef, ViewChild} from '@angular/core';
-import {FormBuilder, FormControl, FormGroup, Validators} from "@angular/forms";
+import {FormControl, FormGroup, Validators} from "@angular/forms";
 import {
   CellClickedEvent,
   CellFocusedEvent,
@@ -202,7 +202,8 @@ export class PriemProdComponent {
     else {
         this.formPriemProd.value.id = null
         this.formPriemProd.value.np = this.lpService.npo
-        this.formPriemProd.value.dt = new Date(`${this.lpService.dt}T${this.lpService.tm}`)
+        //this.formPriemProd.value.dt = new Date(`${this.lpService.dt}T${this.lpService.tm}`)
+        this.formPriemProd.value.dt = this.lpService.dtTm
         this.formPriemProd.value.dts = null
 
         const ppNew = {...<priem_prod>this.formPriemProd.value}

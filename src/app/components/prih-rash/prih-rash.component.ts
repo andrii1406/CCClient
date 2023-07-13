@@ -2,7 +2,7 @@ import {Component, ElementRef, ViewChild} from '@angular/core';
 import {prih_rash} from "../../model/prih_rash";
 import {pr_operation} from "../../model/pr_operation";
 import {pr_op} from "../../localdata/pr_operations";
-import {FormBuilder, FormControl, FormGroup, Validators} from "@angular/forms";
+import {FormControl, FormGroup, Validators} from "@angular/forms";
 import {
   CellClickedEvent,
   CellFocusedEvent,
@@ -192,7 +192,8 @@ export class PrihRashComponent {
     else {
       this.formPrihRash.value.id = null
       this.formPrihRash.value.npo = this.lpService.npo
-      this.formPrihRash.value.dt = new Date(`${this.lpService.dt}T${this.lpService.tm}`)
+      //this.formPrihRash.value.dt = new Date(`${this.lpService.dt}T${this.lpService.tm}`)
+      this.formPrihRash.value.dt = this.lpService.dtTm
       this.formPrihRash.value.dts = null
 
       const prNew = {...<prih_rash_out>this.formPrihRash.value}
