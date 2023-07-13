@@ -36,53 +36,6 @@ export class KursesService {
     )
   }
 
-  readByNpAndDt(np: number, dtB: Date, dtE: Date): Observable<HttpResponse<kurses[]>> {
-    return this.http.post<kurses[]>(`${this.url}/${np}`, {dtB, dtE}, {
-      params: new HttpParams({}),
-      observe: "response"
-    }).pipe(
-      tap((httpResponse) => {
-        if (httpResponse) {
-          const rb = httpResponse.body
-          if (rb) {
-            kursesLocalSplice()
-            kursesToLocals(rb)
-          }
-        }
-      }),
-      catchError(this.es.handleError<any>('readByNpAndDt'))
-    )
-  }
-
-  deleteByNpAndDt(np: number, dtB: Date, dtE: Date): Observable<HttpResponse<kurses[]>> {
-    return this.http.post<kurses[]>(`${this.url}/delbynp/${np}`, {dtB, dtE}, {
-      params: new HttpParams({}),
-      observe: "response"
-    }).pipe(
-      catchError(this.es.handleError<any>('deleteByNpAndDt'))
-    )
-  }
-
-  readPrevByNpAndDt(np: number, dtB: Date, dtE: Date, dt: Date): Observable<HttpResponse<kurses[]>> {
-    return this.http.post<kurses[]>(`${this.url}/${np}`, {dtB, dtE}, {
-      params: new HttpParams({}),
-      observe: "response"
-    }).pipe(
-      tap((httpResponse) => {
-        if (httpResponse) {
-          const rb = httpResponse.body
-          if (rb) {
-            rb.forEach((value) => {
-              value.id = null
-              value.dt = dt
-            })
-          }
-        }
-      }),
-      catchError(this.es.handleError<any>('readPrevByNpAndDt'))
-    )
-  }
-
   update(updValue: kurses): Observable<HttpResponse<kurses>> {
     return this.http.put<kurses>(`${this.url}/${updValue.id}`, updValue, {
       observe: "response"
@@ -108,6 +61,53 @@ export class KursesService {
         }
       }),
       catchError(this.es.handleError<any>('updateKurses'))
+    )
+  }
+
+  readByNpAndDt(np: number, dtB: Date, dtE: Date): Observable<HttpResponse<kurses[]>> {
+    return this.http.post<kurses[]>(`${this.url}/${np}`, {dtB, dtE}, {
+      params: new HttpParams({}),
+      observe: "response"
+    }).pipe(
+      tap((httpResponse) => {
+        if (httpResponse) {
+          const rb = httpResponse.body
+          if (rb) {
+            kursesLocalSplice()
+            kursesToLocals(rb)
+          }
+        }
+      }),
+      catchError(this.es.handleError<any>('readByNpAndDt_Kurses'))
+    )
+  }
+
+  deleteByNpAndDt(np: number, dtB: Date, dtE: Date): Observable<HttpResponse<kurses[]>> {
+    return this.http.post<kurses[]>(`${this.url}/delbynp/${np}`, {dtB, dtE}, {
+      params: new HttpParams({}),
+      observe: "response"
+    }).pipe(
+      catchError(this.es.handleError<any>('deleteByNpAndDt_Kurses'))
+    )
+  }
+
+  readPrevByNpAndDt(np: number, dtB: Date, dtE: Date, dt: Date): Observable<HttpResponse<kurses[]>> {
+    return this.http.post<kurses[]>(`${this.url}/${np}`, {dtB, dtE}, {
+      params: new HttpParams({}),
+      observe: "response"
+    }).pipe(
+      tap((httpResponse) => {
+        if (httpResponse) {
+          const rb = httpResponse.body
+          if (rb) {
+            rb.forEach((value) => {
+              value.id = null
+              value.dt = dt
+            })
+          }
+        }
+      }),
+      catchError(this.es.handleError<any>('readPrevByNpAndDt_Kurses'))
     )
   }
 

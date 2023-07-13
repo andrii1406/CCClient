@@ -27,6 +27,24 @@ export class PrihRashService {
     )
   }
 
+  update(updValue: prih_rash): Observable<HttpResponse<prih_rash>> {
+    return this.http.put<prih_rash>(`${this.url}/${updValue.id}`, updValue, {
+      observe: "response"
+    }).pipe(
+      tap((httpResponse) => {}),
+      catchError(this.es.handleError<any>('updatePrihRash'))
+    )
+  }
+
+  delete(id: number | undefined | null): Observable<HttpResponse<prih_rash>> {
+    return this.http.delete<prih_rash>(`${this.url}/${id}`,{
+      observe: "response"
+    }).pipe(
+      tap((httpResponse) => {}),
+      catchError(this.es.handleError<any>('deletePrihRash'))
+    )
+  }
+
   readByPrAndNpoAndDt(prId: number, npo: number, dtB: Date, dtE: Date): Observable<HttpResponse<prih_rash[]>> {
     return this.http.post<prih_rash[]>(`${this.url}/${prId}/${npo}`, {dtB, dtE},{
       params: new HttpParams({}),
@@ -47,24 +65,6 @@ export class PrihRashService {
         }
       }),
       catchError(this.es.handleError<any>('readByParamsPrihRash'))
-    )
-  }
-
-  update(updValue: prih_rash): Observable<HttpResponse<prih_rash>> {
-    return this.http.put<prih_rash>(`${this.url}/${updValue.id}`, updValue, {
-      observe: "response"
-    }).pipe(
-      tap((httpResponse) => {}),
-      catchError(this.es.handleError<any>('updatePrihRash'))
-    )
-  }
-
-  delete(id: number | undefined | null): Observable<HttpResponse<prih_rash>> {
-    return this.http.delete<prih_rash>(`${this.url}/${id}`,{
-      observe: "response"
-    }).pipe(
-      tap((httpResponse) => {}),
-      catchError(this.es.handleError<any>('deletePrihRash'))
     )
   }
 
