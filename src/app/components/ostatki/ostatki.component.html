@@ -1,2 +1,47 @@
-<p>ostatki works!</p>
-<button (click)="onTest()">TEST create</button>
+
+<div style="text-align: center">
+
+  <br>
+  <br>
+
+  <div class="divRow2">
+  <form class="formInline" [formGroup]="formListOst">
+
+      <select class="ostatkiListSelect" formControlName="ost" #lOst [size]="12"
+      >
+        <option *ngFor="let item of ost" [ngValue]="item"> {{item.vl.vl + ' '+ item.ost}} </option>
+      </select>
+
+  </form>
+  </div>
+
+  <div class="divRow2">
+  <form  >
+    <button class="cancBtn" style="width: 80%;" [disabled]="true">...</button>
+    <br>
+    <button class="delBtn" style="width: 80%; margin-top: 5%">Удалить</button>
+    <br>
+    <input type="text" style="width: 80%; margin-top: 20%">
+    <br>
+    <button class="updBtn" style="width: 80%; margin-top: 5%">Изменить</button>
+  </form>
+  </div>
+
+  <form>
+      <br>
+
+      <label>Валюта</label><br>
+      <select
+      >
+        <option *ngFor="let vl of ppVl" [ngValue]="vl"> {{vl.vl}} </option>
+      </select>
+
+      <input formControlName="krs" type="text" autocomplete="off"
+      />
+
+      <button class="addBtn" type="button"
+      >Внести</button>
+
+  </form>
+
+</div>
