@@ -11,12 +11,13 @@
 
 
   <div class="divRow2" style="width: 10%; margin-left: 1%">
-    <form>
+    <form [formGroup]="formUpdOst">
       <button class="cancBtn" style="width: 90%;" disabled="true">...</button>
 
       <button class="delBtn" style="width: 90%; margin-top: 5%">Удалить</button>
 
-      <input type="text" style="width: 90%; margin-top: 20%"
+      <input formControlName="ost" type="text" style="width: 90%; margin-top: 20%"
+             [ngClass]="{'input-has-error': formUpdOst.controls.ost.invalid}"
       >
 
       <button class="updBtn" style="width: 90%; margin-top: 5%">Изменить</button>

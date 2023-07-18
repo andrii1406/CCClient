@@ -23,6 +23,15 @@ export class OstatkiComponent {
     ost: new FormControl<ostatki | null>(null, []),
   })
 
+  formUpdOst = new FormGroup({
+    id: new FormControl<number | null>(null, []),
+    np: new FormControl<number | null>(null, []),
+    vl: new FormControl<currency | null>(null, []),
+    ost: new FormControl<number | null>(0, [Validators.required, Validators.pattern(sumRegExp)]),
+    dt: new FormControl<Date | null>(null, []),
+    fl: new FormControl<boolean | null>(null, []),
+  })
+
   formNewOst = new FormGroup({
     id: new FormControl<number | null>(null, []),
     np: new FormControl<number | null>(null, []),
