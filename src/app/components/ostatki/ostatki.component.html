@@ -1,46 +1,50 @@
-
-<div style="text-align: center">
-
-  <br>
-  <br>
+<div style="text-align: center; margin-top: 3%">
 
   <div class="divRow2">
-  <form class="formInline" [formGroup]="formListOst">
-
+    <form [formGroup]="formListOst">
       <select class="ostatkiListSelect" formControlName="ost" #lOst [size]="12"
       >
         <option *ngFor="let item of ost" [ngValue]="item"> {{item.vl.vl + ' '+ item.ost}} </option>
       </select>
-
-  </form>
+    </form>
   </div>
 
-  <div class="divRow2">
-  <form  >
-    <button class="cancBtn" style="width: 80%;" [disabled]="true">...</button>
-    <br>
-    <button class="delBtn" style="width: 80%; margin-top: 5%">Удалить</button>
-    <br>
-    <input type="text" style="width: 80%; margin-top: 20%">
-    <br>
-    <button class="updBtn" style="width: 80%; margin-top: 5%">Изменить</button>
-  </form>
+
+  <div class="divRow2" style="width: 10%; margin-left: 1%">
+    <form>
+      <button class="cancBtn" style="width: 90%;" disabled="true">...</button>
+
+      <button class="delBtn" style="width: 90%; margin-top: 5%">Удалить</button>
+
+      <input type="text" style="width: 90%; margin-top: 20%"
+      >
+
+      <button class="updBtn" style="width: 90%; margin-top: 5%">Изменить</button>
+    </form>
   </div>
 
-  <form>
-      <br>
 
-      <label>Валюта</label><br>
-      <select
+  <form style="margin-top: 1%" [formGroup]="formNewOst">
+
+    <div class="divRow">
+      <label></label><br>
+      <select formControlName="vl"
       >
         <option *ngFor="let vl of ppVl" [ngValue]="vl"> {{vl.vl}} </option>
       </select>
+    </div>
 
-      <input formControlName="krs" type="text" autocomplete="off"
+    <div class="divRow">
+      <label>Новый остаток</label><br>
+      <input formControlName="ost" type="text" autocomplete="off" size="16"
+             [ngClass]="{'input-has-error': formNewOst.controls.ost.invalid}"
       />
+    </div>
 
+    <div class="divRow">
       <button class="addBtn" type="button"
       >Внести</button>
+    </div>
 
   </form>
 

@@ -4,9 +4,10 @@ import {currency} from "../../model/currency";
 import {LoginParamsService} from "../../services/login-params/login-params.service";
 import {AuthService} from "../../services/jwt/auth.service";
 import {OstatkiService} from "../../services/ostatki.service";
-import {FormControl, FormGroup} from "@angular/forms";
+import {FormControl, FormGroup, Validators} from "@angular/forms";
 import {ppVlLocal} from "../../localdata/currencies";
 import {ostatkiLocal} from "../../localdata/ostatki";
+import {sumRegExp} from "../../localdata/patterns";
 
 @Component({
   selector: 'app-ostatki',
@@ -19,7 +20,16 @@ export class OstatkiComponent {
   ppVl: currency[] = ppVlLocal
 
   formListOst = new FormGroup({
-    ost: new FormControl<ostatki | null>(this.ost[0], []),
+    ost: new FormControl<ostatki | null>(null, []),
+  })
+
+  formNewOst = new FormGroup({
+    id: new FormControl<number | null>(null, []),
+    np: new FormControl<number | null>(null, []),
+    vl: new FormControl<currency | null>(null, []),
+    ost: new FormControl<number | null>(0, [Validators.required, Validators.pattern(sumRegExp)]),
+    dt: new FormControl<Date | null>(null, []),
+    fl: new FormControl<boolean | null>(false, []),
   })
 
   constructor(
