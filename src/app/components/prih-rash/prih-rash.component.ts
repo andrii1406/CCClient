@@ -192,7 +192,6 @@ export class PrihRashComponent {
     else {
       this.formPrihRash.value.id = null
       this.formPrihRash.value.npo = this.lpService.npo
-      //this.formPrihRash.value.dt = new Date(`${this.lpService.dt}T${this.lpService.tm}`)
       this.formPrihRash.value.dt = this.lpService.dtTm
       this.formPrihRash.value.dts = null
 

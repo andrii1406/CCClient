@@ -202,7 +202,6 @@ export class PriemProdComponent {
     else {
         this.formPriemProd.value.id = null
         this.formPriemProd.value.np = this.lpService.npo
-        //this.formPriemProd.value.dt = new Date(`${this.lpService.dt}T${this.lpService.tm}`)
         this.formPriemProd.value.dt = this.lpService.dtTm
         this.formPriemProd.value.dts = null
 

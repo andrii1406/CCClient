@@ -4,7 +4,7 @@
     <form [formGroup]="formListOst">
       <select class="ostatkiListSelect" formControlName="ost" #lOst [size]="12"
       >
-        <option *ngFor="let item of ost" [ngValue]="item"> {{item.vl.vl + ' '+ item.ost}} </option>
+        <option *ngFor="let item of ost" [ngValue]="item"> {{item.vl.vl + '  '+ (item.ost | number : '1.0-2' : 'fr')}} </option>
       </select>
     </form>
   </div>
@@ -25,13 +25,13 @@
   </div>
 
 
-  <form style="margin-top: 1%" [formGroup]="formNewOst">
+  <form style="margin-top: 1%" [formGroup]="formNewOst" (ngSubmit)="submitOst()">
 
     <div class="divRow">
       <label></label><br>
       <select formControlName="vl"
       >
-        <option *ngFor="let vl of ppVl" [ngValue]="vl"> {{vl.vl}} </option>
+        <option *ngFor="let vl of prVl" [ngValue]="vl"> {{vl.vl}} </option>
       </select>
     </div>
 
@@ -43,7 +43,7 @@
     </div>
 
     <div class="divRow">
-      <button class="addBtn" type="button"
+      <button class="addBtn" type="submit"
       >Внести</button>
     </div>
 

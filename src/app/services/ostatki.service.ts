@@ -3,6 +3,8 @@ import {HttpClient, HttpParams, HttpResponse} from "@angular/common/http";
 import {ErrorService} from "./error/error.service";
 import {ostatki} from "../model/ostatki";
 import {catchError, Observable, tap} from "rxjs";
+import {kursesToLocals} from "../localdata/kurses";
+import {ostatkiLocal} from "../localdata/ostatki";
 
 @Injectable({
   providedIn: 'root'
@@ -21,7 +23,12 @@ export class OstatkiService {
       params: new HttpParams({}),
       observe: "response"
     }).pipe(
-      tap((httpResponse) => {}),
+      tap((httpResponse) => {
+        if (httpResponse) {
+          const rb = httpResponse.body
+          if (rb) ostatkiLocal.push(rb)
+        }
+      }),
       catchError(this.es.handleError<any>('createOstatki'))
     )
   }

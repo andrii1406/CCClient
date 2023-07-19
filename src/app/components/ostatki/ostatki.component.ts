@@ -5,9 +5,11 @@ import {LoginParamsService} from "../../services/login-params/login-params.servi
 import {AuthService} from "../../services/jwt/auth.service";
 import {OstatkiService} from "../../services/ostatki.service";
 import {FormControl, FormGroup, Validators} from "@angular/forms";
-import {ppVlLocal} from "../../localdata/currencies";
+import {prVlLocal} from "../../localdata/currencies";
 import {ostatkiLocal} from "../../localdata/ostatki";
 import {sumRegExp} from "../../localdata/patterns";
+import {getIndexInVlLocalById} from "../../localdata/kurses";
+import {priem_prod} from "../../model/priem_prod";
 
 @Component({
   selector: 'app-ostatki',
@@ -17,7 +19,7 @@ import {sumRegExp} from "../../localdata/patterns";
 export class OstatkiComponent {
 
   ost: ostatki[] = ostatkiLocal
-  ppVl: currency[] = ppVlLocal
+  prVl: currency[] = prVlLocal
 
   formListOst = new FormGroup({
     ost: new FormControl<ostatki | null>(null, []),
@@ -47,12 +49,21 @@ export class OstatkiComponent {
     private authService: AuthService,
   ) {}
 
-  onTest() {
-    const test = new ostatki(null, 10, new currency(4, 'UAH'), 123.99, new Date(), false)
-    console.log('test = ',test)
+  ngOnInit() {
+    //Initialization of drop-down lists
+    this.authService.isLoggedIn$.subscribe((value) => {
+      if(value) {
+        if (this.prVl.length > 3) this.formNewOst.controls.vl.setValue(this.prVl[3])
+      }
+    })
+  }
 
-    this.ostService.create(test).subscribe((httpResponse) => {
-      if (httpResponse) console.log('httpResponse = ',httpResponse)
+  submitOst() {
+    this.formNewOst.controls.dt.setValue(this.lpService.dtTm)
+    this.formNewOst.controls.np.setValue(this.lpService.npo)
+    const ostNew = {...<ostatki>this.formNewOst.value}
+
+    this.ostService.create(ostNew).subscribe(() => {
     })
   }
 
