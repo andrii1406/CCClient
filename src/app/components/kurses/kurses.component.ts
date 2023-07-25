@@ -66,7 +66,7 @@ export class KursesComponent {
   })
 
   lastFocusedListRef: ElementRef | undefined
-  lastSelectedListRow = -1
+  lastSelectedKrsRow = -1
 
   @ViewChild('nKrs0') nKrs0Ref: ElementRef | undefined
   @ViewChild('nKrs1') nKrs1Ref: ElementRef | undefined
@@ -129,7 +129,7 @@ export class KursesComponent {
 
         if (index >= 0) {
           this.formListKrsControlsSetValues(index)
-          this.lastSelectedListRow = index
+          this.lastSelectedKrsRow = index
 
           let fc = this.formListKrs.controls.krs0
           if (listNum === 1) fc = this.formListKrs.controls.krs1
@@ -262,7 +262,7 @@ export class KursesComponent {
 
       this.krsService.update(updVal).subscribe(() => {
         this.formUpdKrs.reset()
-        this.formListKrsControlsSetValues(this.lastSelectedListRow)
+        this.formListKrsControlsSetValues(this.lastSelectedKrsRow)
         this.updKrsEditRef?.nativeElement.focus()
       })
     }
