@@ -1,6 +1,6 @@
-import {currency} from "./currency";
+import {currency} from "../model/currency";
 
-export class ostatki {
+export class OstatkiModel {
 
   id: number | null
   np: number

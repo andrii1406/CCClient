@@ -5,14 +5,14 @@ import {PriemProdComponent} from "./components/priem-prod/priem-prod.component";
 import {MainComponent} from "./components/main/main.component";
 import {canActivateTab} from "./services/jwt/auth.guard";
 import {KursesComponent} from "./components/kurses/kurses.component";
-import {OstatkiComponent} from "./components/ostatki/ostatki.component";
 
 const routes: Routes = [
   { path: '', component: MainComponent },
-  { path: 'opr', component: PrihRashComponent, canActivate: [canActivateTab] },
+  { path: 'opr', component: PrihRashComponent, canActivate: [canActivateTab], },
   { path: 'obm', component: PriemProdComponent, canActivate: [canActivateTab] },
   { path: 'krs', component: KursesComponent, canActivate: [canActivateTab] },
-  { path: 'ost', component: OstatkiComponent, canActivate: [canActivateTab] },
+  { path: 'ost', canActivate: [canActivateTab],
+    loadChildren: () => import('./ostatki/ostatki.module').then(m => m.OstatkiModule)},
   { path: 'bal', component: MainComponent, canActivate: [canActivateTab] },
   { path: 'fil', component: MainComponent, canActivate: [canActivateTab] },
   { path: 'vob', component: MainComponent, canActivate: [canActivateTab] },

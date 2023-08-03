@@ -5,7 +5,7 @@
       <select class="ostatkiListSelect" formControlName="ost" #lOst [size]="12"
               (change)="onChangeList(lOstRef)"
       >
-        <option *ngFor="let item of ost" [ngValue]="item"> {{item.vl.vl + '  '+ (item.ost | number : '1.0-2' : 'fr')}} </option>
+        <option *ngFor="let item of ostService.ostatkiLocal" [ngValue]="item"> {{item.vl.vl + '  '+ (item.ost | number : '1.0-2' : 'fr')}} </option>
       </select>
     </form>
   </div>

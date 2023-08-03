@@ -1,14 +1,12 @@
 import {Component, ElementRef, ViewChild} from '@angular/core';
-import {ostatki} from "../../model/ostatki";
 import {currency} from "../../model/currency";
 import {LoginParamsService} from "../../services/login-params/login-params.service";
 import {AuthService} from "../../services/jwt/auth.service";
-import {OstatkiService} from "../../services/ostatki.service";
+import {OstatkiService} from "../ostatki.service";
 import {FormControl, FormGroup, Validators} from "@angular/forms";
-import {getVlLocalById, prVlLocal} from "../../localdata/currencies";
-import {ostatkiLocal} from "../../localdata/ostatki";
+import {prVlLocal} from "../../localdata/currencies";
 import {sumRegExp} from "../../localdata/patterns";
-import {getKrsObLocalById} from "../../localdata/pp_obmen";
+import {OstatkiModel} from "../ostatki.model";
 
 @Component({
   selector: 'app-ostatki',
@@ -17,12 +15,11 @@ import {getKrsObLocalById} from "../../localdata/pp_obmen";
 })
 export class OstatkiComponent {
 
-  ost: ostatki[] = ostatkiLocal
   prVl: currency[] = prVlLocal
 
   // Balances list form (from database)
   formListOst = new FormGroup({
-    ost: new FormControl<ostatki | null>(null, []),
+    ost: new FormControl<OstatkiModel | null>(null, []),
   })
 
   // New balance form
@@ -50,7 +47,7 @@ export class OstatkiComponent {
   @ViewChild('lOst') lOstRef: ElementRef | undefined
 
   constructor(
-    private ostService: OstatkiService,
+    public ostService: OstatkiService,
     private lpService: LoginParamsService,
     private authService: AuthService,
   ) {}
@@ -70,7 +67,7 @@ export class OstatkiComponent {
   submitOst() {
     this.formNewOst.controls.dt.setValue(this.lpService.dtTm)
     this.formNewOst.controls.np.setValue(this.lpService.npo)
-    const ostNew = {...<ostatki>this.formNewOst.value}
+    const ostNew = {...<OstatkiModel>this.formNewOst.value}
 
     this.ostService.create(ostNew).subscribe(() => {
     })

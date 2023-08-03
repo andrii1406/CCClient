@@ -20,7 +20,6 @@ import { PrKeyDownDirective } from './directives/pr-key-down.directive';
 import { PpKeyDownDirective } from './directives/pp-key-down.directive';
 import { KrsKeyDownDirective } from './directives/krs-key-down.directive';
 import { NavKeyDownDirective } from './directives/nav-key-down.directive';
-import { OstatkiComponent } from './components/ostatki/ostatki.component';
 registerLocaleData(localeFr);
 
 @NgModule({
@@ -35,7 +34,6 @@ registerLocaleData(localeFr);
     PpKeyDownDirective,
     KrsKeyDownDirective,
     NavKeyDownDirective,
-    OstatkiComponent,
   ],
     imports: [
         BrowserModule,

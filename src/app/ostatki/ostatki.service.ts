@@ -1,16 +1,15 @@
 import { Injectable } from '@angular/core';
 import {HttpClient, HttpParams, HttpResponse} from "@angular/common/http";
-import {ErrorService} from "./error/error.service";
-import {ostatki} from "../model/ostatki";
+import {ErrorService} from "../services/error/error.service";
 import {catchError, Observable, tap} from "rxjs";
-import {kursesToLocals} from "../localdata/kurses";
-import {ostatkiLocal} from "../localdata/ostatki";
+import {OstatkiModel} from "./ostatki.model";
 
 @Injectable({
   providedIn: 'root'
 })
 export class OstatkiService {
 
+  private _ostatkiLocal: OstatkiModel[] = []
   private url = 'http://localhost:8080/api/v1/ostatki'
 
   constructor(
@@ -18,23 +17,31 @@ export class OstatkiService {
     private es: ErrorService<any>
   ) { }
 
-  create(newValue: ostatki): Observable<HttpResponse<ostatki>> {
-    return this.http.post<ostatki>(this.url, newValue, {
+  get ostatkiLocal(): OstatkiModel[] {
+    return this._ostatkiLocal;
+  }
+
+  set ostatkiLocal(value: OstatkiModel[]) {
+    this._ostatkiLocal = value;
+  }
+
+  create(newValue: OstatkiModel): Observable<HttpResponse<OstatkiModel>> {
+    return this.http.post<OstatkiModel>(this.url, newValue, {
       params: new HttpParams({}),
       observe: "response"
     }).pipe(
       tap((httpResponse) => {
         if (httpResponse) {
           const rb = httpResponse.body
-          if (rb) ostatkiLocal.push(rb)
+          if (rb) this._ostatkiLocal.push(rb)
         }
       }),
       catchError(this.es.handleError<any>('createOstatki'))
     )
   }
 
-  update(updValue: ostatki): Observable<HttpResponse<ostatki>> {
-    return this.http.put<ostatki>(`${this.url}/${updValue.id}`, updValue, {
+  update(updValue: OstatkiModel): Observable<HttpResponse<OstatkiModel>> {
+    return this.http.put<OstatkiModel>(`${this.url}/${updValue.id}`, updValue, {
       observe: "response"
     }).pipe(
       tap((httpResponse) => {}),
@@ -42,8 +49,8 @@ export class OstatkiService {
     )
   }
 
-  delete(id: number | undefined | null): Observable<HttpResponse<ostatki>> {
-    return this.http.delete<ostatki>(`${this.url}/${id}`,{
+  delete(id: number | undefined | null): Observable<HttpResponse<OstatkiModel>> {
+    return this.http.delete<OstatkiModel>(`${this.url}/${id}`,{
       observe: "response"
     }).pipe(
       tap((httpResponse) => {}),
@@ -51,8 +58,8 @@ export class OstatkiService {
     )
   }
 
-  readByNpAndDt(np: number, dtB: Date, dtE: Date): Observable<HttpResponse<ostatki[]>> {
-    return this.http.post<ostatki[]>(`${this.url}/${np}`, {dtB, dtE}, {
+  readByNpAndDt(np: number, dtB: Date, dtE: Date): Observable<HttpResponse<OstatkiModel[]>> {
+    return this.http.post<OstatkiModel[]>(`${this.url}/${np}`, {dtB, dtE}, {
       params: new HttpParams({}),
       observe: "response"
     }).pipe(
