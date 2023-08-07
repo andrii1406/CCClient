@@ -5,11 +5,13 @@ import {OstatkiComponent} from "./ostatki/ostatki.component";
 import {ReactiveFormsModule} from "@angular/forms";
 
 @NgModule({
+  declarations: [
+    OstatkiComponent
+  ],
   imports: [
     CommonModule,
     OstatkiRoutingModule,
     ReactiveFormsModule
-  ],
-  declarations: [OstatkiComponent]
+  ]
 })
 export class OstatkiModule { }

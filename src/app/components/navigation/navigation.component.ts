@@ -5,18 +5,14 @@ import {TokenStorageService} from "../../services/jwt/token-storage.service";
 import {Router} from "@angular/router";
 import {FormControl, FormGroup} from "@angular/forms";
 import {LoginParamsService} from "../../services/login-params/login-params.service";
-import {forkJoin, mergeMap, tap} from "rxjs";
+import {forkJoin, mergeMap} from "rxjs";
 import {OperationService} from "../../services/operation.service";
 import {CurrencyService} from "../../services/currency.service";
 import {KstatService} from "../../services/kstat.service";
 import {FilialService} from "../../services/filial.service";
 import {ObmenService} from "../../services/obmen.service";
-import {KursesService} from "../../services/kurses.service";
-import {filialsLocal, getFilialsLocalById} from "../../localdata/filials";
-import {kfLocal} from "../../localdata/kflocal";
-import {pr_op} from "../../localdata/pr_operations";
-import {prVlLocal} from "../../localdata/currencies";
-import {krsObLocal} from "../../localdata/pp_obmen";
+import {getFilialsLocalById} from "../../localdata/filials";
+import {KursesService} from "../../kurses/kurses.service";
 
 @Component({
   selector: 'app-navigation',

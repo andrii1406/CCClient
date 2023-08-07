@@ -6,7 +6,7 @@ import {
   isKey_F1_F4_Enter,
   isKey_Enter_Escape,
   isKey_F1_F12_Enter_Escape,
-  F1, F2, F3, F4, Tab, Enter, Escape
+  F1, F2, F3, Enter
 } from "../localdata/keys";
 
 @Directive({

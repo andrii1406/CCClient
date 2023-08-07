@@ -6,7 +6,6 @@ import {
   kurses2Local,
   kurses3Local, kursesLocalSplice
 } from "../../localdata/kurses";
-import {kurses} from "../../model/kurses";
 import {currency} from "../../model/currency";
 import {getVlLocalById, ppVlLocal} from "../../localdata/currencies";
 import {FormControl, FormGroup, Validators} from "@angular/forms";
@@ -14,10 +13,11 @@ import {krsRegExp} from "../../localdata/patterns";
 import {pp_obmen} from "../../model/pp_obmen";
 import {getKrsObLocalById, krsObLocal} from "../../localdata/pp_obmen";
 import {ObmenService} from "../../services/obmen.service";
-import {KursesService} from "../../services/kurses.service";
+import {KursesService} from "../kurses.service";
 import {FocusService} from "../../services/focus/focus.service";
 import {LoginParamsService} from "../../services/login-params/login-params.service";
 import {AuthService} from "../../services/jwt/auth.service";
+import {KursesModel} from "../kurses.model";
 
 @Component({
   selector: 'app-kurses',
@@ -28,25 +28,25 @@ export class KursesComponent {
 
   listRows = 12
 
-  krs0: kurses[] = kurses0Local
-  krs1: kurses[] = kurses1Local
-  krs2: kurses[] = kurses2Local
+  krs0: KursesModel[] = kurses0Local
+  krs1: KursesModel[] = kurses1Local
+  krs2: KursesModel[] = kurses2Local
   krs3: currency[] = kurses3Local
   ppVl: currency[] = ppVlLocal
   krsOb: pp_obmen[] = krsObLocal
 
   formNewKrs = new FormGroup({
-    krs0: new FormControl<kurses | null>(null, [Validators.pattern(krsRegExp)]),
+    krs0: new FormControl<KursesModel | null>(null, [Validators.pattern(krsRegExp)]),
     krs3: new FormControl<currency | null>(this.ppVl[0], []),
-    krs1: new FormControl<kurses | null>(null, [Validators.pattern(krsRegExp)]),
-    krs2: new FormControl<kurses | null>(null, [Validators.pattern(krsRegExp)]),
+    krs1: new FormControl<KursesModel | null>(null, [Validators.pattern(krsRegExp)]),
+    krs2: new FormControl<KursesModel | null>(null, [Validators.pattern(krsRegExp)]),
   })
 
   formListKrs = new FormGroup({
-    krs0: new FormControl<kurses | null>(this.krs0[0], []),
+    krs0: new FormControl<KursesModel | null>(this.krs0[0], []),
     krs3: new FormControl<currency | null>(this.krs3[0], []),
-    krs1: new FormControl<kurses | null>(this.krs1[0], []),
-    krs2: new FormControl<kurses | null>(this.krs2[0], []),
+    krs1: new FormControl<KursesModel | null>(this.krs1[0], []),
+    krs2: new FormControl<KursesModel | null>(this.krs2[0], []),
   })
 
   formDisabled = new FormGroup({
@@ -218,7 +218,7 @@ export class KursesComponent {
         if (!isNaN(Number(k1))) kNum[1] = Number(k1)
         if (!isNaN(Number(k2))) kNum[2] = Number(k2)
 
-        let kursesList: kurses[] = []
+        let kursesList: KursesModel[] = []
 
         let i = -1
         this.krs3.forEach((value, index) => {if (vl.id === value.id) i = index})
@@ -235,7 +235,7 @@ export class KursesComponent {
               const np = this.lpService.npo
               const tv = this.lpService.tv
               const dtTm = this.lpService.dtTm
-              kursesList.push(new kurses(null, np, tv, this.krsOb[j], vl, value, dtTm, false))
+              kursesList.push(new KursesModel(null, np, tv, this.krsOb[j], vl, value, dtTm, false))
             }
           }
         })
@@ -252,7 +252,7 @@ export class KursesComponent {
   }
 
   updKrs() {
-    const updVal = <kurses>this.formUpdKrs.value
+    const updVal = <KursesModel>this.formUpdKrs.value
 
     if (updVal.id === null) {
       this.updKrsEditRef?.nativeElement.focus()

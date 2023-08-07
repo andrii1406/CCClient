@@ -1,7 +1,7 @@
-import {pp_obmen} from "./pp_obmen";
-import {currency} from "./currency";
+import {pp_obmen} from "../model/pp_obmen";
+import {currency} from "../model/currency";
 
-export class kurses {
+export class KursesModel {
 
   id: number | null
   np: number

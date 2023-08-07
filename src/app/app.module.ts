@@ -15,10 +15,8 @@ import {registerLocaleData} from "@angular/common";
 import localeFr from '@angular/common/locales/fr';
 import {NewOperationService} from "./services/new-operation/new-operation.service";
 import {AgGridService} from "./services/ag-grid/ag-grid.service";
-import { KursesComponent } from './components/kurses/kurses.component';
 import { PrKeyDownDirective } from './directives/pr-key-down.directive';
 import { PpKeyDownDirective } from './directives/pp-key-down.directive';
-import { KrsKeyDownDirective } from './directives/krs-key-down.directive';
 import { NavKeyDownDirective } from './directives/nav-key-down.directive';
 registerLocaleData(localeFr);
 
@@ -29,23 +27,21 @@ registerLocaleData(localeFr);
     PrihRashComponent,
     PriemProdComponent,
     NavigationComponent,
-    KursesComponent,
     PrKeyDownDirective,
     PpKeyDownDirective,
-    KrsKeyDownDirective,
     NavKeyDownDirective,
   ],
-    imports: [
-        BrowserModule,
-        AppRoutingModule,
-        HttpClientModule,
-        ReactiveFormsModule,
-        NgbModule,
-        FormsModule,
-        AgGridModule,
-    ],
+  imports: [
+    BrowserModule,
+    AppRoutingModule,
+    HttpClientModule,
+    ReactiveFormsModule,
+    NgbModule,
+    FormsModule,
+    AgGridModule,
+  ],
   providers: [
-    { provide: LOCALE_ID, useValue: "fr-FR" },
+    {provide: LOCALE_ID, useValue: "fr-FR"},
     httpInterceptorProviders,
     NewOperationService,
     AgGridService,

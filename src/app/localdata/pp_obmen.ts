@@ -1,5 +1,4 @@
 import {pp_obmen} from "../model/pp_obmen";
-import {kurses} from "../model/kurses";
 
 export let ppObLocal: pp_obmen[] = []
 export let krsObLocal: pp_obmen[] = []

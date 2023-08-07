@@ -1,10 +1,10 @@
-import {kurses} from "../model/kurses";
 import {currency} from "../model/currency";
 import {getKrsObLocalById} from "./pp_obmen";
+import {KursesModel} from "../kurses/kurses.model";
 
-export let kurses0Local: kurses[] = []
-export let kurses1Local: kurses[] = []
-export let kurses2Local: kurses[] = []
+export let kurses0Local: KursesModel[] = []
+export let kurses1Local: KursesModel[] = []
+export let kurses2Local: KursesModel[] = []
 export let kurses3Local: currency[] = []
 
 export const getKrsVlLocalById = (id: number): currency | null => {
@@ -17,7 +17,7 @@ export const getKrsVlLocalById = (id: number): currency | null => {
   return res
 }
 
-export const getArrayPointer = (ppId: number | undefined): kurses[] | null => {
+export const getArrayPointer = (ppId: number | undefined): KursesModel[] | null => {
   let res = null
 
   if(ppId === 0) res = kurses0Local
@@ -44,15 +44,15 @@ export const kursesLocalSplice = (): void => {
   kurses2Local.splice(0)
 }
 
-export const kursesToLocals = (rbA: kurses[]): void => {
+export const kursesToLocals = (rbA: KursesModel[]): void => {
   rbA.forEach((rbAValue) => {
     let ind = getIndexInVlLocalById(rbAValue.vl.id)
 
     if (ind < 0) {
       kurses3Local.push(rbAValue.vl)
-      kurses0Local.push(new kurses(null, 0, 0, getKrsObLocalById(0)!, rbAValue.vl, 0, rbAValue.dt, false))
-      kurses1Local.push(new kurses(null, 0, 0, getKrsObLocalById(1)!, rbAValue.vl, 0, rbAValue.dt, false))
-      kurses2Local.push(new kurses(null, 0, 0, getKrsObLocalById(2)!, rbAValue.vl, 0, rbAValue.dt, false))
+      kurses0Local.push(new KursesModel(null, 0, 0, getKrsObLocalById(0)!, rbAValue.vl, 0, rbAValue.dt, false))
+      kurses1Local.push(new KursesModel(null, 0, 0, getKrsObLocalById(1)!, rbAValue.vl, 0, rbAValue.dt, false))
+      kurses2Local.push(new KursesModel(null, 0, 0, getKrsObLocalById(2)!, rbAValue.vl, 0, rbAValue.dt, false))
       ind = kurses3Local.length - 1
     }
 

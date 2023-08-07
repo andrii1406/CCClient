@@ -1,13 +1,13 @@
 import { Injectable } from '@angular/core';
 import {HttpClient, HttpParams, HttpResponse} from "@angular/common/http";
-import {ErrorService} from "./error/error.service";
-import {kurses} from "../model/kurses";
+import {ErrorService} from "../services/error/error.service";
 import {catchError, Observable, tap} from "rxjs";
 import {
   getArrayPointer,
   kursesLocalSplice,
   kursesToLocals
 } from "../localdata/kurses";
+import {KursesModel} from "./kurses.model";
 
 @Injectable({
   providedIn: 'root'
@@ -21,8 +21,8 @@ export class KursesService {
     private es: ErrorService<any>
   ) {}
 
-  create(newValue: kurses[]): Observable<HttpResponse<kurses[]>> {
-    return this.http.post<kurses[]>(this.url, newValue, {
+  create(newValue: KursesModel[]): Observable<HttpResponse<KursesModel[]>> {
+    return this.http.post<KursesModel[]>(this.url, newValue, {
       params: new HttpParams({}),
       observe: "response"
     }).pipe(
@@ -36,8 +36,8 @@ export class KursesService {
     )
   }
 
-  update(updValue: kurses): Observable<HttpResponse<kurses>> {
-    return this.http.put<kurses>(`${this.url}/${updValue.id}`, updValue, {
+  update(updValue: KursesModel): Observable<HttpResponse<KursesModel>> {
+    return this.http.put<KursesModel>(`${this.url}/${updValue.id}`, updValue, {
       observe: "response"
     }).pipe(
       tap((httpResponse) => {
@@ -64,8 +64,8 @@ export class KursesService {
     )
   }
 
-  readByNpAndDt(np: number, dtB: Date, dtE: Date): Observable<HttpResponse<kurses[]>> {
-    return this.http.post<kurses[]>(`${this.url}/${np}`, {dtB, dtE}, {
+  readByNpAndDt(np: number, dtB: Date, dtE: Date): Observable<HttpResponse<KursesModel[]>> {
+    return this.http.post<KursesModel[]>(`${this.url}/${np}`, {dtB, dtE}, {
       params: new HttpParams({}),
       observe: "response"
     }).pipe(
@@ -82,8 +82,8 @@ export class KursesService {
     )
   }
 
-  deleteByNpAndDt(np: number, dtB: Date, dtE: Date): Observable<HttpResponse<kurses[]>> {
-    return this.http.post<kurses[]>(`${this.url}/delbynp/${np}`, {dtB, dtE}, {
+  deleteByNpAndDt(np: number, dtB: Date, dtE: Date): Observable<HttpResponse<KursesModel[]>> {
+    return this.http.post<KursesModel[]>(`${this.url}/delbynp/${np}`, {dtB, dtE}, {
       params: new HttpParams({}),
       observe: "response"
     }).pipe(
@@ -91,8 +91,8 @@ export class KursesService {
     )
   }
 
-  readPrevByNpAndDt(np: number, dtB: Date, dtE: Date, dt: Date): Observable<HttpResponse<kurses[]>> {
-    return this.http.post<kurses[]>(`${this.url}/${np}`, {dtB, dtE}, {
+  readPrevByNpAndDt(np: number, dtB: Date, dtE: Date, dt: Date): Observable<HttpResponse<KursesModel[]>> {
+    return this.http.post<KursesModel[]>(`${this.url}/${np}`, {dtB, dtE}, {
       params: new HttpParams({}),
       observe: "response"
     }).pipe(
