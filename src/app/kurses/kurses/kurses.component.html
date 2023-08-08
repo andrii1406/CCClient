@@ -64,18 +64,18 @@
                 (dblclick)="onDblClickList(this.formListKrs.controls.krs0, nKrs0Ref, updKrsEditRef)"
                 krsKeyDownDirective [nextRef]="updKrsEditRef" [nextRef2]="lKrs0Ref"
         >
-          <option *ngFor="let k0 of krs0" [ngValue]="k0"> {{krsOut(k0.krs)}} </option>
+          <option *ngFor="let val of krsService.kurses0Local" [ngValue]="val"> {{krsOut(val.krs)}} </option>
         </select>
       </div>
 
       <div class="divRow" style="margin-left: 0.5%;">
         <label></label><br>
-        <select  class="kursesListSelect" formControlName="krs3" #lKrs3 [size]="listRows"
+        <select class="kursesListSelect" formControlName="krs3" #lKrs3 [size]="listRows"
                 (focus)="onFocusList(3, lKrs3Ref)" (change)="onChangeList(3, lKrs3Ref)"
-                 (dblclick)="onDblClickList(this.formListKrs.controls.krs0, nKrs0Ref, updKrsEditRef)"
+                (dblclick)="onDblClickList(this.formListKrs.controls.krs0, nKrs0Ref, updKrsEditRef)"
                 krsKeyDownDirective [nextRef]="updKrsEditRef" [nextRef2]="lKrs0Ref"
         >
-          <option *ngFor="let k3 of krs3" [ngValue]="k3"> {{k3.vl}} </option>
+          <option *ngFor="let val of krsService.kurses3Local" [ngValue]="val"> {{val.vl}} </option>
         </select>
       </div>
 
@@ -86,7 +86,7 @@
                 (dblclick)="onDblClickList(this.formListKrs.controls.krs1, nKrs1Ref, updKrsEditRef)"
                 krsKeyDownDirective [nextRef]="updKrsEditRef" [nextRef2]="lKrs0Ref"
         >
-          <option *ngFor="let k1 of krs1" [ngValue]="k1"> {{krsOut(k1.krs)}} </option>
+          <option *ngFor="let val of krsService.kurses1Local" [ngValue]="val"> {{krsOut(val.krs)}} </option>
         </select>
       </div>
 
@@ -97,7 +97,7 @@
                 (dblclick)="onDblClickList(this.formListKrs.controls.krs2, nKrs2Ref, updKrsEditRef)"
                 krsKeyDownDirective [nextRef]="updKrsEditRef" [nextRef2]="lKrs0Ref"
         >
-          <option *ngFor="let k2 of krs2" [ngValue]="k2"> {{ krsOut(k2.krs) }} </option>
+          <option *ngFor="let val of krsService.kurses2Local" [ngValue]="val"> {{ krsOut(val.krs) }} </option>
         </select>
       </div>
 
@@ -114,7 +114,7 @@
 
       <div class="divRow">
         <label>Операция</label><br>
-        <select formControlName="pp" #updPpList id="updPpList"
+        <select formControlName="pp" id="updPpList"
         >
           <option *ngFor="let op_item of krsOb" [ngValue]="op_item" >
             {{op_item.obm}}
@@ -124,7 +124,7 @@
 
       <div class="divRow">
         <label>Валюта</label><br>
-        <select formControlName="vl" #updVlList id="updVlList"
+        <select formControlName="vl" id="updVlList"
         >
           <option *ngFor="let vl of ppVl" [ngValue]="vl"> {{vl.vl}} </option>
         </select>

@@ -1,13 +1,12 @@
 import {Injectable} from '@angular/core';
 import {HttpClient, HttpHeaders} from "@angular/common/http";
-import {BehaviorSubject, catchError, forkJoin, mergeMap, Observable, of, tap, throwError} from "rxjs";
+import {BehaviorSubject, catchError, Observable, of, tap, throwError} from "rxjs";
 import {JwtResponse} from "../../model/jwt/jwt-response";
 import {AuthLoginInfo} from "../../model/jwt/login-info";
 import {SignUpInfo} from "../../model/jwt/signup-info";
 import {Router} from "@angular/router";
 import {TokenStorageService} from "./token-storage.service";
-import {kurses0Local, kurses1Local, kurses2Local, kurses3Local} from "../../localdata/kurses";
-import {OperationService} from "../operation.service";
+import {KursesService} from "../../kurses/kurses.service";
 
 const httpOptions = {
   headers: new HttpHeaders({ 'Content-Type': 'application/json' })
@@ -56,11 +55,6 @@ export class AuthService {
   logout() {
     this.isLoggedIn = false
     this.isLoggedIn$.next(this.isLoggedIn)
-
-    kurses3Local.splice(0)
-    kurses0Local.splice(0)
-    kurses1Local.splice(0)
-    kurses2Local.splice(0)
   }
 
   setLoggedIn() {

@@ -1,11 +1,4 @@
 import {Component, ElementRef, ViewChild} from '@angular/core';
-import {
-  getIndexInVlLocalById,
-  kurses0Local,
-  kurses1Local,
-  kurses2Local,
-  kurses3Local, kursesLocalSplice
-} from "../../localdata/kurses";
 import {currency} from "../../model/currency";
 import {getVlLocalById, ppVlLocal} from "../../localdata/currencies";
 import {FormControl, FormGroup, Validators} from "@angular/forms";
@@ -28,10 +21,6 @@ export class KursesComponent {
 
   listRows = 12
 
-  krs0: KursesModel[] = kurses0Local
-  krs1: KursesModel[] = kurses1Local
-  krs2: KursesModel[] = kurses2Local
-  krs3: currency[] = kurses3Local
   ppVl: currency[] = ppVlLocal
   krsOb: pp_obmen[] = krsObLocal
 
@@ -43,10 +32,14 @@ export class KursesComponent {
   })
 
   formListKrs = new FormGroup({
-    krs0: new FormControl<KursesModel | null>(this.krs0[0], []),
-    krs3: new FormControl<currency | null>(this.krs3[0], []),
-    krs1: new FormControl<KursesModel | null>(this.krs1[0], []),
-    krs2: new FormControl<KursesModel | null>(this.krs2[0], []),
+    // krs0: new FormControl<KursesModel | null>(this.krs0[0], []),
+    // krs3: new FormControl<currency | null>(this.krs3[0], []),
+    // krs1: new FormControl<KursesModel | null>(this.krs1[0], []),
+    // krs2: new FormControl<KursesModel | null>(this.krs2[0], []),
+    krs0: new FormControl<KursesModel | null>(null, []),
+    krs3: new FormControl<currency | null>(null, []),
+    krs1: new FormControl<KursesModel | null>(null, []),
+    krs2: new FormControl<KursesModel | null>(null, []),
   })
 
   formDisabled = new FormGroup({
@@ -84,7 +77,7 @@ export class KursesComponent {
 
   constructor(
     private obService: ObmenService,
-    private krsService: KursesService,
+    public krsService: KursesService,
     private focusService: FocusService,
     private lpService: LoginParamsService,
     private authService: AuthService,
@@ -156,14 +149,14 @@ export class KursesComponent {
 
   //выделить строку с курсами по индексу
   formListKrsControlsSetValues(index: number) {
-    const ln = this.krs3.length
+    const ln = this.krsService.kurses3Local.length
     if (ln > 0) {
       if (index < 0) index = 0
       if (index >= ln) index = ln - 1
-      if (this.lKrs0Ref !== undefined) this.formListKrs.controls.krs0.setValue(this.krs0[index])
-      if (this.lKrs3Ref !== undefined) this.formListKrs.controls.krs3.setValue(this.krs3[index])
-      if (this.lKrs1Ref !== undefined) this.formListKrs.controls.krs1.setValue(this.krs1[index])
-      if (this.lKrs2Ref !== undefined) this.formListKrs.controls.krs2.setValue(this.krs2[index])
+      if (this.lKrs0Ref !== undefined) this.formListKrs.controls.krs0.setValue(this.krsService.kurses0Local[index])
+      if (this.lKrs3Ref !== undefined) this.formListKrs.controls.krs3.setValue(this.krsService.kurses3Local[index])
+      if (this.lKrs1Ref !== undefined) this.formListKrs.controls.krs1.setValue(this.krsService.kurses1Local[index])
+      if (this.lKrs2Ref !== undefined) this.formListKrs.controls.krs2.setValue(this.krsService.kurses2Local[index])
     }
   }
 
@@ -176,7 +169,7 @@ export class KursesComponent {
   onLoadPrevKurses() {
     let b = true
 
-    if (this.krs3.length > 0)
+    if (this.krsService.kurses3Local.length > 0)
       if (!confirm("Перезаписать существующие курсы?")) b = false
 
     if (b) {
@@ -188,7 +181,7 @@ export class KursesComponent {
           if (rb) {
             if (rb.length > 0) {
               this.krsService.deleteByNpAndDt(this.lpService.npo, this.lpService.dtB, this.lpService.dtE).subscribe(() => {
-                kursesLocalSplice()
+                this.krsService.kursesLocalSplice()
                 this.krsService.create(rb).subscribe(() => {
                   this.formListKrsControlsSetValues(0)
                 })
@@ -221,15 +214,18 @@ export class KursesComponent {
         let kursesList: KursesModel[] = []
 
         let i = -1
-        this.krs3.forEach((value, index) => {if (vl.id === value.id) i = index})
+        this.krsService.kurses3Local.forEach((value, index) => {
+          if (vl.id === value.id) i = index
+        })
 
         kNum.forEach((value, j) => {
           if (value !== 0) {
             let flag = true
 
             if (i >= 0)
-              if ((j === 0 && this.krs0[i].id !== null) || (j === 1 && this.krs1[i].id !== null) ||
-                (j === 2 && this.krs2[i].id !== null)) flag = false
+              if ((j === 0 && this.krsService.kurses0Local[i].id !== null) ||
+                (j === 1 && this.krsService.kurses1Local[i].id !== null) ||
+                (j === 2 && this.krsService.kurses2Local[i].id !== null)) flag = false
 
             if (flag) {
               const np = this.lpService.npo
@@ -243,7 +239,7 @@ export class KursesComponent {
         this.krsService.create(kursesList).subscribe(() => {
           this.formNewKrs.reset()
           this.formNewKrs.controls.krs3.setValue(vl)
-          const index = getIndexInVlLocalById(vl.id)
+          const index = this.krsService.getIndexInVlLocalById(vl.id)
           this.formListKrsControlsSetValues(index)
           this.nKrs0Ref?.nativeElement.focus()
         })

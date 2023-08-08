@@ -36,8 +36,8 @@ import {
 } from "../../localdata/keys";
 import {LoginParamsService} from "../../services/login-params/login-params.service";
 import {GRID_END, ppField} from "../../localdata/grid_constants";
-import {getArrayPointer} from "../../localdata/kurses";
 import {AuthService} from "../../services/jwt/auth.service";
+import {KursesService} from "../../kurses/kurses.service";
 
 @Component({
   selector: 'app-priem-prod',
@@ -119,6 +119,7 @@ export class PriemProdComponent {
     private gridService: PpGridService,
     private ppService: PriemProdService,
     private obService: ObmenService,
+    private krsService: KursesService,
     private vlService: CurrencyService,
     private focusService: FocusService,
     private lpService: LoginParamsService,
@@ -175,7 +176,7 @@ export class PriemProdComponent {
     if (this.ppNewRec.getMode()) {
       const ppId = this.formPriemProd.controls.pp.value?.id
       const vlId = this.formPriemProd.controls.vl.value?.id
-      const ap = getArrayPointer(ppId)
+      const ap = this.krsService.getArrayPointer(ppId)
       if (ap) {
         let krs: number | null = null
         ap.forEach((value) => {

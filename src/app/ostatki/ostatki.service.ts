@@ -21,10 +21,6 @@ export class OstatkiService {
     return this._ostatkiLocal;
   }
 
-  set ostatkiLocal(value: OstatkiModel[]) {
-    this._ostatkiLocal = value;
-  }
-
   create(newValue: OstatkiModel): Observable<HttpResponse<OstatkiModel>> {
     return this.http.post<OstatkiModel>(this.url, newValue, {
       params: new HttpParams({}),

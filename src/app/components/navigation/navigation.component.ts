@@ -70,6 +70,7 @@ export class NavigationComponent {
     if (this.tokenStorage.getToken()) {
       this.tokenStorage.signOut()
       this.authService.logout()
+      this.krsService.kursesLocalSplice()
     }
   }
 
@@ -95,6 +96,7 @@ export class NavigationComponent {
       this.lpService.clearNpoAndTv()
       this.tokenStorage.signOut()
       this.authService.logout()
+      this.krsService.kursesLocalSplice()
     }
     else {
       let login = this.formLogin.controls.username.value
