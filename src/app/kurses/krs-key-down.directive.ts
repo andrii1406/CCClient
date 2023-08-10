@@ -3,10 +3,9 @@ import {currency} from "../model/currency";
 import {FormControl} from "@angular/forms";
 import {ppVlLocal} from "../localdata/currencies";
 import {
-  isKey_F1_F4_Enter,
   isKey_Enter_Escape,
   isKey_F1_F12_Enter_Escape,
-  Enter, F1, F2, F3
+  Enter, F1, F2, F3, F5, F6
 } from "../localdata/keys";
 
 @Directive({
@@ -40,10 +39,12 @@ export class KrsKeyDownDirective {
       e.preventDefault()
     }
 
-    if ((id === "nKrs3") && isKey_F1_F4_Enter(ek)) {
+    if ((id === "nKrs3") && isKey_F1_F12_Enter_Escape(ek)) {
       if (ek === F1) this.formCon?.setValue(this.krsVl[0])
       if (ek === F2) this.formCon?.setValue(this.krsVl[1])
       if (ek === F3) this.formCon?.setValue(this.krsVl[2])
+      if (ek === F5) this.formCon?.setValue(this.krsVl[3])
+      if (ek === F6) this.formCon?.setValue(this.krsVl[4])
       nrne.focus()
     }
 

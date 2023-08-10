@@ -96,6 +96,7 @@ export class OstatkiComponent {
         this.formNewOst.reset()
         this.formNewOst.controls.vl.setValue(vl)
         this.formNewOst.controls.ost.setValue(0)
+        this.nOstVlRef?.nativeElement.focus()
       })
     }
   }

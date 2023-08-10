@@ -3,10 +3,9 @@ import {currency} from "../model/currency";
 import {FormControl} from "@angular/forms";
 import {prVlLocal} from "../localdata/currencies";
 import {
-  isKey_F1_F4_Enter,
   isKey_Enter_Escape,
   isKey_F1_F12_Enter_Escape,
-  Enter, F1, F2, F3, F4
+  Enter, F1, F2, F3, F4, F5, F6
 } from "../localdata/keys";
 
 @Directive({
@@ -39,21 +38,23 @@ export class OstKeyDownDirective {
       e.preventDefault()
     }
 
-    if ((id === "nOstVl") && isKey_F1_F4_Enter(ek)) {
+    if ((id === "nOstVl") && isKey_F1_F12_Enter_Escape(ek)) {
       if (ek === F1) this.formCon?.setValue(this.ostVl[0])
       if (ek === F2) this.formCon?.setValue(this.ostVl[1])
       if (ek === F3) this.formCon?.setValue(this.ostVl[2])
       if (ek === F4) this.formCon?.setValue(this.ostVl[3])
+      if (ek === F5) this.formCon?.setValue(this.ostVl[4])
+      if (ek === F6) this.formCon?.setValue(this.ostVl[5])
       nrne.focus()
     }
 
-    if (isKey_Enter_Escape(ek))
+    if (isKey_Enter_Escape(ek)) {
       if (ek === Enter) {
         if (nrne !== undefined) nrne.focus()
-      else
+      } else {
         if (nr2ne !== undefined) nr2ne.focus()
       }
-
+    }
   }
 
 }

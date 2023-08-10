@@ -24,7 +24,7 @@
              (focus)="onFocusEdit(updOstEditRef)"
       >
 
-      <button class="updBtn" #ostUpdButton id="ostUpdButton" style="width: 90%; margin-top: 5%"
+      <button class="updBtn" type="button" #ostUpdButton id="ostUpdButton" style="width: 90%; margin-top: 5%"
               ostKeyDownDirective
               [disabled]="formUpdOst.invalid"
       >Изменить</button>
@@ -54,7 +54,7 @@
 
     <div class="divRow">
       <button class="addBtn" type="submit" #ostAddButton id="ostAddButton"
-              ostKeyDownDirective [nextRef]="nOstVlRef" [nextRef2]="nOstVlRef"
+              ostKeyDownDirective [nextRef2]="nOstVlRef"
               [disabled]="formNewOst.invalid"
       >Внести</button>
     </div>
