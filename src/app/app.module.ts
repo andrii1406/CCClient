@@ -21,31 +21,31 @@ import { NavKeyDownDirective } from './directives/nav-key-down.directive';
 registerLocaleData(localeFr);
 
 @NgModule({
-  declarations: [
-    AppComponent,
-    MainComponent,
-    PrihRashComponent,
-    PriemProdComponent,
-    NavigationComponent,
-    PrKeyDownDirective,
-    PpKeyDownDirective,
-    NavKeyDownDirective,
-  ],
-  imports: [
-    BrowserModule,
-    AppRoutingModule,
-    HttpClientModule,
-    ReactiveFormsModule,
-    NgbModule,
-    FormsModule,
-    AgGridModule,
-  ],
-  providers: [
-    {provide: LOCALE_ID, useValue: "fr-FR"},
-    httpInterceptorProviders,
-    NewOperationService,
-    AgGridService,
-  ],
-  bootstrap: [AppComponent]
+    declarations: [
+        AppComponent,
+        MainComponent,
+        PrihRashComponent,
+        PriemProdComponent,
+        NavigationComponent,
+        PrKeyDownDirective,
+        PpKeyDownDirective,
+        NavKeyDownDirective,
+    ],
+    imports: [
+        BrowserModule,
+        AppRoutingModule,
+        HttpClientModule,
+        ReactiveFormsModule,
+        NgbModule,
+        FormsModule,
+        AgGridModule,
+    ],
+    providers: [
+        {provide: LOCALE_ID, useValue: "fr-FR"},
+        httpInterceptorProviders,
+        NewOperationService,
+        AgGridService,
+    ],
+    bootstrap: [AppComponent]
 })
 export class AppModule { }

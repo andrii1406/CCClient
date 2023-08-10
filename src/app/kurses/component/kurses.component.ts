@@ -9,7 +9,6 @@ import {ObmenService} from "../../services/obmen.service";
 import {KursesService} from "../kurses.service";
 import {FocusService} from "../../services/focus/focus.service";
 import {LoginParamsService} from "../../services/login-params/login-params.service";
-import {AuthService} from "../../services/jwt/auth.service";
 import {KursesModel} from "../kurses.model";
 
 @Component({
@@ -26,16 +25,12 @@ export class KursesComponent {
 
   formNewKrs = new FormGroup({
     krs0: new FormControl<KursesModel | null>(null, [Validators.pattern(krsRegExp)]),
-    krs3: new FormControl<currency | null>(this.ppVl[0], []),
+    krs3: new FormControl<currency | null>(null, []),
     krs1: new FormControl<KursesModel | null>(null, [Validators.pattern(krsRegExp)]),
     krs2: new FormControl<KursesModel | null>(null, [Validators.pattern(krsRegExp)]),
   })
 
   formListKrs = new FormGroup({
-    // krs0: new FormControl<KursesModel | null>(this.krs0[0], []),
-    // krs3: new FormControl<currency | null>(this.krs3[0], []),
-    // krs1: new FormControl<KursesModel | null>(this.krs1[0], []),
-    // krs2: new FormControl<KursesModel | null>(this.krs2[0], []),
     krs0: new FormControl<KursesModel | null>(null, []),
     krs3: new FormControl<currency | null>(null, []),
     krs1: new FormControl<KursesModel | null>(null, []),
@@ -80,16 +75,17 @@ export class KursesComponent {
     public krsService: KursesService,
     private focusService: FocusService,
     private lpService: LoginParamsService,
-    private authService: AuthService,
   ) {}
 
   ngOnInit() {
-    //когда осуществлён логин - инициализировать списки курсов
-    this.authService.isLoggedIn$.subscribe((value) => {
-      if (value) this.formListKrsControlsSetValues(0)
-    })
+    // Initialize the currency name list of the new currency rate form
+    if (this.ppVl.length > 0) this.formNewKrs.controls.krs3.setValue(this.ppVl[0])
+
+    // Currency rates lists initialization
+    this.formListKrsControlsSetValues(0)
   }
 
+  // Rates list - handler of focus event
   onFocusList(listNum: number, ref: ElementRef | undefined) {
     this.lastFocusedListRef = ref
     this.onChangeList(listNum, ref)
@@ -147,25 +143,25 @@ export class KursesComponent {
     }
   }
 
-  //выделить строку с курсами по индексу
+  // Select row with all rates by 'index' value
   formListKrsControlsSetValues(index: number) {
     const ln = this.krsService.kurses3Local.length
     if (ln > 0) {
       if (index < 0) index = 0
       if (index >= ln) index = ln - 1
-      if (this.lKrs0Ref !== undefined) this.formListKrs.controls.krs0.setValue(this.krsService.kurses0Local[index])
-      if (this.lKrs3Ref !== undefined) this.formListKrs.controls.krs3.setValue(this.krsService.kurses3Local[index])
-      if (this.lKrs1Ref !== undefined) this.formListKrs.controls.krs1.setValue(this.krsService.kurses1Local[index])
-      if (this.lKrs2Ref !== undefined) this.formListKrs.controls.krs2.setValue(this.krsService.kurses2Local[index])
+      this.formListKrs.controls.krs0.setValue(this.krsService.kurses0Local[index])
+      this.formListKrs.controls.krs3.setValue(this.krsService.kurses3Local[index])
+      this.formListKrs.controls.krs1.setValue(this.krsService.kurses1Local[index])
+      this.formListKrs.controls.krs2.setValue(this.krsService.kurses2Local[index])
     }
   }
 
-  //для курса выделить последний символ
+  // Select rate last digit
   onFocusEdit(ref: ElementRef | undefined) {
     this.focusService.SelectLastChar(ref)
   }
 
-  //загрузка предыдущих курсов
+  // Loading of previous rates
   onLoadPrevKurses() {
     let b = true
 

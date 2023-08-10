@@ -1,6 +1,6 @@
 import { NgModule } from '@angular/core';
 import { Routes, RouterModule } from '@angular/router';
-import {OstatkiComponent} from "./ostatki/ostatki.component";
+import {OstatkiComponent} from "./component/ostatki.component";
 
 const routes: Routes = [
   {

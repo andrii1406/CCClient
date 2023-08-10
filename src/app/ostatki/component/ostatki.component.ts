@@ -1,12 +1,12 @@
 import {Component, ElementRef, ViewChild} from '@angular/core';
 import {currency} from "../../model/currency";
 import {LoginParamsService} from "../../services/login-params/login-params.service";
-import {AuthService} from "../../services/jwt/auth.service";
 import {OstatkiService} from "../ostatki.service";
 import {FormControl, FormGroup, Validators} from "@angular/forms";
 import {prVlLocal} from "../../localdata/currencies";
 import {sumRegExp} from "../../localdata/patterns";
 import {OstatkiModel} from "../ostatki.model";
+import {FocusService} from "../../services/focus/focus.service";
 
 @Component({
   selector: 'app-ostatki',
@@ -17,7 +17,7 @@ export class OstatkiComponent {
 
   prVl: currency[] = prVlLocal
 
-  // Balances list form (from database)
+  // Balances list form
   formListOst = new FormGroup({
     ost: new FormControl<OstatkiModel | null>(null, []),
   })
@@ -45,22 +45,38 @@ export class OstatkiComponent {
   lastSelectedOst = -1
 
   @ViewChild('lOst') lOstRef: ElementRef | undefined
+  @ViewChild('nOstVl') nOstVlRef: ElementRef | undefined
+  @ViewChild('updOstEdit') updOstEditRef: ElementRef | undefined
+  @ViewChild('newOstEdit') newOstEditRef: ElementRef | undefined
+  @ViewChild('ostDelButton') ostDelButtonRef: ElementRef | undefined
+  @ViewChild('ostUpdButton') ostUpdButtonRef: ElementRef | undefined
+  @ViewChild('ostAddButton') ostAddButtonRef: ElementRef | undefined
 
   constructor(
     public ostService: OstatkiService,
+    private focusService: FocusService,
     private lpService: LoginParamsService,
-    private authService: AuthService,
   ) {}
 
-  ngOnInit() {
+  ngAfterViewInit() {
+    // Initialization of currency names list
+    if (this.prVl.length > 3) this.formNewOst.controls.vl.setValue(this.prVl[3])
 
-    //Initialization of drop-down lists
-    this.authService.isLoggedIn$.subscribe((value) => {
-      if(value) {
-        if (this.prVl.length > 3) this.formNewOst.controls.vl.setValue(this.prVl[3])
-      }
-    })
+    // Balances list initialization
+    if (this.ostService.ostatkiLocal.length > 0) {
+      this.formListOst.controls.ost.setValue(this.ostService.ostatkiLocal[0])
+      this.lOstRef?.nativeElement.focus()
+    }
+  }
 
+  // Balances list - handler of focus event
+  onFocusList(ref: ElementRef | undefined) {
+    this.onChangeList(ref)
+  }
+
+  // Select all characters of currency balance
+  onFocusEdit(ref: ElementRef | undefined) {
+    this.focusService.SelectAllText(ref)
   }
 
   // New balance handler
@@ -68,9 +84,20 @@ export class OstatkiComponent {
     this.formNewOst.controls.dt.setValue(this.lpService.dtTm)
     this.formNewOst.controls.np.setValue(this.lpService.npo)
     const ostNew = {...<OstatkiModel>this.formNewOst.value}
+    const ostVal = this.newOstEditRef?.nativeElement.value
 
-    this.ostService.create(ostNew).subscribe(() => {
-    })
+    if (ostVal === '0') {
+      this.newOstEditRef?.nativeElement.focus()
+    }
+    else {
+      const vl = this.formNewOst.controls.vl.value
+
+      this.ostService.create(ostNew).subscribe(() => {
+        this.formNewOst.reset()
+        this.formNewOst.controls.vl.setValue(vl)
+        this.formNewOst.controls.ost.setValue(0)
+      })
+    }
   }
 
   // Handler for event of balances list changing
@@ -84,6 +111,7 @@ export class OstatkiComponent {
         if (index >= 0) {
           this.lastSelectedOst = index
           const fcVal = this.formListOst.controls.ost.value
+
           // Set selected balance into the update form
           if (fcVal) this.formUpdOst.setValue(fcVal)
         }

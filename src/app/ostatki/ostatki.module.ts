@@ -1,12 +1,17 @@
 import { NgModule } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import {OstatkiRoutingModule} from "./ostatki-routing.module";
-import {OstatkiComponent} from "./ostatki/ostatki.component";
+import {OstatkiComponent} from "./component/ostatki.component";
 import {ReactiveFormsModule} from "@angular/forms";
+import {OstKeyDownDirective} from "./ost-key-down.directive";
 
 @NgModule({
   declarations: [
-    OstatkiComponent
+    OstatkiComponent,
+    OstKeyDownDirective,
+  ],
+  exports: [
+    OstKeyDownDirective
   ],
   imports: [
     CommonModule,

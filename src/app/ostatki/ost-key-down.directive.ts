@@ -1,20 +1,20 @@
 import {Directive, ElementRef, HostListener, Input} from '@angular/core';
 import {currency} from "../model/currency";
 import {FormControl} from "@angular/forms";
-import {ppVlLocal} from "../localdata/currencies";
+import {prVlLocal} from "../localdata/currencies";
 import {
   isKey_F1_F4_Enter,
   isKey_Enter_Escape,
   isKey_F1_F12_Enter_Escape,
-  Enter, F1, F2, F3
+  Enter, F1, F2, F3, F4
 } from "../localdata/keys";
 
 @Directive({
-  selector: '[krsKeyDownDirective]'
+  selector: '[ostKeyDownDirective]'
 })
-export class KrsKeyDownDirective {
+export class OstKeyDownDirective {
 
-  krsVl: currency[] = ppVlLocal
+  ostVl: currency[] = prVlLocal
 
   @Input() nextRef: ElementRef | undefined
   @Input() nextRef2: ElementRef | undefined
@@ -33,26 +33,26 @@ export class KrsKeyDownDirective {
     const nr2ne = this.nextRef2?.nativeElement
 
     if (isKey_F1_F12_Enter_Escape(ek) &&
-      //для ниже перечисленных условый стандартное поведение НЕ будет переопределяться
-      id !== "krsAddButton" && id !== "krsUpdButton"
+      id !== "ostDelButton" && id !== "ostUpdButton" && id !== "ostAddButton"
     ) {
-      //переопределить стандартное поведение
+      // Prevent default behavior excluding above id's
       e.preventDefault()
     }
 
-    if ((id === "nKrs3") && isKey_F1_F4_Enter(ek)) {
-      if (ek === F1) this.formCon?.setValue(this.krsVl[0])
-      if (ek === F2) this.formCon?.setValue(this.krsVl[1])
-      if (ek === F3) this.formCon?.setValue(this.krsVl[2])
+    if ((id === "nOstVl") && isKey_F1_F4_Enter(ek)) {
+      if (ek === F1) this.formCon?.setValue(this.ostVl[0])
+      if (ek === F2) this.formCon?.setValue(this.ostVl[1])
+      if (ek === F3) this.formCon?.setValue(this.ostVl[2])
+      if (ek === F4) this.formCon?.setValue(this.ostVl[3])
       nrne.focus()
     }
 
-    if (isKey_Enter_Escape(ek)) {
-      if (ek === Enter)
-        nrne.focus()
+    if (isKey_Enter_Escape(ek))
+      if (ek === Enter) {
+        if (nrne !== undefined) nrne.focus()
       else
         if (nr2ne !== undefined) nr2ne.focus()
-    }
+      }
 
   }
 
