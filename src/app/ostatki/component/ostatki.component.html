@@ -26,6 +26,7 @@
 
       <button class="updBtn" type="button" #ostUpdButton id="ostUpdButton" style="width: 90%; margin-top: 5%"
               ostKeyDownDirective
+              (click)="updOst()"
               [disabled]="formUpdOst.invalid"
       >Изменить</button>
     </form>

@@ -63,9 +63,23 @@ export class OstatkiComponent {
     if (this.prVl.length > 3) this.formNewOst.controls.vl.setValue(this.prVl[3])
 
     // Balances list initialization
-    if (this.ostService.ostatkiLocal.length > 0) {
-      this.formListOst.controls.ost.setValue(this.ostService.ostatkiLocal[0])
-      this.lOstRef?.nativeElement.focus()
+    this.formListOstSelectByIndex(0, this.lOstRef)
+  }
+
+  // Select balance by 'index' value
+  formListOstSelectByIndex(index: number, focusRef?: ElementRef | undefined) {
+    const ln = this.ostService.ostatkiLocal.length
+    if (ln > 0) {
+      if (index < 0) index = 0
+      if (index >= ln) index = ln - 1
+      this.formListOst.controls.ost.setValue(this.ostService.ostatkiLocal[index])
+      if (focusRef !== undefined) {
+        if (focusRef === this.lOstRef) {
+          focusRef.nativeElement.selectedIndex = index
+          this.onFocusList(focusRef)
+        }
+        focusRef.nativeElement.focus()
+      }
     }
   }
 
@@ -96,7 +110,7 @@ export class OstatkiComponent {
         this.formNewOst.reset()
         this.formNewOst.controls.vl.setValue(vl)
         this.formNewOst.controls.ost.setValue(0)
-        this.nOstVlRef?.nativeElement.focus()
+        this.formListOstSelectByIndex(Number.MAX_VALUE, this.nOstVlRef)
       })
     }
   }
@@ -117,6 +131,24 @@ export class OstatkiComponent {
           if (fcVal) this.formUpdOst.setValue(fcVal)
         }
       }
+    }
+  }
+
+  // Update balance handler
+  updOst() {
+    const updVal = <OstatkiModel>this.formUpdOst.value
+
+    if (updVal.id === null) {
+      this.updOstEditRef?.nativeElement.focus()
+    }
+    else {
+      updVal.ost = Number(updVal.ost)
+
+      this.ostService.update(updVal).subscribe(() => {
+        this.formUpdOst.reset()
+        this.formUpdOst.controls.ost.setValue(0)
+        this.formListOstSelectByIndex(this.lastSelectedOst, this.lOstRef)
+      })
     }
   }
 

@@ -40,7 +40,22 @@ export class OstatkiService {
     return this.http.put<OstatkiModel>(`${this.url}/${updValue.id}`, updValue, {
       observe: "response"
     }).pipe(
-      tap((httpResponse) => {}),
+      tap((httpResponse) => {
+        if (httpResponse) {
+          const rb = httpResponse.body
+          if (rb) {
+            let ind = -1
+            this.ostatkiLocal.forEach((value, index) => {
+              if (value.id === rb.id) ind = index
+            })
+
+            if (ind >= 0) {
+              rb.dt = new Date(rb.dt)
+              this.ostatkiLocal[ind] = rb
+            }
+          }
+        }
+      }),
       catchError(this.es.handleError<any>('updateOstatki'))
     )
   }
