@@ -21,6 +21,16 @@ export class OstatkiService {
     return this._ostatkiLocal;
   }
 
+  private getIndexInArrayById(id: number | null): number {
+    let ind = -1
+
+    this._ostatkiLocal.forEach((value, index) => {
+      if (value.id === id) ind = index
+    })
+
+    return ind
+  }
+
   create(newValue: OstatkiModel): Observable<HttpResponse<OstatkiModel>> {
     return this.http.post<OstatkiModel>(this.url, newValue, {
       params: new HttpParams({}),
@@ -44,10 +54,7 @@ export class OstatkiService {
         if (httpResponse) {
           const rb = httpResponse.body
           if (rb) {
-            let ind = -1
-            this.ostatkiLocal.forEach((value, index) => {
-              if (value.id === rb.id) ind = index
-            })
+            let ind = this.getIndexInArrayById(rb.id)
 
             if (ind >= 0) {
               rb.dt = new Date(rb.dt)
@@ -64,7 +71,15 @@ export class OstatkiService {
     return this.http.delete<OstatkiModel>(`${this.url}/${id}`,{
       observe: "response"
     }).pipe(
-      tap((httpResponse) => {}),
+      tap((httpResponse) => {
+        if (httpResponse) {
+          const rb = httpResponse.body
+          if (rb) {
+            let ind = this.getIndexInArrayById(rb.id)
+            if (ind >= 0) this._ostatkiLocal.splice(ind, 1)
+          }
+        }
+      }),
       catchError(this.es.handleError<any>('deleteOstatki'))
     )
   }

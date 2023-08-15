@@ -5,7 +5,7 @@ import {prVlLocal} from "../localdata/currencies";
 import {
   isKey_Enter_Escape,
   isKey_F1_F12_Enter_Escape,
-  Enter, F1, F2, F3, F4, F5, F6
+  Enter, F1, F2, F3, F4, F5, F6, Delete
 } from "../localdata/keys";
 
 @Directive({
@@ -30,6 +30,7 @@ export class OstKeyDownDirective {
     const id = this.elemRef.nativeElement.id
     const nrne = this.nextRef?.nativeElement
     const nr2ne = this.nextRef2?.nativeElement
+    const nrdel = this.nextRefDel?.nativeElement
 
     if (isKey_F1_F12_Enter_Escape(ek) &&
       id !== "ostDelButton" && id !== "ostUpdButton" && id !== "ostAddButton"
@@ -55,6 +56,11 @@ export class OstKeyDownDirective {
         if (nr2ne !== undefined) nr2ne.focus()
       }
     }
+
+    if (ek === Delete) {
+      if (nrdel !== undefined) nrdel.focus()
+    }
+
   }
 
 }

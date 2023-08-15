@@ -3,7 +3,7 @@
   <div class="divRow2">
     <form [formGroup]="formListOst">
       <select class="ostatkiListSelect" formControlName="ost" #lOst [size]="12"
-              ostKeyDownDirective
+              ostKeyDownDirective [nextRef]="updOstEditRef" [nextRef2]="nOstVlRef" [nextRefDel]="ostDelButtonRef"
               (focus)="onFocusList(lOstRef)" (change)="onChangeList(lOstRef)"
       >
         <option *ngFor="let item of ostService.ostatkiLocal" [ngValue]="item"> {{item.vl.vl + '  '+ (item.ost | number : '1.0-2' : 'fr')}} </option>
@@ -14,20 +14,21 @@
 
   <div class="divRow2" style="width: 10%; margin-left: 1%">
     <form [formGroup]="formUpdOst">
-      <button class="delBtn" #ostDelButton id="ostDelButton" style="width: 90%; margin-top: 5%"
-              ostKeyDownDirective
+      <button class="delBtn" type="button" #ostDelButton id="ostDelButton" style="width: 90%; margin-top: 5%"
+              ostKeyDownDirective [nextRef2]="lOstRef"
+              (click)="delOst()"
       >Удалить</button>
 
       <input formControlName="ost" type="text" autocomplete="off" #updOstEdit id="updOstEdit" style="width: 90%; margin-top: 20%"
-             ostKeyDownDirective
+             ostKeyDownDirective [nextRef]="ostUpdButtonRef" [nextRef2]="lOstRef"
              [ngClass]="{'input-has-error': formUpdOst.controls.ost.invalid}"
              (focus)="onFocusEdit(updOstEditRef)"
       >
 
       <button class="updBtn" type="button" #ostUpdButton id="ostUpdButton" style="width: 90%; margin-top: 5%"
-              ostKeyDownDirective
-              (click)="updOst()"
+              ostKeyDownDirective [nextRef2]="updOstEditRef"
               [disabled]="formUpdOst.invalid"
+              (click)="updOst()"
       >Изменить</button>
     </form>
   </div>
@@ -38,7 +39,7 @@
     <div class="divRow">
       <label></label><br>
       <select formControlName="vl" #nOstVl id="nOstVl"
-              ostKeyDownDirective [nextRef]="newOstEditRef" [nextRef2]="nOstVlRef" [formCon]="formNewOst.controls.vl"
+              ostKeyDownDirective [nextRef]="newOstEditRef" [nextRef2]="lOstRef" [formCon]="formNewOst.controls.vl"
       >
         <option *ngFor="let vl of prVl" [ngValue]="vl"> {{vl.vl}} </option>
       </select>

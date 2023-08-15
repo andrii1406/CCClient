@@ -39,10 +39,10 @@ export class OstatkiComponent {
     vl: new FormControl<currency | null>(null, []),
     ost: new FormControl<number | null>(0, [Validators.required, Validators.pattern(sumRegExp)]),
     dt: new FormControl<Date | null>(null, []),
-    fl: new FormControl<boolean | null>(false, []),
+    fl: new FormControl<boolean | null>(null, []),
   })
 
-  lastSelectedOst = -1
+  lastSelectedIndex = -1
 
   @ViewChild('lOst') lOstRef: ElementRef | undefined
   @ViewChild('nOstVl') nOstVlRef: ElementRef | undefined
@@ -58,6 +58,7 @@ export class OstatkiComponent {
     private lpService: LoginParamsService,
   ) {}
 
+  // Lifecycle hook handler
   ngAfterViewInit() {
     // Initialization of currency names list
     if (this.prVl.length > 3) this.formNewOst.controls.vl.setValue(this.prVl[3])
@@ -72,7 +73,9 @@ export class OstatkiComponent {
     if (ln > 0) {
       if (index < 0) index = 0
       if (index >= ln) index = ln - 1
+
       this.formListOst.controls.ost.setValue(this.ostService.ostatkiLocal[index])
+
       if (focusRef !== undefined) {
         if (focusRef === this.lOstRef) {
           focusRef.nativeElement.selectedIndex = index
@@ -83,7 +86,7 @@ export class OstatkiComponent {
     }
   }
 
-  // Balances list - handler of focus event
+  // Balances list - focus event handler
   onFocusList(ref: ElementRef | undefined) {
     this.onChangeList(ref)
   }
@@ -95,12 +98,12 @@ export class OstatkiComponent {
 
   // New balance handler
   submitOst() {
+    this.formNewOst.controls.fl.setValue(false)
     this.formNewOst.controls.dt.setValue(this.lpService.dtTm)
     this.formNewOst.controls.np.setValue(this.lpService.npo)
     const ostNew = {...<OstatkiModel>this.formNewOst.value}
-    const ostVal = this.newOstEditRef?.nativeElement.value
 
-    if (ostVal === '0') {
+    if (this.formNewOst.controls.ost.value === 0) {
       this.newOstEditRef?.nativeElement.focus()
     }
     else {
@@ -124,7 +127,7 @@ export class OstatkiComponent {
         const index = refNe.selectedIndex
 
         if (index >= 0) {
-          this.lastSelectedOst = index
+          this.lastSelectedIndex = index
           const fcVal = this.formListOst.controls.ost.value
 
           // Set selected balance into the update form
@@ -147,7 +150,31 @@ export class OstatkiComponent {
       this.ostService.update(updVal).subscribe(() => {
         this.formUpdOst.reset()
         this.formUpdOst.controls.ost.setValue(0)
-        this.formListOstSelectByIndex(this.lastSelectedOst, this.lOstRef)
+        this.formListOstSelectByIndex(this.lastSelectedIndex, this.lOstRef)
+      })
+    }
+  }
+
+  // Delete balance handler
+  delOst() {
+    const delVal = <OstatkiModel>this.formUpdOst.value
+
+    if (delVal.id === null) {
+      this.updOstEditRef?.nativeElement.focus()
+    }
+    else {
+      this.ostService.delete(delVal.id).subscribe(() => {
+        this.formUpdOst.reset()
+        this.formUpdOst.controls.ost.setValue(0)
+
+        if (this.ostService.ostatkiLocal.length > 0)
+          this.formListOstSelectByIndex(this.lastSelectedIndex, this.lOstRef)
+        else {
+          if (this.lOstRef) {
+            this.lOstRef.nativeElement.selectedIndex = -1
+            this.lOstRef.nativeElement.focus()
+          }
+        }
       })
     }
   }
