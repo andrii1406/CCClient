@@ -3,6 +3,7 @@ import {HttpClient, HttpParams, HttpResponse} from "@angular/common/http";
 import {ErrorService} from "../services/error/error.service";
 import {catchError, Observable, tap} from "rxjs";
 import {OstatkiModel} from "./ostatki.model";
+import {getPrVlLocalById} from "../localdata/currencies";
 
 @Injectable({
   providedIn: 'root'
@@ -39,7 +40,12 @@ export class OstatkiService {
       tap((httpResponse) => {
         if (httpResponse) {
           const rb = httpResponse.body
-          if (rb) this._ostatkiLocal.push(rb)
+          if (rb) {
+            const vl = getPrVlLocalById(rb.vl.id)
+            if (vl) rb.vl = vl
+            rb.dt = new Date(rb.dt)
+            this._ostatkiLocal.push(rb)
+          }
         }
       }),
       catchError(this.es.handleError<any>('createOstatki'))
@@ -57,6 +63,8 @@ export class OstatkiService {
             let ind = this.getIndexInArrayById(rb.id)
 
             if (ind >= 0) {
+              const vl = getPrVlLocalById(rb.vl.id)
+              if (vl) rb.vl = vl
               rb.dt = new Date(rb.dt)
               this.ostatkiLocal[ind] = rb
             }
@@ -93,6 +101,12 @@ export class OstatkiService {
         if (httpResponse) {
           const rb = httpResponse.body
           if (rb) {
+            rb.forEach((value) => {
+              const vl = getPrVlLocalById(value.vl.id)
+              if (vl) value.vl = vl
+              value.dt = new Date(value.dt)
+            })
+            this._ostatkiLocal = rb
           }
         }
       }),

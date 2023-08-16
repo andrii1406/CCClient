@@ -1,6 +1,6 @@
 import {Component, ElementRef, ViewChild} from '@angular/core';
 import {currency} from "../../model/currency";
-import {getVlLocalById, ppVlLocal} from "../../localdata/currencies";
+import {getPpVlLocalById, ppVlLocal} from "../../localdata/currencies";
 import {FormControl, FormGroup, Validators} from "@angular/forms";
 import {krsRegExp} from "../../localdata/patterns";
 import {pp_obmen} from "../../model/pp_obmen";
@@ -77,15 +77,17 @@ export class KursesComponent {
     private lpService: LoginParamsService,
   ) {}
 
-  ngOnInit() {
+  // Lifecycle hook handler
+  ngAfterViewInit() {
     // Initialize the currency name list of the new currency rate form
     if (this.ppVl.length > 0) this.formNewKrs.controls.krs3.setValue(this.ppVl[0])
 
-    // Currency rates lists initialization
+    // Initial focus setting
+    this.nKrs0Ref?.nativeElement.focus()
     this.formListKrsControlsSetValues(0)
   }
 
-  // Rates list - handler of focus event
+  // Rates list - focus event handler
   onFocusList(listNum: number, ref: ElementRef | undefined) {
     this.lastFocusedListRef = ref
     this.onChangeList(listNum, ref)
@@ -100,9 +102,10 @@ export class KursesComponent {
       else {
         const vlId = this.formListKrs.controls.krs3.value?.id
         if (vlId !== undefined) {
-          const vl = getVlLocalById(vlId)
           //корректная установка значения списка валют
+          const vl = getPpVlLocalById(vlId)
           if (vl) this.formNewKrs.controls.krs3.setValue(vl)
+
           refN?.nativeElement.focus()
         }
       }
@@ -132,7 +135,7 @@ export class KursesComponent {
               if (pp) this.formDisabled.controls.pp.setValue(pp)
 
               //корректная установка значения списка валют
-              const vl = getVlLocalById(fcVal.vl.id)
+              const vl = getPpVlLocalById(fcVal.vl.id)
               if (vl) this.formDisabled.controls.vl.setValue(vl)
 
               this.formUpdKrs.setValue(fcVal)

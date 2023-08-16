@@ -12,7 +12,7 @@
       <div class="divRow" style="margin-left: 4%;">
         <label>Приём</label><br>
         <input formControlName="krs0" type="text" autocomplete="off" #nKrs0 id="nKrs0"
-               krsKeyDownDirective [nextRef]="nKrs3Ref" [nextRef2]="nKrs0Ref"
+               krsKeyDownDirective [nextRef]="nKrs3Ref" [nextRef2]="lKrs0Ref"
                [ngClass]="{'input-has-error': formNewKrs.controls.krs0.invalid}"
                (focus)="onFocusEdit(nKrs0Ref)"
         />
@@ -60,7 +60,7 @@
       <div class="divRow">
         <label>Приём</label><br>
         <select class="kursesListSelect" formControlName="krs0" #lKrs0 [size]="listRows"
-                krsKeyDownDirective [nextRef]="updKrsEditRef" [nextRef2]="lKrs0Ref"
+                krsKeyDownDirective [nextRef]="updKrsEditRef" [nextRef2]="nKrs0Ref"
                 (focus)="onFocusList(0, lKrs0Ref)" (change)="onChangeList(0, lKrs0Ref)"
                 (dblclick)="onDblClickList(this.formListKrs.controls.krs0, nKrs0Ref, updKrsEditRef)"
         >

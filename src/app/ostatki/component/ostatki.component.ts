@@ -63,8 +63,13 @@ export class OstatkiComponent {
     // Initialization of currency names list
     if (this.prVl.length > 3) this.formNewOst.controls.vl.setValue(this.prVl[3])
 
-    // Balances list initialization
-    this.formListOstSelectByIndex(0, this.lOstRef)
+    this.ostService.readByNpAndDt(this.lpService.npo, this.lpService.dtB, this.lpService.dtE).subscribe(() => {
+      // Initial focus setting
+      if (this.ostService.ostatkiLocal.length > 0)
+        this.formListOstSelectByIndex(0, this.lOstRef)
+      else
+        this.nOstVlRef?.nativeElement.focus()
+    })
   }
 
   // Select balance by 'index' value
@@ -74,7 +79,9 @@ export class OstatkiComponent {
       if (index < 0) index = 0
       if (index >= ln) index = ln - 1
 
-      this.formListOst.controls.ost.setValue(this.ostService.ostatkiLocal[index])
+      const ost = this.ostService.ostatkiLocal[index]
+      this.formListOst.controls.ost.setValue(ost)
+      this.formUpdOst.setValue(ost)
 
       if (focusRef !== undefined) {
         if (focusRef === this.lOstRef) {
@@ -96,6 +103,25 @@ export class OstatkiComponent {
     this.focusService.SelectAllText(ref)
   }
 
+  // Handler for event of balances list changing
+  onChangeList(ref: ElementRef | undefined) {
+    if (ref !== undefined && ref !== null) {
+      const refNe = ref.nativeElement
+
+      if (refNe !== undefined && refNe !== null) {
+        const index = refNe.selectedIndex
+
+        if (index >= 0) {
+          this.lastSelectedIndex = index
+          const fcVal = this.formListOst.controls.ost.value
+
+          // Set selected balance into the update form
+          if (fcVal) this.formUpdOst.setValue(fcVal)
+        }
+      }
+    }
+  }
+
   // New balance handler
   submitOst() {
     this.formNewOst.controls.fl.setValue(false)
@@ -115,25 +141,6 @@ export class OstatkiComponent {
         this.formNewOst.controls.ost.setValue(0)
         this.formListOstSelectByIndex(Number.MAX_VALUE, this.nOstVlRef)
       })
-    }
-  }
-
-  // Handler for event of balances list changing
-  onChangeList(ref: ElementRef | undefined) {
-    if (ref !== undefined && ref !== null) {
-      const refNe = ref.nativeElement
-
-      if (refNe !== undefined && refNe !== null) {
-        const index = refNe.selectedIndex
-
-        if (index >= 0) {
-          this.lastSelectedIndex = index
-          const fcVal = this.formListOst.controls.ost.value
-
-          // Set selected balance into the update form
-          if (fcVal) this.formUpdOst.setValue(fcVal)
-        }
-      }
     }
   }
 

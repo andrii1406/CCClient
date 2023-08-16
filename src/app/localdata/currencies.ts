@@ -3,10 +3,18 @@ import {currency} from "../model/currency";
 export let prVlLocal: currency[] = []
 export let ppVlLocal: currency[] = []
 
-export const getVlLocalById = (id: number): currency | null => {
+export const getPpVlLocalById = (id: number): currency | null => {
+  return getVlLocalById(id, ppVlLocal)
+}
+
+export const getPrVlLocalById = (id: number): currency | null => {
+  return getVlLocalById(id, prVlLocal)
+}
+
+export const getVlLocalById = (id: number, arr: currency[]): currency | null => {
   let res: currency | null = null
 
-  ppVlLocal.forEach((value) => {
+  arr.forEach((value) => {
     if (id === value.id) res = value
   })
 

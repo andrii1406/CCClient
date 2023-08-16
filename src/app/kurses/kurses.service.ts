@@ -5,6 +5,7 @@ import {catchError, Observable, tap} from "rxjs";
 import {KursesModel} from "./kurses.model";
 import {currency} from "../model/currency";
 import {getKrsObLocalById} from "../localdata/pp_obmen";
+import {getPpVlLocalById, getPrVlLocalById} from "../localdata/currencies";
 
 @Injectable({
   providedIn: 'root'
@@ -36,16 +37,6 @@ export class KursesService {
 
   get kurses3Local(): currency[] {
     return this._kurses3Local;
-  }
-
-  getKrsVlLocalById(id: number): currency | null {
-    let res: currency | null = null
-
-    this._kurses3Local.forEach((value) => {
-      if (id === value.id) res = value
-    })
-
-    return res
   }
 
   getArrayPointer (ppId: number | undefined): KursesModel[] | null {
@@ -80,6 +71,9 @@ export class KursesService {
       let ind = this.getIndexInVlLocalById(rbAValue.vl.id)
 
       if (ind < 0) {
+        const vl = getPpVlLocalById(rbAValue.vl.id)
+        if (vl) rbAValue.vl = vl
+        rbAValue.dt = new Date(rbAValue.dt)
         this._kurses3Local.push(rbAValue.vl)
         this._kurses0Local.push(new KursesModel(null, 0, 0, getKrsObLocalById(0)!, rbAValue.vl, 0, rbAValue.dt, false))
         this._kurses1Local.push(new KursesModel(null, 0, 0, getKrsObLocalById(1)!, rbAValue.vl, 0, rbAValue.dt, false))
@@ -116,7 +110,8 @@ export class KursesService {
           const rb = httpResponse.body
           if (rb) {
             let ap = this.getArrayPointer(rb.pp.id)
-              if (ap) {
+
+            if (ap) {
               let ind = -1
 
               ap.forEach((value, index) => {
@@ -124,6 +119,8 @@ export class KursesService {
               })
 
               if (ind >= 0) {
+                const vl = getPpVlLocalById(rb.vl.id)
+                if (vl) rb.vl = vl
                 rb.dt = new Date(rb.dt)
                 ap[ind] = rb
               }
