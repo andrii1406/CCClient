@@ -65,7 +65,7 @@
               prKeyDownDirective [prevRef]="prListRef" [nextRef]="smEditRef"
               [formCon]="formPrihRash.controls.vl"
       >
-        <option *ngFor="let val of prVl" [ngValue]="val">
+        <option *ngFor="let val of this.crService.prVlLocal" [ngValue]="val">
           {{val.vl}}
         </option>
       </select>

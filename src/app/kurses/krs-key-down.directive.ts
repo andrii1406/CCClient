@@ -1,19 +1,17 @@
 import {Directive, ElementRef, HostListener, Input} from '@angular/core';
 import {currency} from "../model/currency";
 import {FormControl} from "@angular/forms";
-import {ppVlLocal} from "../localdata/currencies";
 import {
   isKey_Enter_Escape,
   isKey_F1_F12_Enter_Escape,
   Enter, F1, F2, F3, F5, F6
 } from "../localdata/keys";
+import {CurrencyService} from "../services/currency.service";
 
 @Directive({
   selector: '[krsKeyDownDirective]'
 })
 export class KrsKeyDownDirective {
-
-  krsVl: currency[] = ppVlLocal
 
   @Input() nextRef: ElementRef | undefined
   @Input() nextRef2: ElementRef | undefined
@@ -22,6 +20,7 @@ export class KrsKeyDownDirective {
 
   constructor(
     private elemRef: ElementRef,
+    private curService: CurrencyService,
   ) {}
 
   @HostListener('keydown', ['$event']) onKeyDownHandler(e: KeyboardEvent) {
@@ -40,11 +39,12 @@ export class KrsKeyDownDirective {
     }
 
     if ((id === "nKrs3") && isKey_F1_F12_Enter_Escape(ek)) {
-      if (ek === F1) this.formCon?.setValue(this.krsVl[0])
-      if (ek === F2) this.formCon?.setValue(this.krsVl[1])
-      if (ek === F3) this.formCon?.setValue(this.krsVl[2])
-      if (ek === F5) this.formCon?.setValue(this.krsVl[3])
-      if (ek === F6) this.formCon?.setValue(this.krsVl[4])
+      const krsVl = this.curService.ppVlLocal
+      if (ek === F1) this.formCon?.setValue(krsVl[0])
+      if (ek === F2) this.formCon?.setValue(krsVl[1])
+      if (ek === F3) this.formCon?.setValue(krsVl[2])
+      if (ek === F5) this.formCon?.setValue(krsVl[3])
+      if (ek === F6) this.formCon?.setValue(krsVl[4])
       nrne.focus()
     }
 

@@ -22,7 +22,9 @@
         <select formControlName="krs3" #nKrs3 id="nKrs3"
                 krsKeyDownDirective [nextRef]="nKrs1Ref" [nextRef2]="nKrs0Ref"
                                   [formCon]="formNewKrs.controls.krs3">
-          <option *ngFor="let k3 of ppVl" [ngValue]="k3"> {{k3.vl}} </option>
+          <option *ngFor="let val of curService.ppVlLocal" [ngValue]="val">
+            {{val.vl}}
+          </option>
         </select>
       </div>
 
@@ -64,7 +66,9 @@
                 (focus)="onFocusList(0, lKrs0Ref)" (change)="onChangeList(0, lKrs0Ref)"
                 (dblclick)="onDblClickList(this.formListKrs.controls.krs0, nKrs0Ref, updKrsEditRef)"
         >
-          <option *ngFor="let val of krsService.kurses0Local" [ngValue]="val"> {{krsOut(val.krs)}} </option>
+          <option *ngFor="let val of krsService.kurses0Local" [ngValue]="val">
+            {{krsOut(val.krs)}}
+          </option>
         </select>
       </div>
 
@@ -126,7 +130,9 @@
         <label>Валюта</label><br>
         <select formControlName="vl" id="updVlList"
         >
-          <option *ngFor="let vl of ppVl" [ngValue]="vl"> {{vl.vl}} </option>
+          <option *ngFor="let val of curService.ppVlLocal" [ngValue]="val">
+            {{val.vl}}
+          </option>
         </select>
       </div>
 

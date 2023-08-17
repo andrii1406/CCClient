@@ -5,7 +5,7 @@ import {catchError, Observable, tap} from "rxjs";
 import {KursesModel} from "./kurses.model";
 import {currency} from "../model/currency";
 import {getKrsObLocalById} from "../localdata/pp_obmen";
-import {getPpVlLocalById, getPrVlLocalById} from "../localdata/currencies";
+import {CurrencyService} from "../services/currency.service";
 
 @Injectable({
   providedIn: 'root'
@@ -20,7 +20,8 @@ export class KursesService {
 
   constructor(
     private http: HttpClient,
-    private es: ErrorService<any>
+    private curService: CurrencyService,
+    private es: ErrorService<any>,
   ) {}
 
   get kurses0Local(): KursesModel[] {
@@ -71,9 +72,9 @@ export class KursesService {
       let ind = this.getIndexInVlLocalById(rbAValue.vl.id)
 
       if (ind < 0) {
-        const vl = getPpVlLocalById(rbAValue.vl.id)
-        if (vl) rbAValue.vl = vl
+        rbAValue.vl = this.curService.getPpVlLocalById(rbAValue.vl)
         rbAValue.dt = new Date(rbAValue.dt)
+
         this._kurses3Local.push(rbAValue.vl)
         this._kurses0Local.push(new KursesModel(null, 0, 0, getKrsObLocalById(0)!, rbAValue.vl, 0, rbAValue.dt, false))
         this._kurses1Local.push(new KursesModel(null, 0, 0, getKrsObLocalById(1)!, rbAValue.vl, 0, rbAValue.dt, false))
@@ -119,8 +120,7 @@ export class KursesService {
               })
 
               if (ind >= 0) {
-                const vl = getPpVlLocalById(rb.vl.id)
-                if (vl) rb.vl = vl
+                rb.vl = this.curService.getPpVlLocalById(rb.vl)
                 rb.dt = new Date(rb.dt)
                 ap[ind] = rb
               }

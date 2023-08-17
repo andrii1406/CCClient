@@ -1,6 +1,5 @@
 import {Component, ElementRef, ViewChild} from '@angular/core';
 import {currency} from "../../model/currency";
-import {getPpVlLocalById, ppVlLocal} from "../../localdata/currencies";
 import {FormControl, FormGroup, Validators} from "@angular/forms";
 import {krsRegExp} from "../../localdata/patterns";
 import {pp_obmen} from "../../model/pp_obmen";
@@ -10,6 +9,7 @@ import {KursesService} from "../kurses.service";
 import {FocusService} from "../../services/focus/focus.service";
 import {LoginParamsService} from "../../services/login-params/login-params.service";
 import {KursesModel} from "../kurses.model";
+import {CurrencyService} from "../../services/currency.service";
 
 @Component({
   selector: 'app-kurses',
@@ -19,8 +19,6 @@ import {KursesModel} from "../kurses.model";
 export class KursesComponent {
 
   listRows = 12
-
-  ppVl: currency[] = ppVlLocal
   krsOb: pp_obmen[] = krsObLocal
 
   formNewKrs = new FormGroup({
@@ -73,6 +71,7 @@ export class KursesComponent {
   constructor(
     private obService: ObmenService,
     public krsService: KursesService,
+    public curService: CurrencyService,
     private focusService: FocusService,
     private lpService: LoginParamsService,
   ) {}
@@ -80,7 +79,8 @@ export class KursesComponent {
   // Lifecycle hook handler
   ngAfterViewInit() {
     // Initialize the currency name list of the new currency rate form
-    if (this.ppVl.length > 0) this.formNewKrs.controls.krs3.setValue(this.ppVl[0])
+    const ppVl = this.curService.ppVlLocal
+    if (ppVl.length > 0) this.formNewKrs.controls.krs3.setValue(ppVl[0])
 
     // Initial focus setting
     this.nKrs0Ref?.nativeElement.focus()
@@ -100,12 +100,9 @@ export class KursesComponent {
       if(fc.value.id)
         refU?.nativeElement.focus()
       else {
-        const vlId = this.formListKrs.controls.krs3.value?.id
-        if (vlId !== undefined) {
-          //корректная установка значения списка валют
-          const vl = getPpVlLocalById(vlId)
-          if (vl) this.formNewKrs.controls.krs3.setValue(vl)
-
+        const vl = this.formListKrs.controls.krs3.value
+        if (vl) {
+          this.formNewKrs.controls.krs3.setValue(this.curService.getPpVlLocalById(vl))
           refN?.nativeElement.focus()
         }
       }
@@ -134,9 +131,7 @@ export class KursesComponent {
               const pp = getKrsObLocalById(fcVal.pp.id)
               if (pp) this.formDisabled.controls.pp.setValue(pp)
 
-              //корректная установка значения списка валют
-              const vl = getPpVlLocalById(fcVal.vl.id)
-              if (vl) this.formDisabled.controls.vl.setValue(vl)
+              this.formDisabled.controls.vl.setValue(this.curService.getPpVlLocalById(fcVal.vl))
 
               this.formUpdKrs.setValue(fcVal)
             }

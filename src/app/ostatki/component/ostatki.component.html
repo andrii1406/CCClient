@@ -41,7 +41,7 @@
       <select formControlName="vl" #nOstVl id="nOstVl"
               ostKeyDownDirective [nextRef]="newOstEditRef" [nextRef2]="lOstRef" [formCon]="formNewOst.controls.vl"
       >
-        <option *ngFor="let vl of prVl" [ngValue]="vl"> {{vl.vl}} </option>
+        <option *ngFor="let val of curService.prVlLocal" [ngValue]="val"> {{val.vl}} </option>
       </select>
     </div>
 

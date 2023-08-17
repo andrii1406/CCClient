@@ -65,7 +65,7 @@
               ppKeyDownDirective [prevRef]="ppListRef" [nextRef]="smEditRef"
               [formCon]="formPriemProd.controls.vl"
       >
-        <option *ngFor="let val of vl" [ngValue]="val">
+        <option *ngFor="let val of crService.ppVlLocal" [ngValue]="val">
           {{val.vl}}
         </option>
       </select>

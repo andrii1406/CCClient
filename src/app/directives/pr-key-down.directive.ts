@@ -3,7 +3,6 @@ import {pr_operation} from "../model/pr_operation";
 import {pr_op} from "../localdata/pr_operations";
 import {currency} from "../model/currency";
 import {FormControl} from "@angular/forms";
-import {prVlLocal} from "../localdata/currencies";
 import {PrNewRecService} from "../services/new-operation/pr-new-rec.service";
 import {PrGridService} from "../services/ag-grid/pr-grid.service";
 import {
@@ -11,9 +10,10 @@ import {
   isKey_F1_F2_Enter,
   isKey_F1_F4_Enter,
   isKey_F1_F12_Enter_Escape,
-  F1, F2, F3, F4, Tab, Enter, Escape
+  F1, F2, F3, F4, Tab, Enter, Escape, F5, F6
 } from "../localdata/keys";
 import {prField} from "../localdata/grid_constants";
+import {CurrencyService} from "../services/currency.service";
 
 @Directive({
   selector: '[prKeyDownDirective]'
@@ -21,7 +21,6 @@ import {prField} from "../localdata/grid_constants";
 export class PrKeyDownDirective {
 
   focusCol = prField[2]
-  prVl: currency[] = prVlLocal
   prOp: pr_operation[] = pr_op
 
   @Input() prevRef: ElementRef | undefined
@@ -34,6 +33,7 @@ export class PrKeyDownDirective {
     private elemRef: ElementRef,
     private prNewRec: PrNewRecService,
     private prGridService: PrGridService,
+    private curService: CurrencyService,
   ) {}
 
   @HostListener('keydown', ['$event']) onKeyDownHandler(e: KeyboardEvent) {
@@ -60,10 +60,13 @@ export class PrKeyDownDirective {
     }
 
     if ((id === "vlList") && isKey_F1_F4_Enter(ek)) {
-      if (ek === F1) this.formCon?.setValue(this.prVl[0])
-      if (ek === F2) this.formCon?.setValue(this.prVl[1])
-      if (ek === F3) this.formCon?.setValue(this.prVl[2])
-      if (ek === F4) this.formCon?.setValue(this.prVl[3])
+      const prVl = this.curService.prVlLocal
+      if (ek === F1) this.formCon?.setValue(prVl[0])
+      if (ek === F2) this.formCon?.setValue(prVl[1])
+      if (ek === F3) this.formCon?.setValue(prVl[2])
+      if (ek === F4) this.formCon?.setValue(prVl[3])
+      if (ek === F5) this.formCon?.setValue(prVl[4])
+      if (ek === F6) this.formCon?.setValue(prVl[5])
       nrne.focus()
     }
 

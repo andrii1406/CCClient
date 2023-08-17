@@ -21,7 +21,6 @@ import {priem_prod} from "../../model/priem_prod";
 import {pp_obmen} from "../../model/pp_obmen";
 import {PriemProdService} from "../../services/priem-prod.service";
 import {ppObLocal} from "../../localdata/pp_obmen";
-import {ppVlLocal} from "../../localdata/currencies";
 import {priemLocal, prodLocal} from "../../localdata/priem_prod";
 import {PpNewRecService} from "../../services/new-operation/pp-new-rec.service";
 import {PpGridService} from "../../services/ag-grid/pp-grid.service";
@@ -52,7 +51,6 @@ export class PriemProdComponent {
   flag2 = false
 
   pp: pp_obmen[] = ppObLocal
-  vl: currency[] = ppVlLocal
 
   public priemRowData:priem_prod[] = []
   public prodRowData:priem_prod[] = []
@@ -120,7 +118,7 @@ export class PriemProdComponent {
     private ppService: PriemProdService,
     private obService: ObmenService,
     private krsService: KursesService,
-    private vlService: CurrencyService,
+    public crService: CurrencyService,
     private focusService: FocusService,
     private lpService: LoginParamsService,
     private authService: AuthService,
@@ -150,7 +148,8 @@ export class PriemProdComponent {
     this.authService.isLoggedIn$.subscribe((value) => {
       if(value) {
         if (this.pp.length > 0) this.formPriemProd.controls.pp.setValue(this.pp[0])
-        if (this.vl.length > 0) this.formPriemProd.controls.vl.setValue(this.vl[0])
+        const ppVl = this.crService.ppVlLocal
+        if (ppVl.length > 0) this.formPriemProd.controls.vl.setValue(ppVl[0])
       }
     })
   }
@@ -433,9 +432,6 @@ export class PriemProdComponent {
 
     //корректная установка значения списка операций
     this.pp.forEach((value) => {if (value.id === lsr.pp.id) lsr.pp = value})
-
-    //корректная установка значения списка валют
-    this.vl.forEach((value) => {if (value.id === lsr.vl.id) lsr.vl = value})
 
     this.formPriemProd.setValue(lsr)
 

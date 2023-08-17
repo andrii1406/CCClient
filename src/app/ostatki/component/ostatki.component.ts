@@ -3,10 +3,10 @@ import {currency} from "../../model/currency";
 import {LoginParamsService} from "../../services/login-params/login-params.service";
 import {OstatkiService} from "../ostatki.service";
 import {FormControl, FormGroup, Validators} from "@angular/forms";
-import {prVlLocal} from "../../localdata/currencies";
 import {sumRegExp} from "../../localdata/patterns";
 import {OstatkiModel} from "../ostatki.model";
 import {FocusService} from "../../services/focus/focus.service";
+import {CurrencyService} from "../../services/currency.service";
 
 @Component({
   selector: 'app-ostatki',
@@ -14,8 +14,6 @@ import {FocusService} from "../../services/focus/focus.service";
   styleUrls: ['./ostatki.component.scss']
 })
 export class OstatkiComponent {
-
-  prVl: currency[] = prVlLocal
 
   // Balances list form
   formListOst = new FormGroup({
@@ -54,6 +52,7 @@ export class OstatkiComponent {
 
   constructor(
     public ostService: OstatkiService,
+    public curService: CurrencyService,
     private focusService: FocusService,
     private lpService: LoginParamsService,
   ) {}
@@ -61,7 +60,8 @@ export class OstatkiComponent {
   // Lifecycle hook handler
   ngAfterViewInit() {
     // Initialization of currency names list
-    if (this.prVl.length > 3) this.formNewOst.controls.vl.setValue(this.prVl[3])
+    const prVl = this.curService.prVlLocal
+    if (prVl.length > 3) this.formNewOst.controls.vl.setValue(prVl[3])
 
     this.ostService.readByNpAndDt(this.lpService.npo, this.lpService.dtB, this.lpService.dtE).subscribe(() => {
       // Initial focus setting

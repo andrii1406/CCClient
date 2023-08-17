@@ -3,19 +3,46 @@ import {HttpClient, HttpParams, HttpResponse} from "@angular/common/http";
 import {catchError, Observable, tap} from "rxjs";
 import {currency} from "../model/currency";
 import {ErrorService} from "./error/error.service";
-import {ppVlLocal, prVlLocal} from "../localdata/currencies";
 
 @Injectable({
   providedIn: 'root'
 })
 export class CurrencyService {
 
+  private _prVlLocal: currency[] = []
+  private _ppVlLocal: currency[] = []
   private url = 'http://localhost:8080/api/v1/currency'
 
   constructor(
     private http: HttpClient,
     private es: ErrorService<any>
   ) { }
+
+  get prVlLocal(): currency[] {
+    return this._prVlLocal;
+  }
+
+  get ppVlLocal(): currency[] {
+    return this._ppVlLocal;
+  }
+
+  getPpVlLocalById(vl: currency): currency {
+    return this.getVlLocalById(vl, this.ppVlLocal)
+  }
+
+  getPrVlLocalById(vl: currency): currency {
+    return this.getVlLocalById(vl, this.prVlLocal)
+  }
+
+  getVlLocalById(vl: currency, arr: currency[]): currency {
+    let res = vl
+
+    arr.forEach((value) => {
+      if (vl.id === value.id) res = value
+    })
+
+    return res
+  }
 
   readAll(): Observable<HttpResponse<currency[]>> {
     return this.http.get<currency[]>(this.url, {
@@ -26,11 +53,11 @@ export class CurrencyService {
         if (httpResponse) {
           const rb = httpResponse.body
           if (rb) {
-            prVlLocal.splice(0)
-            ppVlLocal.splice(0)
+            this.prVlLocal.splice(0)
+            this.ppVlLocal.splice(0)
             rb.forEach((value) => {
-              prVlLocal.push(value)
-              if (value.id !== 4) ppVlLocal.push(value)
+              this.prVlLocal.push(value)
+              if (value.id !== 4) this.ppVlLocal.push(value)
             })
           }
         }

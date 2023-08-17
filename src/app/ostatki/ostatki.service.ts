@@ -3,7 +3,7 @@ import {HttpClient, HttpParams, HttpResponse} from "@angular/common/http";
 import {ErrorService} from "../services/error/error.service";
 import {catchError, Observable, tap} from "rxjs";
 import {OstatkiModel} from "./ostatki.model";
-import {getPrVlLocalById} from "../localdata/currencies";
+import {CurrencyService} from "../services/currency.service";
 
 @Injectable({
   providedIn: 'root'
@@ -15,6 +15,7 @@ export class OstatkiService {
 
   constructor(
     private http: HttpClient,
+    private curService: CurrencyService,
     private es: ErrorService<any>
   ) { }
 
@@ -41,8 +42,7 @@ export class OstatkiService {
         if (httpResponse) {
           const rb = httpResponse.body
           if (rb) {
-            const vl = getPrVlLocalById(rb.vl.id)
-            if (vl) rb.vl = vl
+            rb.vl = this.curService.getPrVlLocalById(rb.vl)
             rb.dt = new Date(rb.dt)
             this._ostatkiLocal.push(rb)
           }
@@ -63,8 +63,7 @@ export class OstatkiService {
             let ind = this.getIndexInArrayById(rb.id)
 
             if (ind >= 0) {
-              const vl = getPrVlLocalById(rb.vl.id)
-              if (vl) rb.vl = vl
+              rb.vl = this.curService.getPrVlLocalById(rb.vl)
               rb.dt = new Date(rb.dt)
               this.ostatkiLocal[ind] = rb
             }
@@ -102,8 +101,7 @@ export class OstatkiService {
           const rb = httpResponse.body
           if (rb) {
             rb.forEach((value) => {
-              const vl = getPrVlLocalById(value.vl.id)
-              if (vl) value.vl = vl
+              value.vl = this.curService.getPrVlLocalById(value.vl)
               value.dt = new Date(value.dt)
             })
             this._ostatkiLocal = rb

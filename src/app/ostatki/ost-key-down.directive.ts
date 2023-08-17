@@ -1,19 +1,16 @@
 import {Directive, ElementRef, HostListener, Input} from '@angular/core';
-import {currency} from "../model/currency";
 import {FormControl} from "@angular/forms";
-import {prVlLocal} from "../localdata/currencies";
 import {
   isKey_Enter_Escape,
   isKey_F1_F12_Enter_Escape,
   Enter, F1, F2, F3, F4, F5, F6, Delete
 } from "../localdata/keys";
+import {CurrencyService} from "../services/currency.service";
 
 @Directive({
   selector: '[ostKeyDownDirective]'
 })
 export class OstKeyDownDirective {
-
-  ostVl: currency[] = prVlLocal
 
   @Input() nextRef: ElementRef | undefined
   @Input() nextRef2: ElementRef | undefined
@@ -22,6 +19,7 @@ export class OstKeyDownDirective {
 
   constructor(
     private elemRef: ElementRef,
+    private curService: CurrencyService,
   ) {}
 
   @HostListener('keydown', ['$event']) onKeyDownHandler(e: KeyboardEvent) {
@@ -40,12 +38,13 @@ export class OstKeyDownDirective {
     }
 
     if ((id === "nOstVl") && isKey_F1_F12_Enter_Escape(ek)) {
-      if (ek === F1) this.formCon?.setValue(this.ostVl[0])
-      if (ek === F2) this.formCon?.setValue(this.ostVl[1])
-      if (ek === F3) this.formCon?.setValue(this.ostVl[2])
-      if (ek === F4) this.formCon?.setValue(this.ostVl[3])
-      if (ek === F5) this.formCon?.setValue(this.ostVl[4])
-      if (ek === F6) this.formCon?.setValue(this.ostVl[5])
+      const ostVl = this.curService.prVlLocal
+      if (ek === F1) this.formCon?.setValue(ostVl[0])
+      if (ek === F2) this.formCon?.setValue(ostVl[1])
+      if (ek === F3) this.formCon?.setValue(ostVl[2])
+      if (ek === F4) this.formCon?.setValue(ostVl[3])
+      if (ek === F5) this.formCon?.setValue(ostVl[4])
+      if (ek === F6) this.formCon?.setValue(ostVl[5])
       nrne.focus()
     }
 

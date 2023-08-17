@@ -27,7 +27,6 @@ import {prih_rash_out} from "../../model/prih_rash_out";
 import {Mapper_prih_rash} from "../../model/mapper_prih_rash";
 import {SumIntl} from "../../localdata/formats";
 import {currency} from "../../model/currency";
-import {prVlLocal} from "../../localdata/currencies";
 import {prihLocal, rashLocal} from "../../localdata/prih_rash";
 import {PrNewRecService} from "../../services/new-operation/pr-new-rec.service";
 import {PrGridService} from "../../services/ag-grid/pr-grid.service";
@@ -58,7 +57,6 @@ export class PrihRashComponent {
   flag2 = false
 
   pr: pr_operation[] = pr_op
-  prVl: currency[] = prVlLocal
   kf: kstat_filial[] = kfLocal
 
   public prihRowData:prih_rash_out[] = []
@@ -130,7 +128,7 @@ export class PrihRashComponent {
     private prService: PrihRashService,
     private opService: OperationService,
     private ksService: KstatService,
-    private crService: CurrencyService,
+    public crService: CurrencyService,
     private cnService: FilialService,
     private focusService: FocusService,
     private lpService: LoginParamsService,
@@ -158,7 +156,8 @@ export class PrihRashComponent {
     this.authService.isLoggedIn$.subscribe((value) => {
       if(value) {
         if (this.pr.length > 0) this.formPrihRash.controls.pr.setValue(this.pr[0])
-        if (this.prVl.length > 3) this.formPrihRash.controls.vl.setValue(this.prVl[3])
+        const prVl = this.crService.prVlLocal
+        if (prVl.length > 3) this.formPrihRash.controls.vl.setValue(prVl[3])
         if (this.kf.length > 0) this.formPrihRash.controls.kf.setValue(this.kf[0])
       }
     })
@@ -423,9 +422,6 @@ export class PrihRashComponent {
 
     //корректная установка значения списка операций
     this.pr.forEach((value) => {if (value.id === lsr.pr.id) lsr.pr = value})
-
-    //корректная установка значения списка валют
-    this.prVl.forEach((value) => {if (value.id === lsr.vl.id) lsr.vl = value})
 
     //корректная установка значения списка статей
     this.kf.forEach((value) => {if (value.id === lsr.kf.id) lsr.kf = value})

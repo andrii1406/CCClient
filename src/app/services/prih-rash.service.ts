@@ -4,6 +4,7 @@ import {prihLocal, rashLocal} from "../localdata/prih_rash";
 import {HttpClient, HttpParams, HttpResponse} from "@angular/common/http";
 import {catchError, Observable, tap} from "rxjs";
 import {ErrorService} from "./error/error.service";
+import {CurrencyService} from "./currency.service";
 
 @Injectable({
   providedIn: 'root'
@@ -14,7 +15,8 @@ export class PrihRashService {
 
   constructor(
     private http: HttpClient,
-    private es: ErrorService<any>
+    private es: ErrorService<any>,
+    private curService: CurrencyService,
   ) {}
 
   create(newValue: prih_rash): Observable<HttpResponse<prih_rash>> {
@@ -57,6 +59,7 @@ export class PrihRashService {
             const prLocal = prId === 0 ? prihLocal : rashLocal
             prLocal.splice(0)
             rb.forEach((value) => {
+              value.vl = this.curService.getPrVlLocalById(value.vl)
               value.dt = new Date(value.dt)
               value.dts = new Date(value.dts)
               prLocal.push(value)

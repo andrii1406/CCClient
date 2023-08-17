@@ -1,6 +1,4 @@
 import {prih_rash} from "./prih_rash";
-import {pr_operation} from "./pr_operation";
-import {currency} from "./currency";
 import {kstat} from "./kstat";
 import {prih_rash_out} from "./prih_rash_out";
 import {kstat_filial} from "./kstat_filial";
@@ -27,9 +25,9 @@ export class Mapper_prih_rash {
     return new prih_rash(
       out.id,
       out.npo,
-      new pr_operation(out.pr.id, out.pr.opr),
+      out.pr,
       out.sm,
-      new currency(out.vl.id, out.vl.vl),
+      out.vl,
       Npk,
       out.dt,
       new kstat(eKstatId, eKstatStat),
@@ -56,9 +54,9 @@ export class Mapper_prih_rash {
     return new prih_rash_out(
       e.id,
       e.npo,
-      new pr_operation(e.pr.id, e.pr.opr),
+      e.pr,
       e.sm,
-      new currency(e.vl.id, e.vl.vl),
+      e.vl,
       e.dt,
       new kstat_filial(outKfId, outKfStat_cn, outKfNpk),
       e.prim,
