@@ -1,4 +1,4 @@
-export class pr_operation {
+export class PrOperationsModel {
 
   id: number
   opr: string

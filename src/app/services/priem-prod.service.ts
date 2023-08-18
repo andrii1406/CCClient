@@ -4,7 +4,7 @@ import {ErrorService} from "./error/error.service";
 import {priem_prod} from "../model/priem_prod";
 import {catchError, Observable, tap} from "rxjs";
 import {priemLocal, prodLocal} from "../localdata/priem_prod";
-import {CurrencyService} from "./currency.service";
+import {CurrencyService} from "../currencies/currency.service";
 
 @Injectable({
   providedIn: 'root'

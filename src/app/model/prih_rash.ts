@@ -1,14 +1,14 @@
-import {pr_operation} from "./pr_operation";
-import {currency} from "./currency";
 import {kstat} from "./kstat";
+import {CurrenciesModel} from "../currencies/currencies.model";
+import {PrOperationsModel} from "../pr_operations/pr_operations.model";
 
 export class prih_rash {
 
   id: number
   npo: number
-  pr: pr_operation
+  pr: PrOperationsModel
   sm: number
-  vl: currency
+  vl: CurrenciesModel
   npk: number
   dt: Date
   kstat: kstat
@@ -16,7 +16,7 @@ export class prih_rash {
   fl: boolean
   dts: Date
 
-  constructor(id: number, npo: number, pr: pr_operation, sm: number, vl: currency,
+  constructor(id: number, npo: number, pr: PrOperationsModel, sm: number, vl: CurrenciesModel,
               npk: number, dt: Date, kstat: kstat, prim: string, fl: boolean, dts: Date) {
     this.id = id
     this.npo = npo

@@ -1,19 +1,19 @@
-import {currency} from "./currency";
-import {pp_obmen} from "./pp_obmen";
+import {CurrenciesModel} from "../currencies/currencies.model";
+import {PpObmensModel} from "../pp_obmens/pp_obmens.model";
 
 export class priem_prod {
 
   id: number
   np: number
-  pp: pp_obmen
+  pp: PpObmensModel
   sm: number
-  vl: currency
+  vl: CurrenciesModel
   krs: number
   dt: Date
   fl: boolean
   dts: Date
 
-  constructor(id: number, np: number, pp: pp_obmen, sm: number, vl: currency,
+  constructor(id: number, np: number, pp: PpObmensModel, sm: number, vl: CurrenciesModel,
               krs: number, dt: Date, fl: boolean, dts: Date) {
     this.id = id
     this.np = np

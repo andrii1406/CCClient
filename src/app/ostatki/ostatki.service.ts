@@ -3,7 +3,7 @@ import {HttpClient, HttpParams, HttpResponse} from "@angular/common/http";
 import {ErrorService} from "../services/error/error.service";
 import {catchError, Observable, tap} from "rxjs";
 import {OstatkiModel} from "./ostatki.model";
-import {CurrencyService} from "../services/currency.service";
+import {CurrencyService} from "../currencies/currency.service";
 
 @Injectable({
   providedIn: 'root'

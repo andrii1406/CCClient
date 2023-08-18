@@ -1,12 +1,11 @@
 import {Directive, ElementRef, HostListener, Input} from '@angular/core';
-import {currency} from "../model/currency";
 import {FormControl} from "@angular/forms";
 import {
   isKey_Enter_Escape,
   isKey_F1_F12_Enter_Escape,
   Enter, F1, F2, F3, F5, F6
 } from "../localdata/keys";
-import {CurrencyService} from "../services/currency.service";
+import {CurrencyService} from "../currencies/currency.service";
 
 @Directive({
   selector: '[krsKeyDownDirective]'

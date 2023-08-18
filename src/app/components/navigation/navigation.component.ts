@@ -7,7 +7,7 @@ import {FormControl, FormGroup} from "@angular/forms";
 import {LoginParamsService} from "../../services/login-params/login-params.service";
 import {forkJoin, mergeMap} from "rxjs";
 import {OperationService} from "../../services/operation.service";
-import {CurrencyService} from "../../services/currency.service";
+import {CurrencyService} from "../../currencies/currency.service";
 import {KstatService} from "../../services/kstat.service";
 import {FilialService} from "../../services/filial.service";
 import {ObmenService} from "../../services/obmen.service";

@@ -18,6 +18,7 @@ import {AgGridService} from "./services/ag-grid/ag-grid.service";
 import { PrKeyDownDirective } from './directives/pr-key-down.directive';
 import { PpKeyDownDirective } from './directives/pp-key-down.directive';
 import { NavKeyDownDirective } from './directives/nav-key-down.directive';
+import {OstatkiModule} from "./ostatki/ostatki.module";
 registerLocaleData(localeFr);
 
 @NgModule({
@@ -31,21 +32,24 @@ registerLocaleData(localeFr);
         PpKeyDownDirective,
         NavKeyDownDirective,
     ],
-    imports: [
-        BrowserModule,
-        AppRoutingModule,
-        HttpClientModule,
-        ReactiveFormsModule,
-        NgbModule,
-        FormsModule,
-        AgGridModule,
-    ],
+  imports: [
+    BrowserModule,
+    AppRoutingModule,
+    HttpClientModule,
+    ReactiveFormsModule,
+    NgbModule,
+    FormsModule,
+    AgGridModule,
+    OstatkiModule,
+  ],
     providers: [
         {provide: LOCALE_ID, useValue: "fr-FR"},
         httpInterceptorProviders,
         NewOperationService,
         AgGridService,
     ],
+  exports: [
+  ],
     bootstrap: [AppComponent]
 })
 export class AppModule { }

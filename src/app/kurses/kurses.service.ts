@@ -3,9 +3,9 @@ import {HttpClient, HttpParams, HttpResponse} from "@angular/common/http";
 import {ErrorService} from "../services/error/error.service";
 import {catchError, Observable, tap} from "rxjs";
 import {KursesModel} from "./kurses.model";
-import {currency} from "../model/currency";
 import {getKrsObLocalById} from "../localdata/pp_obmen";
-import {CurrencyService} from "../services/currency.service";
+import {CurrencyService} from "../currencies/currency.service";
+import {CurrenciesModel} from "../currencies/currencies.model";
 
 @Injectable({
   providedIn: 'root'
@@ -15,7 +15,7 @@ export class KursesService {
   private _kurses0Local: KursesModel[] = []
   private _kurses1Local: KursesModel[] = []
   private _kurses2Local: KursesModel[] = []
-  private _kurses3Local: currency[] = []
+  private _kurses3Local: CurrenciesModel[] = []
   private url = 'http://localhost:8080/api/v1/kurses'
 
   constructor(
@@ -36,7 +36,7 @@ export class KursesService {
     return this._kurses2Local;
   }
 
-  get kurses3Local(): currency[] {
+  get kurses3Local(): CurrenciesModel[] {
     return this._kurses3Local;
   }
 

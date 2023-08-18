@@ -1,12 +1,12 @@
 import {Component, ElementRef, ViewChild} from '@angular/core';
-import {currency} from "../../model/currency";
 import {LoginParamsService} from "../../services/login-params/login-params.service";
 import {OstatkiService} from "../ostatki.service";
 import {FormControl, FormGroup, Validators} from "@angular/forms";
 import {sumRegExp} from "../../localdata/patterns";
 import {OstatkiModel} from "../ostatki.model";
 import {FocusService} from "../../services/focus/focus.service";
-import {CurrencyService} from "../../services/currency.service";
+import { CurrencyService } from 'src/app/currencies/currency.service';
+import {CurrenciesModel} from "../../currencies/currencies.model";
 
 @Component({
   selector: 'app-ostatki',
@@ -24,7 +24,7 @@ export class OstatkiComponent {
   formUpdOst = new FormGroup({
     id: new FormControl<number | null>(null, []),
     np: new FormControl<number | null>(null, []),
-    vl: new FormControl<currency | null>(null, []),
+    vl: new FormControl<CurrenciesModel | null>(null, []),
     ost: new FormControl<number | null>(0, [Validators.required, Validators.pattern(sumRegExp)]),
     dt: new FormControl<Date | null>(null, []),
     fl: new FormControl<boolean | null>(null, []),
@@ -34,7 +34,7 @@ export class OstatkiComponent {
   formNewOst = new FormGroup({
     id: new FormControl<number | null>(null, []),
     np: new FormControl<number | null>(null, []),
-    vl: new FormControl<currency | null>(null, []),
+    vl: new FormControl<CurrenciesModel | null>(null, []),
     ost: new FormControl<number | null>(0, [Validators.required, Validators.pattern(sumRegExp)]),
     dt: new FormControl<Date | null>(null, []),
     fl: new FormControl<boolean | null>(null, []),

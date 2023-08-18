@@ -1,6 +1,5 @@
 import {Component, ElementRef, ViewChild} from '@angular/core';
 import {prih_rash} from "../../model/prih_rash";
-import {pr_operation} from "../../model/pr_operation";
 import {pr_op} from "../../localdata/pr_operations";
 import {FormControl, FormGroup, Validators} from "@angular/forms";
 import {
@@ -19,31 +18,29 @@ import {
 import {PrihRashService} from "../../services/prih-rash.service";
 import {OperationService} from "../../services/operation.service";
 import {KstatService} from "../../services/kstat.service";
-import {CurrencyService} from "../../services/currency.service";
+import {CurrencyService} from "../../currencies/currency.service";
 import {FilialService} from "../../services/filial.service";
 import {kfLocal} from "../../localdata/kflocal";
 import {kstat_filial} from "../../model/kstat_filial";
 import {prih_rash_out} from "../../model/prih_rash_out";
 import {Mapper_prih_rash} from "../../model/mapper_prih_rash";
 import {SumIntl} from "../../localdata/formats";
-import {currency} from "../../model/currency";
 import {prihLocal, rashLocal} from "../../localdata/prih_rash";
 import {PrNewRecService} from "../../services/new-operation/pr-new-rec.service";
 import {PrGridService} from "../../services/ag-grid/pr-grid.service";
 import {FocusService} from "../../services/focus/focus.service";
 import {sumRegExp} from "../../localdata/patterns";
 import {
-  End,
-  Enter,
-  F1,
-  Home, isKey_Enter_Delete, isKey_F1_F2,
+  End,Enter, F1, Home, Tab,
+  isKey_Enter_Delete, isKey_F1_F2,
   isKey_F1_F2_Enter_Delete,
-  isKey_Home_End_PageUp_PageDown,
-  Tab
+  isKey_Home_End_PageUp_PageDown
 } from "../../localdata/keys";
 import {LoginParamsService} from "../../services/login-params/login-params.service";
 import {GRID_END, prField} from "../../localdata/grid_constants";
 import {AuthService} from "../../services/jwt/auth.service";
+import {CurrenciesModel} from "../../currencies/currencies.model";
+import {PrOperationsModel} from "../../pr_operations/pr_operations.model";
 
 @Component({
   selector: 'app-prih-rash',
@@ -56,7 +53,7 @@ export class PrihRashComponent {
   flag1 = false
   flag2 = false
 
-  pr: pr_operation[] = pr_op
+  pr: PrOperationsModel[] = pr_op
   kf: kstat_filial[] = kfLocal
 
   public prihRowData:prih_rash_out[] = []
@@ -75,9 +72,9 @@ export class PrihRashComponent {
   formPrihRash = new FormGroup({
     id: new FormControl(0),
     npo: new FormControl(0),
-    pr: new FormControl<pr_operation | null>(null),
+    pr: new FormControl<PrOperationsModel | null>(null),
     sm: new FormControl(0,[Validators.required, Validators.pattern(sumRegExp)]),
-    vl: new FormControl<currency | null>(null),
+    vl: new FormControl<CurrenciesModel | null>(null),
     dt: new FormControl(new Date()),
     kf: new FormControl<kstat_filial | null>(null),
     prim: new FormControl('Примечание', [Validators.maxLength(10)]),

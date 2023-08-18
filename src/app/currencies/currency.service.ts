@@ -1,16 +1,16 @@
 import { Injectable } from '@angular/core';
 import {HttpClient, HttpParams, HttpResponse} from "@angular/common/http";
 import {catchError, Observable, tap} from "rxjs";
-import {currency} from "../model/currency";
-import {ErrorService} from "./error/error.service";
+import {ErrorService} from "../services/error/error.service";
+import {CurrenciesModel} from "./currencies.model";
 
 @Injectable({
   providedIn: 'root'
 })
 export class CurrencyService {
 
-  private _prVlLocal: currency[] = []
-  private _ppVlLocal: currency[] = []
+  private _prVlLocal: CurrenciesModel[] = []
+  private _ppVlLocal: CurrenciesModel[] = []
   private url = 'http://localhost:8080/api/v1/currency'
 
   constructor(
@@ -18,23 +18,23 @@ export class CurrencyService {
     private es: ErrorService<any>
   ) { }
 
-  get prVlLocal(): currency[] {
+  get prVlLocal(): CurrenciesModel[] {
     return this._prVlLocal;
   }
 
-  get ppVlLocal(): currency[] {
+  get ppVlLocal(): CurrenciesModel[] {
     return this._ppVlLocal;
   }
 
-  getPpVlLocalById(vl: currency): currency {
+  getPpVlLocalById(vl: CurrenciesModel): CurrenciesModel {
     return this.getVlLocalById(vl, this.ppVlLocal)
   }
 
-  getPrVlLocalById(vl: currency): currency {
+  getPrVlLocalById(vl: CurrenciesModel): CurrenciesModel {
     return this.getVlLocalById(vl, this.prVlLocal)
   }
 
-  getVlLocalById(vl: currency, arr: currency[]): currency {
+  getVlLocalById(vl: CurrenciesModel, arr: CurrenciesModel[]): CurrenciesModel {
     let res = vl
 
     arr.forEach((value) => {
@@ -44,8 +44,8 @@ export class CurrencyService {
     return res
   }
 
-  readAll(): Observable<HttpResponse<currency[]>> {
-    return this.http.get<currency[]>(this.url, {
+  readAll(): Observable<HttpResponse<CurrenciesModel[]>> {
+    return this.http.get<CurrenciesModel[]>(this.url, {
       params: new HttpParams({}),
       observe: "response"
     }).pipe(

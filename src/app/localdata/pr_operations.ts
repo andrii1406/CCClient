@@ -1,3 +1,3 @@
-import {pr_operation} from "../model/pr_operation";
+import {PrOperationsModel} from "../pr_operations/pr_operations.model";
 
-export let pr_op: pr_operation[] = []
+export let pr_op: PrOperationsModel[] = []

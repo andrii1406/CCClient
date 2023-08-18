@@ -92,7 +92,7 @@
     <div class="divRow">
       <label>Итого</label><br>
       <div class="totalSum">
-        {{this.totalSum | number : '1.0-2' : 'fr'}}
+        {{this.totalSum | number : '1.0-2' | replaceComma}}
       </div>
     </div>
 

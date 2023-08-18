@@ -4,7 +4,7 @@ import {prihLocal, rashLocal} from "../localdata/prih_rash";
 import {HttpClient, HttpParams, HttpResponse} from "@angular/common/http";
 import {catchError, Observable, tap} from "rxjs";
 import {ErrorService} from "./error/error.service";
-import {CurrencyService} from "./currency.service";
+import {CurrencyService} from "../currencies/currency.service";
 
 @Injectable({
   providedIn: 'root'

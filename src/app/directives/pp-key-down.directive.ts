@@ -1,6 +1,5 @@
 import {Directive, ElementRef, HostListener, Input} from '@angular/core';
 import {FormControl} from "@angular/forms";
-import {pp_obmen} from "../model/pp_obmen";
 import {ppObLocal} from "../localdata/pp_obmen";
 import {PpNewRecService} from "../services/new-operation/pp-new-rec.service";
 import {PpGridService} from "../services/ag-grid/pp-grid.service";
@@ -12,7 +11,8 @@ import {
   F1, F2, F3, F5, F6, Tab, Enter, Escape
 } from "../localdata/keys";
 import {ppField} from "../localdata/grid_constants";
-import {CurrencyService} from "../services/currency.service";
+import {CurrencyService} from "../currencies/currency.service";
+import {PpObmensModel} from "../pp_obmens/pp_obmens.model";
 
 @Directive({
   selector: '[ppKeyDownDirective]'
@@ -20,7 +20,7 @@ import {CurrencyService} from "../services/currency.service";
 export class PpKeyDownDirective {
 
   focusCol = ppField[2]
-  ppOb: pp_obmen[] = ppObLocal
+  ppOb: PpObmensModel[] = ppObLocal
 
   @Input() prevRef: ElementRef | undefined
   @Input() nextRef: ElementRef | undefined

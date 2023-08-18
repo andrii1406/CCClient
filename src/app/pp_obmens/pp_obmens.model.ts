@@ -1,4 +1,4 @@
-export class pp_obmen {
+export class PpObmensModel {
 
   id: number
   obm: string

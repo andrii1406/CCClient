@@ -1,10 +1,10 @@
-import {pp_obmen} from "../model/pp_obmen";
+import {PpObmensModel} from "../pp_obmens/pp_obmens.model";
 
-export let ppObLocal: pp_obmen[] = []
-export let krsObLocal: pp_obmen[] = []
+export let ppObLocal: PpObmensModel[] = []
+export let krsObLocal: PpObmensModel[] = []
 
-export const getKrsObLocalById = (id: number): pp_obmen | null => {
-  let res: pp_obmen | null = null
+export const getKrsObLocalById = (id: number): PpObmensModel | null => {
+  let res: PpObmensModel | null = null
 
   krsObLocal.forEach((value) => {
     if (id === value.id) res = value

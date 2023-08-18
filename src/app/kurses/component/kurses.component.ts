@@ -1,15 +1,15 @@
 import {Component, ElementRef, ViewChild} from '@angular/core';
-import {currency} from "../../model/currency";
 import {FormControl, FormGroup, Validators} from "@angular/forms";
 import {krsRegExp} from "../../localdata/patterns";
-import {pp_obmen} from "../../model/pp_obmen";
 import {getKrsObLocalById, krsObLocal} from "../../localdata/pp_obmen";
 import {ObmenService} from "../../services/obmen.service";
 import {KursesService} from "../kurses.service";
 import {FocusService} from "../../services/focus/focus.service";
 import {LoginParamsService} from "../../services/login-params/login-params.service";
 import {KursesModel} from "../kurses.model";
-import {CurrencyService} from "../../services/currency.service";
+import {CurrencyService} from "../../currencies/currency.service";
+import {CurrenciesModel} from "../../currencies/currencies.model";
+import {PpObmensModel} from "../../pp_obmens/pp_obmens.model";
 
 @Component({
   selector: 'app-kurses',
@@ -19,33 +19,33 @@ import {CurrencyService} from "../../services/currency.service";
 export class KursesComponent {
 
   listRows = 12
-  krsOb: pp_obmen[] = krsObLocal
+  krsOb: PpObmensModel[] = krsObLocal
 
   formNewKrs = new FormGroup({
     krs0: new FormControl<KursesModel | null>(null, [Validators.pattern(krsRegExp)]),
-    krs3: new FormControl<currency | null>(null, []),
+    krs3: new FormControl<CurrenciesModel | null>(null, []),
     krs1: new FormControl<KursesModel | null>(null, [Validators.pattern(krsRegExp)]),
     krs2: new FormControl<KursesModel | null>(null, [Validators.pattern(krsRegExp)]),
   })
 
   formListKrs = new FormGroup({
     krs0: new FormControl<KursesModel | null>(null, []),
-    krs3: new FormControl<currency | null>(null, []),
+    krs3: new FormControl<CurrenciesModel | null>(null, []),
     krs1: new FormControl<KursesModel | null>(null, []),
     krs2: new FormControl<KursesModel | null>(null, []),
   })
 
   formDisabled = new FormGroup({
-    pp: new FormControl<pp_obmen | null>({value: null, disabled: true}, []),
-    vl: new FormControl<currency | null>({value: null, disabled: true}, []),
+    pp: new FormControl<PpObmensModel | null>({value: null, disabled: true}, []),
+    vl: new FormControl<CurrenciesModel | null>({value: null, disabled: true}, []),
   })
 
   formUpdKrs = new FormGroup({
     id: new FormControl<number | null>(null, []),
     np: new FormControl<number | null>(null, []),
     tv: new FormControl<number | null>(null, []),
-    pp: new FormControl<pp_obmen | null>(null, []),
-    vl: new FormControl<currency | null>(null, []),
+    pp: new FormControl<PpObmensModel | null>(null, []),
+    vl: new FormControl<CurrenciesModel | null>(null, []),
     krs: new FormControl<number | null>(null, [Validators.pattern(krsRegExp)]),
     dt: new FormControl<Date | null>(null, []),
     fl: new FormControl<boolean | null>(null, []),

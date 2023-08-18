@@ -1,4 +1,4 @@
-export class currency {
+export class CurrenciesModel {
 
   id: number
   vl: string

@@ -1,7 +1,5 @@
 import {Directive, ElementRef, HostListener, Input} from '@angular/core';
-import {pr_operation} from "../model/pr_operation";
 import {pr_op} from "../localdata/pr_operations";
-import {currency} from "../model/currency";
 import {FormControl} from "@angular/forms";
 import {PrNewRecService} from "../services/new-operation/pr-new-rec.service";
 import {PrGridService} from "../services/ag-grid/pr-grid.service";
@@ -13,7 +11,8 @@ import {
   F1, F2, F3, F4, Tab, Enter, Escape, F5, F6
 } from "../localdata/keys";
 import {prField} from "../localdata/grid_constants";
-import {CurrencyService} from "../services/currency.service";
+import {CurrencyService} from "../currencies/currency.service";
+import {PrOperationsModel} from "../pr_operations/pr_operations.model";
 
 @Directive({
   selector: '[prKeyDownDirective]'
@@ -21,7 +20,7 @@ import {CurrencyService} from "../services/currency.service";
 export class PrKeyDownDirective {
 
   focusCol = prField[2]
-  prOp: pr_operation[] = pr_op
+  prOp: PrOperationsModel[] = pr_op
 
   @Input() prevRef: ElementRef | undefined
   @Input() nextRef: ElementRef | undefined

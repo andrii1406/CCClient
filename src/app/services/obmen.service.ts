@@ -2,8 +2,8 @@ import { Injectable } from '@angular/core';
 import {HttpClient, HttpParams, HttpResponse} from "@angular/common/http";
 import {ErrorService} from "./error/error.service";
 import {catchError, Observable, tap} from "rxjs";
-import {pp_obmen} from "../model/pp_obmen";
 import {krsObLocal, ppObLocal} from "../localdata/pp_obmen";
+import {PpObmensModel} from "../pp_obmens/pp_obmens.model";
 
 @Injectable({
   providedIn: 'root'
@@ -17,8 +17,8 @@ export class ObmenService {
     private es: ErrorService<any>
   ) { }
 
-  readAll(): Observable<HttpResponse<pp_obmen[]>> {
-    return this.http.get<pp_obmen[]>(this.url, {
+  readAll(): Observable<HttpResponse<PpObmensModel[]>> {
+    return this.http.get<PpObmensModel[]>(this.url, {
       params: new HttpParams({}),
       observe: "response"
     }).pipe(

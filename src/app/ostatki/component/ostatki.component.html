@@ -6,7 +6,9 @@
               ostKeyDownDirective [nextRef]="updOstEditRef" [nextRef2]="nOstVlRef" [nextRefDel]="ostDelButtonRef"
               (focus)="onFocusList(lOstRef)" (change)="onChangeList(lOstRef)"
       >
-        <option *ngFor="let item of ostService.ostatkiLocal" [ngValue]="item"> {{item.vl.vl + '  '+ (item.ost | number : '1.0-2' : 'fr')}} </option>
+        <option *ngFor="let val of ostService.ostatkiLocal" [ngValue]="val">
+          {{val.vl.vl + '  ' + (val.ost | number : '1.0-2' | replaceComma)}}
+        </option>
       </select>
     </form>
   </div>

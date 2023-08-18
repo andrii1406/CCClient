@@ -5,7 +5,7 @@ import {
   isKey_F1_F12_Enter_Escape,
   Enter, F1, F2, F3, F4, F5, F6, Delete
 } from "../localdata/keys";
-import {CurrencyService} from "../services/currency.service";
+import {CurrencyService} from "../currencies/currency.service";
 
 @Directive({
   selector: '[ostKeyDownDirective]'

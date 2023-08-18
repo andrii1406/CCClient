@@ -14,11 +14,9 @@ import {
   TabToNextCellParams
 } from "ag-grid-community";
 import {ObmenService} from "../../services/obmen.service";
-import {CurrencyService} from "../../services/currency.service";
+import {CurrencyService} from "../../currencies/currency.service";
 import {KrsIntl, SumIntl} from "../../localdata/formats";
-import {currency} from "../../model/currency";
 import {priem_prod} from "../../model/priem_prod";
-import {pp_obmen} from "../../model/pp_obmen";
 import {PriemProdService} from "../../services/priem-prod.service";
 import {ppObLocal} from "../../localdata/pp_obmen";
 import {priemLocal, prodLocal} from "../../localdata/priem_prod";
@@ -27,16 +25,18 @@ import {PpGridService} from "../../services/ag-grid/pp-grid.service";
 import {krsRegExp, sumRegExp} from "../../localdata/patterns";
 import {FocusService} from "../../services/focus/focus.service";
 import {
-  Enter, F1,
+  Enter, F1, Tab,
   isKey_Enter_Delete,
   isKey_F1_F2,
   isKey_F1_F2_Enter_Delete,
-  isKey_Home_End_PageUp_PageDown, Tab
+  isKey_Home_End_PageUp_PageDown
 } from "../../localdata/keys";
 import {LoginParamsService} from "../../services/login-params/login-params.service";
 import {GRID_END, ppField} from "../../localdata/grid_constants";
 import {AuthService} from "../../services/jwt/auth.service";
 import {KursesService} from "../../kurses/kurses.service";
+import {CurrenciesModel} from "../../currencies/currencies.model";
+import {PpObmensModel} from "../../pp_obmens/pp_obmens.model";
 
 @Component({
   selector: 'app-priem-prod',
@@ -50,7 +50,7 @@ export class PriemProdComponent {
   flag1 = false
   flag2 = false
 
-  pp: pp_obmen[] = ppObLocal
+  pp: PpObmensModel[] = ppObLocal
 
   public priemRowData:priem_prod[] = []
   public prodRowData:priem_prod[] = []
@@ -68,9 +68,9 @@ export class PriemProdComponent {
   formPriemProd = new FormGroup({
     id: new FormControl(0),
     np: new FormControl(0),
-    pp: new FormControl<pp_obmen | null>(null),
+    pp: new FormControl<PpObmensModel | null>(null),
     sm: new FormControl(0,[Validators.required, Validators.pattern(sumRegExp)]),
-    vl: new FormControl<currency | null>(null),
+    vl: new FormControl<CurrenciesModel | null>(null),
     krs: new FormControl(0,[Validators.required, Validators.pattern(krsRegExp)]),
     dt: new FormControl(new Date()),
     fl: new FormControl(false),
