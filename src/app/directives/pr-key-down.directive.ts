@@ -6,9 +6,9 @@ import {PrGridService} from "../services/ag-grid/pr-grid.service";
 import {
   isKey_Enter_Tab,
   isKey_F1_F2_Enter,
-  isKey_F1_F4_Enter,
+  getIndexInPrByKey,
   isKey_F1_F12_Enter_Escape,
-  F1, F2, F3, F4, Tab, Enter, Escape, F5, F6
+  F1, F2, Tab, Enter, Escape,
 } from "../localdata/keys";
 import {prField} from "../localdata/grid_constants";
 import {CurrencyService} from "../currencies/currency.service";
@@ -41,6 +41,7 @@ export class PrKeyDownDirective {
     const id = this.elemRef.nativeElement.id
     const nrne = this.nextRef?.nativeElement
     const nr2ne = this.nextRef2?.nativeElement
+    const fc = this.formCon
 
 
     if (isKey_F1_F12_Enter_Escape(ek) &&
@@ -53,19 +54,19 @@ export class PrKeyDownDirective {
     }
 
     if ((id === "prList") && isKey_F1_F2_Enter(ek)) {
-      if (ek === F1) this.formCon?.setValue(this.prOp[0])
-      if (ek === F2) this.formCon?.setValue(this.prOp[1])
+      if (fc !== undefined) {
+        if (ek === F1) fc.setValue(this.prOp[0])
+        if (ek === F2) fc.setValue(this.prOp[1])
+      }
       nrne.focus()
     }
 
-    if ((id === "vlList") && isKey_F1_F4_Enter(ek)) {
-      const prVl = this.curService.prVlLocal
-      if (ek === F1) this.formCon?.setValue(prVl[0])
-      if (ek === F2) this.formCon?.setValue(prVl[1])
-      if (ek === F3) this.formCon?.setValue(prVl[2])
-      if (ek === F4) this.formCon?.setValue(prVl[3])
-      if (ek === F5) this.formCon?.setValue(prVl[4])
-      if (ek === F6) this.formCon?.setValue(prVl[5])
+    if ((id === "vlList") && isKey_F1_F12_Enter_Escape(ek)) {
+      if (fc !== undefined) {
+        const prVl = this.curService.prVlLocal
+        const index = getIndexInPrByKey(ek)
+        if (index >= 0 && index < prVl.length) fc.setValue(prVl[index])
+      }
       nrne.focus()
     }
 

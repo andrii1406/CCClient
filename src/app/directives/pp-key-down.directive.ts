@@ -6,9 +6,9 @@ import {PpGridService} from "../services/ag-grid/pp-grid.service";
 import {
   isKey_Enter_Tab,
   isKey_F1_F2_Enter,
-  isKey_F1_F4_Enter,
+  getIndexInPpByKey,
   isKey_F1_F12_Enter_Escape,
-  F1, F2, F3, F5, F6, Tab, Enter, Escape
+  F1, F2, Tab, Enter, Escape,
 } from "../localdata/keys";
 import {ppField} from "../localdata/grid_constants";
 import {CurrencyService} from "../currencies/currency.service";
@@ -41,6 +41,7 @@ export class PpKeyDownDirective {
     const id = this.elemRef.nativeElement.id
     const nrne = this.nextRef?.nativeElement
     const nr2ne = this.nextRef2?.nativeElement
+    const fc = this.formCon
 
     if (isKey_F1_F12_Enter_Escape(ek) &&
       //для ниже перечисленных условый стандартное поведение НЕ будет переопределяться
@@ -52,18 +53,19 @@ export class PpKeyDownDirective {
     }
 
     if ((id === "ppList") && isKey_F1_F2_Enter(ek)) {
-      if (ek === F1) this.formCon?.setValue(this.ppOb[0])
-      if (ek === F2) this.formCon?.setValue(this.ppOb[1])
+      if (fc !== undefined) {
+        if (ek === F1) fc.setValue(this.ppOb[0])
+        if (ek === F2) fc.setValue(this.ppOb[1])
+      }
       nrne.focus()
     }
 
-    if ((id === "ppVlList") && isKey_F1_F4_Enter(ek)) {
-      const ppVl = this.curService.ppVlLocal
-      if (ek === F1) this.formCon?.setValue(ppVl[0])
-      if (ek === F2) this.formCon?.setValue(ppVl[1])
-      if (ek === F3) this.formCon?.setValue(ppVl[2])
-      if (ek === F5) this.formCon?.setValue(ppVl[3])
-      if (ek === F6) this.formCon?.setValue(ppVl[4])
+    if ((id === "ppVlList") && isKey_F1_F12_Enter_Escape(ek)) {
+      if (fc !== undefined) {
+        const ppVl = this.curService.ppVlLocal
+        const index = getIndexInPpByKey(ek)
+        if (index >= 0 && index < ppVl.length) fc.setValue(ppVl[index])
+      }
       nrne.focus()
     }
 

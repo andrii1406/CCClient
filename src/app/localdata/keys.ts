@@ -20,6 +20,46 @@ export const Delete = "Delete"
 export const PageUp = "PageUp"
 export const PageDown = "PageDown"
 
+// For downed key get index in array with currency 'UAH'
+export const getIndexInPrByKey = (k: string): number => {
+  let res = -1
+
+  if (k === F1) res = 0
+  if (k === F2) res = 1
+  if (k === F3) res = 2
+  if (k === F4) res = 3
+  if (k === F5) res = 4
+  if (k === F6) res = 5
+  if (k === F7) res = 6
+  if (k === F8) res = 7
+  if (k === F9) res = 8
+  if (k === F10) res = 9
+  if (k === F11) res = 10
+  if (k === F12) res = 11
+
+  return res
+}
+
+// For downed key get index in array without currency 'UAH'
+export const getIndexInPpByKey = (k: string): number => {
+  let res = -1
+
+  if (k === F1) res = 0
+  if (k === F2) res = 1
+  if (k === F3) res = 2
+
+  if (k === F5) res = 3
+  if (k === F6) res = 4
+  if (k === F7) res = 5
+  if (k === F8) res = 6
+  if (k === F9) res = 7
+  if (k === F10) res = 8
+  if (k === F11) res = 9
+  if (k === F12) res = 10
+
+  return res
+}
+
 export const isKey_F1_F12_Enter_Escape = (k: string): boolean => {
   return  isKey_F1_F2(k) || k === F3 || k === F4 || k === F5 || k === F6 || k === F7 ||
           k === F8 || k === F9 || k === F10 || k === F11 || k === F12 || isKey_Enter_Escape(k)
@@ -56,4 +96,3 @@ export const isKey_Enter_Tab = (k: string): boolean => {
 export const isKey_F1_F2 = (k: string): boolean => {
   return k === F1 || k === F2
 }
-

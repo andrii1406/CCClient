@@ -1,9 +1,10 @@
 import {Directive, ElementRef, HostListener, Input} from '@angular/core';
 import {FormControl} from "@angular/forms";
 import {
+  getIndexInPpByKey,
   isKey_Enter_Escape,
   isKey_F1_F12_Enter_Escape,
-  Enter, F1, F2, F3, F5, F6
+  Enter,
 } from "../localdata/keys";
 import {CurrencyService} from "../currencies/currency.service";
 
@@ -28,6 +29,7 @@ export class KrsKeyDownDirective {
     const id = this.elemRef.nativeElement.id
     const nrne = this.nextRef?.nativeElement
     const nr2ne = this.nextRef2?.nativeElement
+    const fc = this.formCon
 
     if (isKey_F1_F12_Enter_Escape(ek) &&
       //для ниже перечисленных условый стандартное поведение НЕ будет переопределяться
@@ -38,12 +40,11 @@ export class KrsKeyDownDirective {
     }
 
     if ((id === "nKrs3") && isKey_F1_F12_Enter_Escape(ek)) {
-      const krsVl = this.curService.ppVlLocal
-      if (ek === F1) this.formCon?.setValue(krsVl[0])
-      if (ek === F2) this.formCon?.setValue(krsVl[1])
-      if (ek === F3) this.formCon?.setValue(krsVl[2])
-      if (ek === F5) this.formCon?.setValue(krsVl[3])
-      if (ek === F6) this.formCon?.setValue(krsVl[4])
+      if (fc !== undefined) {
+        const ppVl = this.curService.ppVlLocal
+        const index = getIndexInPpByKey(ek)
+        if (index >= 0 && index < ppVl.length) fc.setValue(ppVl[index])
+      }
       nrne.focus()
     }
 
