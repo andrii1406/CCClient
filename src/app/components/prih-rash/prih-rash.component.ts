@@ -1,6 +1,5 @@
 import {Component, ElementRef, ViewChild} from '@angular/core';
 import {prih_rash} from "../../model/prih_rash";
-import {pr_op} from "../../localdata/pr_operations";
 import {FormControl, FormGroup, Validators} from "@angular/forms";
 import {
   CellClickedEvent,
@@ -53,8 +52,8 @@ export class PrihRashComponent {
   flag1 = false
   flag2 = false
 
-  pr: PrOperationsModel[] = pr_op
   kf: kstat_filial[] = kfLocal
+  pr: PrOperationsModel[] = this.opService.pr_op
 
   public prihRowData:prih_rash_out[] = []
   public rashRowData:prih_rash_out[] = []
@@ -123,7 +122,7 @@ export class PrihRashComponent {
     public prNewRec: PrNewRecService,
     private gridService: PrGridService,
     private prService: PrihRashService,
-    private opService: OperationService,
+    public opService: OperationService,
     private ksService: KstatService,
     public crService: CurrencyService,
     private cnService: FilialService,
@@ -416,15 +415,9 @@ export class PrihRashComponent {
   //двойной клик в гриде
   onRowDoubleClicked(event: RowDoubleClickedEvent<prih_rash_out>) {
     const lsr = <prih_rash_out>this.gridService.lastSelectedRow
-
-    //корректная установка значения списка операций
-    this.pr.forEach((value) => {if (value.id === lsr.pr.id) lsr.pr = value})
-
     //корректная установка значения списка статей
     this.kf.forEach((value) => {if (value.id === lsr.kf.id) lsr.kf = value})
-
     this.formPrihRash.setValue(lsr)
-
     this.prNewRec.setMode(false)
   }
 

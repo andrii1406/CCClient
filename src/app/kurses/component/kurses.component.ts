@@ -1,7 +1,6 @@
 import {Component, ElementRef, ViewChild} from '@angular/core';
 import {FormControl, FormGroup, Validators} from "@angular/forms";
 import {krsRegExp} from "../../localdata/patterns";
-import {getKrsObLocalById, krsObLocal} from "../../localdata/pp_obmen";
 import {ObmenService} from "../../services/obmen.service";
 import {KursesService} from "../kurses.service";
 import {FocusService} from "../../services/focus/focus.service";
@@ -19,7 +18,6 @@ import {PpObmensModel} from "../../pp_obmens/pp_obmens.model";
 export class KursesComponent {
 
   listRows = 12
-  krsOb: PpObmensModel[] = krsObLocal
 
   formNewKrs = new FormGroup({
     krs0: new FormControl<KursesModel | null>(null, [Validators.pattern(krsRegExp)]),
@@ -69,7 +67,7 @@ export class KursesComponent {
   @ViewChild('updKrsEdit') updKrsEditRef: ElementRef | undefined
 
   constructor(
-    private obService: ObmenService,
+    public obService: ObmenService,
     public krsService: KursesService,
     public curService: CurrencyService,
     private focusService: FocusService,
@@ -97,13 +95,14 @@ export class KursesComponent {
   //в противном случае - в поле создания нового курса
   onDblClickList(fc: FormControl, refN: ElementRef | undefined, refU: ElementRef | undefined) {
     if (fc) {
-      if(fc.value.id)
-        refU?.nativeElement.focus()
+      if(fc.value.id) {
+        if (refU) refU.nativeElement.focus()
+      }
       else {
         const vl = this.formListKrs.controls.krs3.value
         if (vl) {
           this.formNewKrs.controls.krs3.setValue(this.curService.getPpVlLocalById(vl))
-          refN?.nativeElement.focus()
+          if (refN !== undefined) refN.nativeElement.focus()
         }
       }
     }
@@ -127,12 +126,9 @@ export class KursesComponent {
           if (fc !== undefined && fc !== null) {
             const fcVal = fc.value
             if (fcVal) {
-              //корректная установка значения списка операций
-              const pp = getKrsObLocalById(fcVal.pp.id)
-              if (pp) this.formDisabled.controls.pp.setValue(pp)
-
-              this.formDisabled.controls.vl.setValue(this.curService.getPpVlLocalById(fcVal.vl))
-
+              const fdc = this.formDisabled.controls
+              fdc.pp.setValue(this.obService.getKrsObLocalById(fcVal.pp))
+              fdc.vl.setValue(this.curService.getPpVlLocalById(fcVal.vl))
               this.formUpdKrs.setValue(fcVal)
             }
           }
@@ -225,7 +221,7 @@ export class KursesComponent {
               const np = this.lpService.npo
               const tv = this.lpService.tv
               const dtTm = this.lpService.dtTm
-              kursesList.push(new KursesModel(null, np, tv, this.krsOb[j], vl, value, dtTm, false))
+              kursesList.push(new KursesModel(null, np, tv, this.obService.krs_ob[j], vl, value, dtTm, false))
             }
           }
         })

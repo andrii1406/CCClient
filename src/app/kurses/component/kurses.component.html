@@ -120,8 +120,8 @@
         <label>Операция</label><br>
         <select formControlName="pp" id="updPpList"
         >
-          <option *ngFor="let op_item of krsOb" [ngValue]="op_item" >
-            {{op_item.obm}}
+          <option *ngFor="let val of this.obService.krs_ob" [ngValue]="val" >
+            {{val.obm}}
           </option>
         </select>
       </div>

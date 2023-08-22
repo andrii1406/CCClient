@@ -5,6 +5,7 @@ import {priem_prod} from "../model/priem_prod";
 import {catchError, Observable, tap} from "rxjs";
 import {priemLocal, prodLocal} from "../localdata/priem_prod";
 import {CurrencyService} from "../currencies/currency.service";
+import {ObmenService} from "./obmen.service";
 
 @Injectable({
   providedIn: 'root'
@@ -16,6 +17,7 @@ export class PriemProdService {
   constructor(
     private http: HttpClient,
     private es: ErrorService<any>,
+    private obService: ObmenService,
     private curService: CurrencyService,
   ) {}
 
@@ -41,6 +43,7 @@ export class PriemProdService {
             const ppLocal = ppId === 0 ? priemLocal : prodLocal
             ppLocal.splice(0)
             rb.forEach((value) => {
+              value.pp = this.obService.getPpObLocalById(value.pp)
               value.vl = this.curService.getPpVlLocalById(value.vl)
               value.dt = new Date(value.dt)
               value.dts = new Date(value.dts)

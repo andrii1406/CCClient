@@ -18,7 +18,6 @@ import {CurrencyService} from "../../currencies/currency.service";
 import {KrsIntl, SumIntl} from "../../localdata/formats";
 import {priem_prod} from "../../model/priem_prod";
 import {PriemProdService} from "../../services/priem-prod.service";
-import {ppObLocal} from "../../localdata/pp_obmen";
 import {priemLocal, prodLocal} from "../../localdata/priem_prod";
 import {PpNewRecService} from "../../services/new-operation/pp-new-rec.service";
 import {PpGridService} from "../../services/ag-grid/pp-grid.service";
@@ -50,7 +49,7 @@ export class PriemProdComponent {
   flag1 = false
   flag2 = false
 
-  pp: PpObmensModel[] = ppObLocal
+  pp: PpObmensModel[] = this.obService.pp_ob
 
   public priemRowData:priem_prod[] = []
   public prodRowData:priem_prod[] = []
@@ -429,14 +428,8 @@ export class PriemProdComponent {
   //двойной клик в гриде
   onRowDoubleClicked(event: RowDoubleClickedEvent<priem_prod>) {
     const lsr = <priem_prod>this.gridService.lastSelectedRow
-
-    //корректная установка значения списка операций
-    this.pp.forEach((value) => {if (value.id === lsr.pp.id) lsr.pp = value})
-
     this.formPriemProd.setValue(lsr)
-
     this.ppNewRec.setMode(false)
-
     this.onSumKrsChange()
   }
 

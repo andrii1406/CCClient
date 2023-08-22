@@ -3,9 +3,9 @@ import {HttpClient, HttpParams, HttpResponse} from "@angular/common/http";
 import {ErrorService} from "../services/error/error.service";
 import {catchError, Observable, tap} from "rxjs";
 import {KursesModel} from "./kurses.model";
-import {getKrsObLocalById} from "../localdata/pp_obmen";
 import {CurrencyService} from "../currencies/currency.service";
 import {CurrenciesModel} from "../currencies/currencies.model";
+import {ObmenService} from "../services/obmen.service";
 
 @Injectable({
   providedIn: 'root'
@@ -20,8 +20,9 @@ export class KursesService {
 
   constructor(
     private http: HttpClient,
-    private curService: CurrencyService,
     private es: ErrorService<any>,
+    private obService: ObmenService,
+    private curService: CurrencyService,
   ) {}
 
   get kurses0Local(): KursesModel[] {
@@ -61,10 +62,10 @@ export class KursesService {
   }
 
   kursesLocalSplice (): void {
-    this._kurses3Local.splice(0)
-    this._kurses0Local.splice(0)
-    this._kurses1Local.splice(0)
-    this._kurses2Local.splice(0)
+    this.kurses3Local.splice(0)
+    this.kurses0Local.splice(0)
+    this.kurses1Local.splice(0)
+    this.kurses2Local.splice(0)
   }
 
   kursesToLocals (rbA: KursesModel[]): void {
@@ -72,14 +73,20 @@ export class KursesService {
       let ind = this.getIndexInVlLocalById(rbAValue.vl.id)
 
       if (ind < 0) {
-        rbAValue.vl = this.curService.getPpVlLocalById(rbAValue.vl)
-        rbAValue.dt = new Date(rbAValue.dt)
+        const pp = rbAValue.pp
+        const vl = rbAValue.vl
+        const dt = rbAValue.dt
+        rbAValue.pp = this.obService.getKrsObLocalById(pp)
+        rbAValue.vl = this.curService.getPpVlLocalById(vl)
+        rbAValue.dt = new Date(dt)
 
-        this._kurses3Local.push(rbAValue.vl)
-        this._kurses0Local.push(new KursesModel(null, 0, 0, getKrsObLocalById(0)!, rbAValue.vl, 0, rbAValue.dt, false))
-        this._kurses1Local.push(new KursesModel(null, 0, 0, getKrsObLocalById(1)!, rbAValue.vl, 0, rbAValue.dt, false))
-        this._kurses2Local.push(new KursesModel(null, 0, 0, getKrsObLocalById(2)!, rbAValue.vl, 0, rbAValue.dt, false))
-        ind = this._kurses3Local.length - 1
+        const krs_ob = this.obService.krs_ob
+        this.kurses3Local.push(vl)
+        this.kurses0Local.push(new KursesModel(null, 0, 0, krs_ob[0], vl, 0, dt, false))
+        this.kurses1Local.push(new KursesModel(null, 0, 0, krs_ob[1], vl, 0, dt, false))
+        this.kurses2Local.push(new KursesModel(null, 0, 0, krs_ob[2], vl, 0, dt, false))
+
+        ind = this.kurses3Local.length - 1
       }
 
       const ap = this.getArrayPointer(rbAValue.pp.id)

@@ -1,5 +1,4 @@
 import {Directive, ElementRef, HostListener, Input} from '@angular/core';
-import {pr_op} from "../localdata/pr_operations";
 import {FormControl} from "@angular/forms";
 import {PrNewRecService} from "../services/new-operation/pr-new-rec.service";
 import {PrGridService} from "../services/ag-grid/pr-grid.service";
@@ -12,7 +11,7 @@ import {
 } from "../localdata/keys";
 import {prField} from "../localdata/grid_constants";
 import {CurrencyService} from "../currencies/currency.service";
-import {PrOperationsModel} from "../pr_operations/pr_operations.model";
+import {OperationService} from "../services/operation.service";
 
 @Directive({
   selector: '[prKeyDownDirective]'
@@ -20,7 +19,6 @@ import {PrOperationsModel} from "../pr_operations/pr_operations.model";
 export class PrKeyDownDirective {
 
   focusCol = prField[2]
-  prOp: PrOperationsModel[] = pr_op
 
   @Input() prevRef: ElementRef | undefined
   @Input() nextRef: ElementRef | undefined
@@ -33,6 +31,7 @@ export class PrKeyDownDirective {
     private prNewRec: PrNewRecService,
     private prGridService: PrGridService,
     private curService: CurrencyService,
+    private opService: OperationService,
   ) {}
 
   @HostListener('keydown', ['$event']) onKeyDownHandler(e: KeyboardEvent) {
@@ -55,8 +54,9 @@ export class PrKeyDownDirective {
 
     if ((id === "prList") && isKey_F1_F2_Enter(ek)) {
       if (fc !== undefined) {
-        if (ek === F1) fc.setValue(this.prOp[0])
-        if (ek === F2) fc.setValue(this.prOp[1])
+        const prOp = this.opService.pr_op
+        if (ek === F1) fc.setValue(prOp[0])
+        if (ek === F2) fc.setValue(prOp[1])
       }
       nrne.focus()
     }

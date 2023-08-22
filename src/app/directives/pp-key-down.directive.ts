@@ -1,6 +1,5 @@
 import {Directive, ElementRef, HostListener, Input} from '@angular/core';
 import {FormControl} from "@angular/forms";
-import {ppObLocal} from "../localdata/pp_obmen";
 import {PpNewRecService} from "../services/new-operation/pp-new-rec.service";
 import {PpGridService} from "../services/ag-grid/pp-grid.service";
 import {
@@ -12,7 +11,7 @@ import {
 } from "../localdata/keys";
 import {ppField} from "../localdata/grid_constants";
 import {CurrencyService} from "../currencies/currency.service";
-import {PpObmensModel} from "../pp_obmens/pp_obmens.model";
+import {ObmenService} from "../services/obmen.service";
 
 @Directive({
   selector: '[ppKeyDownDirective]'
@@ -20,7 +19,6 @@ import {PpObmensModel} from "../pp_obmens/pp_obmens.model";
 export class PpKeyDownDirective {
 
   focusCol = ppField[2]
-  ppOb: PpObmensModel[] = ppObLocal
 
   @Input() prevRef: ElementRef | undefined
   @Input() nextRef: ElementRef | undefined
@@ -30,6 +28,7 @@ export class PpKeyDownDirective {
 
   constructor(
     private elemRef: ElementRef,
+    private obService: ObmenService,
     private ppNewRec: PpNewRecService,
     private ppGridService: PpGridService,
     private curService: CurrencyService,
@@ -54,8 +53,9 @@ export class PpKeyDownDirective {
 
     if ((id === "ppList") && isKey_F1_F2_Enter(ek)) {
       if (fc !== undefined) {
-        if (ek === F1) fc.setValue(this.ppOb[0])
-        if (ek === F2) fc.setValue(this.ppOb[1])
+        const ppOb = this.obService.pp_ob
+        if (ek === F1) fc.setValue(ppOb[0])
+        if (ek === F2) fc.setValue(ppOb[1])
       }
       nrne.focus()
     }

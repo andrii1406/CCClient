@@ -53,8 +53,8 @@
               prKeyDownDirective [nextRef]="vlListRef"
               [formCon]="formPrihRash.controls.pr"
       >
-        <option *ngFor="let op_item of pr" [ngValue]="op_item" >
-          {{op_item.opr}}
+        <option *ngFor="let val of this.opService.pr_op" [ngValue]="val" >
+          {{val.opr}}
         </option>
       </select>
     </div>
