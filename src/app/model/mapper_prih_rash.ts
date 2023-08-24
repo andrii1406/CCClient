@@ -1,8 +1,8 @@
 import {prih_rash} from "./prih_rash";
-import {kstat} from "./kstat";
 import {prih_rash_out} from "./prih_rash_out";
-import {kstat_filial} from "./kstat_filial";
 import {Injectable} from "@angular/core";
+import {KstatsFilialsModel} from "../kstats_filials/kstats_filials.model";
+import {KstatsModel} from "../kstats/kstats.model";
 
 @Injectable({
   providedIn: 'root'
@@ -30,7 +30,7 @@ export class Mapper_prih_rash {
       out.vl,
       Npk,
       out.dt,
-      new kstat(eKstatId, eKstatStat),
+      new KstatsModel(eKstatId, eKstatStat),
       out.prim,
       out.fl,
       out.dts
@@ -58,7 +58,7 @@ export class Mapper_prih_rash {
       e.sm,
       e.vl,
       e.dt,
-      new kstat_filial(outKfId, outKfStat_cn, outKfNpk),
+      new KstatsFilialsModel(outKfId, outKfStat_cn, outKfNpk),
       e.prim,
       e.fl,
       e.dts

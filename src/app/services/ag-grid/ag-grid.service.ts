@@ -2,21 +2,21 @@ import { Injectable } from '@angular/core';
 import {ColumnApi, GridApi} from "ag-grid-community";
 
 @Injectable()
-export class AgGridService<EntityType> {
+export class AgGridService<Model> {
 
-  private _lastSelectedRow!: EntityType
+  private _lastSelectedRow!: Model
   private _lastSelectedRowIndex: number | null = -1
-  private _lastSelectedGridApi: GridApi<EntityType> | null = null
-  private _rowData!: EntityType[]
+  private _lastSelectedGridApi: GridApi<Model> | null = null
+  private _rowData!: Model[]
 
 
   constructor() {}
 
-  get lastSelectedRow(): EntityType {
+  get lastSelectedRow(): Model {
     return this._lastSelectedRow;
   }
 
-  set lastSelectedRow(value: EntityType) {
+  set lastSelectedRow(value: Model) {
     this._lastSelectedRow = value;
   }
 
@@ -28,24 +28,24 @@ export class AgGridService<EntityType> {
     this._lastSelectedRowIndex = value;
   }
 
-  get lastSelectedGridApi(): GridApi<EntityType> | null {
+  get lastSelectedGridApi(): GridApi<Model> | null {
     return this._lastSelectedGridApi;
   }
 
-  set lastSelectedGridApi(value: GridApi<EntityType> | null){
+  set lastSelectedGridApi(value: GridApi<Model> | null){
     this._lastSelectedGridApi = value;
   }
 
-  get rowData(): EntityType[] {
+  get rowData(): Model[] {
     return this._rowData;
   }
 
-  set rowData(value: EntityType[]) {
+  set rowData(value: Model[]) {
     this._rowData = value;
   }
 
   //установить фокус в ячейку грида
-  FocusCell(api: GridApi<EntityType> | null, row: number | undefined | null, col: string) {
+  FocusCell(api: GridApi<Model> | null, row: number | undefined | null, col: string) {
     if (api !== undefined && api !== null) {
       if (api.getModel()) {
         if (!api.getModel().isEmpty()) {
@@ -70,21 +70,21 @@ export class AgGridService<EntityType> {
   }
 
   //выделить всю строку по выбранной ячейке
-  SelectRow(api: GridApi<EntityType>, rowIndex: number | null) {
+  SelectRow(api: GridApi<Model>, rowIndex: number | null) {
     api.forEachNode((node) => {
       if (node.rowIndex === rowIndex) {
         //выделить строку
         node.setSelected(true)
 
-        //запомнить объект EntityType выбранной строки
+        //запомнить объект Model выбранной строки
         this.rememberLastSelectedEntity(api)
       }
     })
   }
 
   //получить объект выбранной строки грида
-  onSelectionChangedOrCellClicked(api: GridApi<EntityType>, rowData: EntityType[]) {
-    //запомнить объект EntityType выбранной строки
+  onSelectionChangedOrCellClicked(api: GridApi<Model>, rowData: Model[]) {
+    //запомнить объект Model выбранной строки
     //this.rememberLastSelectedEntity(api)
 
     //запомнить api выбранного грида
@@ -100,9 +100,9 @@ export class AgGridService<EntityType> {
     })
   }
 
-  //запомнить объект EntityType выбранной строки
-  rememberLastSelectedEntity(api: GridApi<EntityType>) {
-    //получить EntityType[] выбранных строк
+  //запомнить объект Model выбранной строки
+  rememberLastSelectedEntity(api: GridApi<Model>) {
+    //получить Model[] выбранных строк
     const selectedRows = api.getSelectedRows()
     this._lastSelectedRow = selectedRows[0]
   }

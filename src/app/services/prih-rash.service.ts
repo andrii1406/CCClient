@@ -4,8 +4,8 @@ import {prihLocal, rashLocal} from "../localdata/prih_rash";
 import {HttpClient, HttpParams, HttpResponse} from "@angular/common/http";
 import {catchError, Observable, tap} from "rxjs";
 import {ErrorService} from "./error/error.service";
-import {CurrencyService} from "../currencies/currency.service";
-import {OperationService} from "./operation.service";
+import {PrOperationsService} from "../pr_operations/pr_operations.service";
+import {CurrenciesService} from "../currencies/currencies.service";
 
 @Injectable({
   providedIn: 'root'
@@ -17,8 +17,8 @@ export class PrihRashService {
   constructor(
     private http: HttpClient,
     private es: ErrorService<any>,
-    private opService: OperationService,
-    private curService: CurrencyService,
+    private opService: PrOperationsService,
+    private curService: CurrenciesService,
   ) {}
 
   create(newValue: prih_rash): Observable<HttpResponse<prih_rash>> {

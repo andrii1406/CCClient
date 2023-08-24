@@ -10,8 +10,8 @@ import {
   F1, F2, Tab, Enter, Escape,
 } from "../localdata/keys";
 import {prField} from "../localdata/grid_constants";
-import {CurrencyService} from "../currencies/currency.service";
-import {OperationService} from "../services/operation.service";
+import {CurrenciesService} from "../currencies/currencies.service";
+import {PrOperationsService} from "../pr_operations/pr_operations.service";
 
 @Directive({
   selector: '[prKeyDownDirective]'
@@ -30,8 +30,8 @@ export class PrKeyDownDirective {
     private elemRef: ElementRef,
     private prNewRec: PrNewRecService,
     private prGridService: PrGridService,
-    private curService: CurrencyService,
-    private opService: OperationService,
+    private curService: CurrenciesService,
+    private opService: PrOperationsService,
   ) {}
 
   @HostListener('keydown', ['$event']) onKeyDownHandler(e: KeyboardEvent) {

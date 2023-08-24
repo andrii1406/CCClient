@@ -1,13 +1,13 @@
 import { Injectable } from '@angular/core';
 import {HttpClient, HttpParams, HttpResponse} from "@angular/common/http";
-import {ErrorService} from "./error/error.service";
+import {ErrorService} from "../services/error/error.service";
 import {catchError, Observable, tap} from "rxjs";
-import {PpObmensModel} from "../pp_obmens/pp_obmens.model";
+import {PpObmensModel} from "./pp_obmens.model";
 
 @Injectable({
   providedIn: 'root'
 })
-export class ObmenService {
+export class PpObmensService {
 
   private _ppObLocal: PpObmensModel[] = []
   private _krsObLocal: PpObmensModel[] = []

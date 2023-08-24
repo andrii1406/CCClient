@@ -15,12 +15,10 @@ import {
   TabToNextCellParams
 } from "ag-grid-community";
 import {PrihRashService} from "../../services/prih-rash.service";
-import {OperationService} from "../../services/operation.service";
-import {KstatService} from "../../services/kstat.service";
-import {CurrencyService} from "../../currencies/currency.service";
-import {FilialService} from "../../services/filial.service";
-import {kfLocal} from "../../localdata/kflocal";
-import {kstat_filial} from "../../model/kstat_filial";
+import {PrOperationsService} from "../../pr_operations/pr_operations.service";
+import {KstatsService} from "../../kstats/kstats.service";
+import {CurrenciesService} from "../../currencies/currencies.service";
+import {FilialsService} from "../../filials/filials.service";
 import {prih_rash_out} from "../../model/prih_rash_out";
 import {Mapper_prih_rash} from "../../model/mapper_prih_rash";
 import {SumIntl} from "../../localdata/formats";
@@ -40,6 +38,8 @@ import {GRID_END, prField} from "../../localdata/grid_constants";
 import {AuthService} from "../../services/jwt/auth.service";
 import {CurrenciesModel} from "../../currencies/currencies.model";
 import {PrOperationsModel} from "../../pr_operations/pr_operations.model";
+import {KstatsFilialsModel} from "../../kstats_filials/kstats_filials.model";
+import {KstatsFilialsService} from "../../kstats_filials/kstats_filials.service";
 
 @Component({
   selector: 'app-prih-rash',
@@ -52,7 +52,7 @@ export class PrihRashComponent {
   flag1 = false
   flag2 = false
 
-  kf: kstat_filial[] = kfLocal
+  kf: KstatsFilialsModel[] = this.kfService.kf
   pr: PrOperationsModel[] = this.opService.pr_op
 
   public prihRowData:prih_rash_out[] = []
@@ -75,7 +75,7 @@ export class PrihRashComponent {
     sm: new FormControl(0,[Validators.required, Validators.pattern(sumRegExp)]),
     vl: new FormControl<CurrenciesModel | null>(null),
     dt: new FormControl(new Date()),
-    kf: new FormControl<kstat_filial | null>(null),
+    kf: new FormControl<KstatsFilialsModel | null>(null),
     prim: new FormControl('Примечание', [Validators.maxLength(10)]),
     fl: new FormControl(false),
     dts: new FormControl(new Date())
@@ -122,13 +122,14 @@ export class PrihRashComponent {
     public prNewRec: PrNewRecService,
     private gridService: PrGridService,
     private prService: PrihRashService,
-    public opService: OperationService,
-    private ksService: KstatService,
-    public crService: CurrencyService,
-    private cnService: FilialService,
+    public opService: PrOperationsService,
+    private ksService: KstatsService,
+    public crService: CurrenciesService,
+    private cnService: FilialsService,
     private focusService: FocusService,
     private lpService: LoginParamsService,
     private authService: AuthService,
+    private kfService: KstatsFilialsService,
   ) { }
 
   ngOnInit() {

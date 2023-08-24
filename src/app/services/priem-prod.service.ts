@@ -4,8 +4,8 @@ import {ErrorService} from "./error/error.service";
 import {priem_prod} from "../model/priem_prod";
 import {catchError, Observable, tap} from "rxjs";
 import {priemLocal, prodLocal} from "../localdata/priem_prod";
-import {CurrencyService} from "../currencies/currency.service";
-import {ObmenService} from "./obmen.service";
+import {CurrenciesService} from "../currencies/currencies.service";
+import {PpObmensService} from "../pp_obmens/pp_obmens.service";
 
 @Injectable({
   providedIn: 'root'
@@ -17,8 +17,8 @@ export class PriemProdService {
   constructor(
     private http: HttpClient,
     private es: ErrorService<any>,
-    private obService: ObmenService,
-    private curService: CurrencyService,
+    private obService: PpObmensService,
+    private curService: CurrenciesService,
   ) {}
 
   create(newValue: priem_prod): Observable<HttpResponse<priem_prod>> {

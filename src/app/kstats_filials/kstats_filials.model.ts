@@ -1,4 +1,4 @@
-export class kstat_filial {
+export class KstatsFilialsModel {
 
   id: number
   stat_cn: string

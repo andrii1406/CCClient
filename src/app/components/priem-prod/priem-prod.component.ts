@@ -13,8 +13,8 @@ import {
   SelectionChangedEvent,
   TabToNextCellParams
 } from "ag-grid-community";
-import {ObmenService} from "../../services/obmen.service";
-import {CurrencyService} from "../../currencies/currency.service";
+import {PpObmensService} from "../../pp_obmens/pp_obmens.service";
+import {CurrenciesService} from "../../currencies/currencies.service";
 import {KrsIntl, SumIntl} from "../../localdata/formats";
 import {priem_prod} from "../../model/priem_prod";
 import {PriemProdService} from "../../services/priem-prod.service";
@@ -115,9 +115,9 @@ export class PriemProdComponent {
     public ppNewRec: PpNewRecService,
     private gridService: PpGridService,
     private ppService: PriemProdService,
-    private obService: ObmenService,
+    private obService: PpObmensService,
     private krsService: KursesService,
-    public crService: CurrencyService,
+    public crService: CurrenciesService,
     private focusService: FocusService,
     private lpService: LoginParamsService,
     private authService: AuthService,

@@ -1,12 +1,12 @@
 import {Component, ElementRef, ViewChild} from '@angular/core';
 import {FormControl, FormGroup, Validators} from "@angular/forms";
 import {krsRegExp} from "../../localdata/patterns";
-import {ObmenService} from "../../services/obmen.service";
+import {PpObmensService} from "../../pp_obmens/pp_obmens.service";
 import {KursesService} from "../kurses.service";
 import {FocusService} from "../../services/focus/focus.service";
 import {LoginParamsService} from "../../services/login-params/login-params.service";
 import {KursesModel} from "../kurses.model";
-import {CurrencyService} from "../../currencies/currency.service";
+import {CurrenciesService} from "../../currencies/currencies.service";
 import {CurrenciesModel} from "../../currencies/currencies.model";
 import {PpObmensModel} from "../../pp_obmens/pp_obmens.model";
 
@@ -67,9 +67,9 @@ export class KursesComponent {
   @ViewChild('updKrsEdit') updKrsEditRef: ElementRef | undefined
 
   constructor(
-    public obService: ObmenService,
+    public obService: PpObmensService,
     public krsService: KursesService,
-    public curService: CurrencyService,
+    public curService: CurrenciesService,
     private focusService: FocusService,
     private lpService: LoginParamsService,
   ) {}
@@ -143,10 +143,11 @@ export class KursesComponent {
     if (ln > 0) {
       if (index < 0) index = 0
       if (index >= ln) index = ln - 1
-      this.formListKrs.controls.krs0.setValue(this.krsService.kurses0Local[index])
-      this.formListKrs.controls.krs3.setValue(this.krsService.kurses3Local[index])
-      this.formListKrs.controls.krs1.setValue(this.krsService.kurses1Local[index])
-      this.formListKrs.controls.krs2.setValue(this.krsService.kurses2Local[index])
+      const flc = this.formListKrs.controls
+      flc.krs0.setValue(this.krsService.kurses0Local[index])
+      flc.krs3.setValue(this.krsService.kurses3Local[index])
+      flc.krs1.setValue(this.krsService.kurses1Local[index])
+      flc.krs2.setValue(this.krsService.kurses2Local[index])
     }
   }
 

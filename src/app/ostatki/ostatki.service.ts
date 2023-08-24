@@ -3,7 +3,7 @@ import {HttpClient, HttpParams, HttpResponse} from "@angular/common/http";
 import {ErrorService} from "../services/error/error.service";
 import {catchError, Observable, tap} from "rxjs";
 import {OstatkiModel} from "./ostatki.model";
-import {CurrencyService} from "../currencies/currency.service";
+import {CurrenciesService} from "../currencies/currencies.service";
 
 @Injectable({
   providedIn: 'root'
@@ -15,7 +15,7 @@ export class OstatkiService {
 
   constructor(
     private http: HttpClient,
-    private curService: CurrencyService,
+    private curService: CurrenciesService,
     private es: ErrorService<any>
   ) { }
 

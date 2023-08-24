@@ -1,13 +1,13 @@
 import { Injectable } from '@angular/core';
 import {catchError, Observable, tap} from "rxjs";
 import {HttpClient, HttpParams, HttpResponse} from "@angular/common/http";
-import {ErrorService} from "./error/error.service";
-import {PrOperationsModel} from "../pr_operations/pr_operations.model";
+import {ErrorService} from "../services/error/error.service";
+import {PrOperationsModel} from "./pr_operations.model";
 
 @Injectable({
   providedIn: 'root'
 })
-export class OperationService {
+export class PrOperationsService {
 
   private _prOpLocal: PrOperationsModel[] = []
   private url = 'http://localhost:8080/api/v1/operation'

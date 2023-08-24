@@ -1,6 +1,6 @@
-import {kstat_filial} from "./kstat_filial";
 import {CurrenciesModel} from "../currencies/currencies.model";
 import {PrOperationsModel} from "../pr_operations/pr_operations.model";
+import {KstatsFilialsModel} from "../kstats_filials/kstats_filials.model";
 
 export class prih_rash_out {
 
@@ -10,13 +10,13 @@ export class prih_rash_out {
   sm: number
   vl: CurrenciesModel
   dt: Date
-  kf: kstat_filial
+  kf: KstatsFilialsModel
   prim: string
   fl: boolean
   dts: Date
 
   constructor(id: number, npo: number, pr: PrOperationsModel, sm: number, vl: CurrenciesModel,
-              dt: Date, kf: kstat_filial, prim: string, fl: boolean, dts: Date) {
+              dt: Date, kf: KstatsFilialsModel, prim: string, fl: boolean, dts: Date) {
     this.id = id
     this.npo = npo
     this.pr = pr

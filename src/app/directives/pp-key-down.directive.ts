@@ -10,8 +10,8 @@ import {
   F1, F2, Tab, Enter, Escape,
 } from "../localdata/keys";
 import {ppField} from "../localdata/grid_constants";
-import {CurrencyService} from "../currencies/currency.service";
-import {ObmenService} from "../services/obmen.service";
+import {CurrenciesService} from "../currencies/currencies.service";
+import {PpObmensService} from "../pp_obmens/pp_obmens.service";
 
 @Directive({
   selector: '[ppKeyDownDirective]'
@@ -28,10 +28,10 @@ export class PpKeyDownDirective {
 
   constructor(
     private elemRef: ElementRef,
-    private obService: ObmenService,
+    private obService: PpObmensService,
     private ppNewRec: PpNewRecService,
     private ppGridService: PpGridService,
-    private curService: CurrencyService,
+    private curService: CurrenciesService,
   ) {}
 
   @HostListener('keydown', ['$event']) onKeyDownHandler(e: KeyboardEvent) {

@@ -1,4 +1,4 @@
-export class filial {
+export class FilialsModel {
 
   id: number
   tv: number

@@ -5,7 +5,7 @@ import {FormControl, FormGroup, Validators} from "@angular/forms";
 import {sumRegExp} from "../../localdata/patterns";
 import {OstatkiModel} from "../ostatki.model";
 import {FocusService} from "../../services/focus/focus.service";
-import { CurrencyService } from 'src/app/currencies/currency.service';
+import {CurrenciesService} from 'src/app/currencies/currencies.service';
 import {CurrenciesModel} from "../../currencies/currencies.model";
 
 @Component({
@@ -52,7 +52,7 @@ export class OstatkiComponent {
 
   constructor(
     public ostService: OstatkiService,
-    public curService: CurrencyService,
+    public curService: CurrenciesService,
     private focusService: FocusService,
     private lpService: LoginParamsService,
   ) {}

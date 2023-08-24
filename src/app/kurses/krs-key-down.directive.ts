@@ -6,7 +6,7 @@ import {
   isKey_F1_F12_Enter_Escape,
   Enter,
 } from "../localdata/keys";
-import {CurrencyService} from "../currencies/currency.service";
+import {CurrenciesService} from "../currencies/currencies.service";
 
 @Directive({
   selector: '[krsKeyDownDirective]'
@@ -20,7 +20,7 @@ export class KrsKeyDownDirective {
 
   constructor(
     private elemRef: ElementRef,
-    private curService: CurrencyService,
+    private curService: CurrenciesService,
   ) {}
 
   @HostListener('keydown', ['$event']) onKeyDownHandler(e: KeyboardEvent) {

@@ -6,12 +6,11 @@ import {Router} from "@angular/router";
 import {FormControl, FormGroup} from "@angular/forms";
 import {LoginParamsService} from "../../services/login-params/login-params.service";
 import {forkJoin, mergeMap} from "rxjs";
-import {OperationService} from "../../services/operation.service";
-import {CurrencyService} from "../../currencies/currency.service";
-import {KstatService} from "../../services/kstat.service";
-import {FilialService} from "../../services/filial.service";
-import {ObmenService} from "../../services/obmen.service";
-import {getFilialsLocalById} from "../../localdata/filials";
+import {PrOperationsService} from "../../pr_operations/pr_operations.service";
+import {CurrenciesService} from "../../currencies/currencies.service";
+import {KstatsService} from "../../kstats/kstats.service";
+import {FilialsService} from "../../filials/filials.service";
+import {PpObmensService} from "../../pp_obmens/pp_obmens.service";
 import {KursesService} from "../../kurses/kurses.service";
 
 @Component({
@@ -39,11 +38,11 @@ export class NavigationComponent {
   constructor(public authService: AuthService,
               private router: Router,
               private tokenStorage: TokenStorageService,
-              private obService: ObmenService,
-              private ksService: KstatService,
-              private cnService: FilialService,
-              private crService: CurrencyService,
-              private opService: OperationService,
+              private obService: PpObmensService,
+              private ksService: KstatsService,
+              private cnService: FilialsService,
+              private crService: CurrenciesService,
+              private opService: PrOperationsService,
               private lpService: LoginParamsService,
               private krsService: KursesService,
   ) {
@@ -136,7 +135,7 @@ export class NavigationComponent {
                   const npNum = Number(npStr)
                   let np = isNaN(npNum) ? 0 : npNum
                   let tv = 0
-                  const arrVal = getFilialsLocalById(np)
+                  const arrVal = this.cnService.getFilialsLocalById(np)
                   if (arrVal) {
                     np = arrVal.id
                     tv = arrVal.tv

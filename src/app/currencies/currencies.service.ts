@@ -7,7 +7,7 @@ import {CurrenciesModel} from "./currencies.model";
 @Injectable({
   providedIn: 'root'
 })
-export class CurrencyService {
+export class CurrenciesService {
 
   private _prVlLocal: CurrenciesModel[] = []
   private _ppVlLocal: CurrenciesModel[] = []

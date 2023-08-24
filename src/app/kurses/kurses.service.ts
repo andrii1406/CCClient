@@ -3,9 +3,9 @@ import {HttpClient, HttpParams, HttpResponse} from "@angular/common/http";
 import {ErrorService} from "../services/error/error.service";
 import {catchError, Observable, tap} from "rxjs";
 import {KursesModel} from "./kurses.model";
-import {CurrencyService} from "../currencies/currency.service";
+import {CurrenciesService} from "../currencies/currencies.service";
 import {CurrenciesModel} from "../currencies/currencies.model";
-import {ObmenService} from "../services/obmen.service";
+import {PpObmensService} from "../pp_obmens/pp_obmens.service";
 
 @Injectable({
   providedIn: 'root'
@@ -21,8 +21,8 @@ export class KursesService {
   constructor(
     private http: HttpClient,
     private es: ErrorService<any>,
-    private obService: ObmenService,
-    private curService: CurrencyService,
+    private obService: PpObmensService,
+    private curService: CurrenciesService,
   ) {}
 
   get kurses0Local(): KursesModel[] {
@@ -44,9 +44,9 @@ export class KursesService {
   getArrayPointer (ppId: number | undefined): KursesModel[] | null {
     let res = null
 
-    if(ppId === 0) res = this._kurses0Local
-    if(ppId === 1) res = this._kurses1Local
-    if(ppId === 2) res = this._kurses2Local
+    if(ppId === 0) res = this.kurses0Local
+    if(ppId === 1) res = this.kurses1Local
+    if(ppId === 2) res = this.kurses2Local
 
     return res
   }

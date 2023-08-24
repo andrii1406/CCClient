@@ -1,4 +1,4 @@
-export class kstat {
+export class KstatsModel {
 
   id: number
   stat: string
