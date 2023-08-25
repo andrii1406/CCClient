@@ -5,7 +5,6 @@ import { AppComponent } from './app.component';
 import { NgbModule } from '@ng-bootstrap/ng-bootstrap';
 import {FormsModule, ReactiveFormsModule} from "@angular/forms";
 import {AgGridModule} from "ag-grid-angular";
-import { PrihRashComponent } from './components/prih-rash/prih-rash.component';
 import { PriemProdComponent } from './components/priem-prod/priem-prod.component';
 import { NavigationComponent } from './components/navigation/navigation.component';
 import {HttpClientModule} from "@angular/common/http";
@@ -15,7 +14,6 @@ import {registerLocaleData} from "@angular/common";
 import localeFr from '@angular/common/locales/fr';
 import {NewOperationService} from "./services/new-operation/new-operation.service";
 import {AgGridService} from "./services/ag-grid/ag-grid.service";
-import { PrKeyDownDirective } from './directives/pr-key-down.directive';
 import { PpKeyDownDirective } from './directives/pp-key-down.directive';
 import { NavKeyDownDirective } from './directives/nav-key-down.directive';
 import {OstatkiModule} from "./ostatki/ostatki.module";
@@ -25,10 +23,8 @@ registerLocaleData(localeFr);
     declarations: [
         AppComponent,
         MainComponent,
-        PrihRashComponent,
         PriemProdComponent,
         NavigationComponent,
-        PrKeyDownDirective,
         PpKeyDownDirective,
         NavKeyDownDirective,
     ],

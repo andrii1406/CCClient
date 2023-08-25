@@ -1,13 +1,13 @@
 import {NgModule} from '@angular/core';
 import {RouterModule, Routes} from '@angular/router';
-import {PrihRashComponent} from "./components/prih-rash/prih-rash.component";
-import {PriemProdComponent} from "./components/priem-prod/priem-prod.component";
-import {MainComponent} from "./components/main/main.component";
 import {canActivateTab} from "./services/jwt/auth.guard";
+import {MainComponent} from "./components/main/main.component";
+import {PriemProdComponent} from "./components/priem-prod/priem-prod.component";
 
 const routes: Routes = [
   { path: '', component: MainComponent },
-  { path: 'opr', component: PrihRashComponent, canActivate: [canActivateTab], },
+  { path: 'opr', canActivate: [canActivateTab],
+    loadChildren: () => import('./prih-rash/prih-rash.module').then(m => m.PrihRashModule)},
   { path: 'obm', component: PriemProdComponent, canActivate: [canActivateTab] },
   { path: 'krs', canActivate: [canActivateTab],
     loadChildren: () => import('./kurses/kurses.module').then(m => m.KursesModule)},

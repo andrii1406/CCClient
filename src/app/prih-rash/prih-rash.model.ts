@@ -1,8 +1,8 @@
+import {KstatsModel} from "../kstats/kstats.model";
 import {CurrenciesModel} from "../currencies/currencies.model";
 import {PrOperationsModel} from "../pr_operations/pr_operations.model";
-import {KstatsModel} from "../kstats/kstats.model";
 
-export class prih_rash {
+export class PrihRashModel {
 
   id: number
   npo: number

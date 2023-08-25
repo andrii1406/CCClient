@@ -1,17 +1,18 @@
 import { Injectable } from '@angular/core';
-import {prih_rash} from "../model/prih_rash";
-import {prihLocal, rashLocal} from "../localdata/prih_rash";
 import {HttpClient, HttpParams, HttpResponse} from "@angular/common/http";
 import {catchError, Observable, tap} from "rxjs";
-import {ErrorService} from "./error/error.service";
+import {ErrorService} from "../services/error/error.service";
 import {PrOperationsService} from "../pr_operations/pr_operations.service";
 import {CurrenciesService} from "../currencies/currencies.service";
+import {PrihRashModel} from "./prih-rash.model";
 
 @Injectable({
   providedIn: 'root'
 })
 export class PrihRashService {
 
+  private _prihLocal: PrihRashModel[] = []
+  private _rashLocal: PrihRashModel[] = []
   private url = 'http://localhost:8080/api/v1/prihrash'
 
   constructor(
@@ -21,8 +22,24 @@ export class PrihRashService {
     private curService: CurrenciesService,
   ) {}
 
-  create(newValue: prih_rash): Observable<HttpResponse<prih_rash>> {
-    return this.http.post<prih_rash>(this.url, newValue, {
+  get prih(): PrihRashModel[] {
+    return this._prihLocal;
+  }
+
+  set prih(value: PrihRashModel[]) {
+    this._prihLocal = value;
+  }
+
+  get rash(): PrihRashModel[] {
+    return this._rashLocal;
+  }
+
+  set rash(value: PrihRashModel[]) {
+    this._rashLocal = value;
+  }
+
+  create(newValue: PrihRashModel): Observable<HttpResponse<PrihRashModel>> {
+    return this.http.post<PrihRashModel>(this.url, newValue, {
       params: new HttpParams({}),
       observe: "response"
     }).pipe(
@@ -31,8 +48,8 @@ export class PrihRashService {
     )
   }
 
-  update(updValue: prih_rash): Observable<HttpResponse<prih_rash>> {
-    return this.http.put<prih_rash>(`${this.url}/${updValue.id}`, updValue, {
+  update(updValue: PrihRashModel): Observable<HttpResponse<PrihRashModel>> {
+    return this.http.put<PrihRashModel>(`${this.url}/${updValue.id}`, updValue, {
       observe: "response"
     }).pipe(
       tap((httpResponse) => {}),
@@ -40,8 +57,8 @@ export class PrihRashService {
     )
   }
 
-  delete(id: number | undefined | null): Observable<HttpResponse<prih_rash>> {
-    return this.http.delete<prih_rash>(`${this.url}/${id}`,{
+  delete(id: number | undefined | null): Observable<HttpResponse<PrihRashModel>> {
+    return this.http.delete<PrihRashModel>(`${this.url}/${id}`,{
       observe: "response"
     }).pipe(
       tap((httpResponse) => {}),
@@ -49,8 +66,8 @@ export class PrihRashService {
     )
   }
 
-  readByPrAndNpoAndDt(prId: number, npo: number, dtB: Date, dtE: Date): Observable<HttpResponse<prih_rash[]>> {
-    return this.http.post<prih_rash[]>(`${this.url}/${prId}/${npo}`, {dtB, dtE},{
+  readByPrAndNpoAndDt(prId: number, npo: number, dtB: Date, dtE: Date): Observable<HttpResponse<PrihRashModel[]>> {
+    return this.http.post<PrihRashModel[]>(`${this.url}/${prId}/${npo}`, {dtB, dtE},{
       params: new HttpParams({}),
       observe: "response"
     }).pipe(
@@ -58,14 +75,14 @@ export class PrihRashService {
         if (httpResponse) {
           const rb = httpResponse.body
           if (rb) {
-            const prLocal = prId === 0 ? prihLocal : rashLocal
-            prLocal.splice(0)
+            const pr = prId === 0 ? this.prih : this.rash
+            pr.splice(0)
             rb.forEach((value) => {
               value.pr = this.opService.getOpLocalById(value.pr)
               value.vl = this.curService.getPrVlLocalById(value.vl)
               value.dt = new Date(value.dt)
               value.dts = new Date(value.dts)
-              prLocal.push(value)
+              pr.push(value)
             })
           }
         }

@@ -1,11 +1,11 @@
 import { Injectable } from '@angular/core';
 import {NewOperationService} from "./new-operation.service";
-import {prih_rash_out} from "../../model/prih_rash_out";
+import {PrihRashModel} from "../../prih-rash/prih-rash.model";
 
 @Injectable({
   providedIn: 'root'
 })
-export class PrNewRecService extends NewOperationService<prih_rash_out> {
+export class PrNewRecService extends NewOperationService<PrihRashModel> {
 
   constructor() {
     super()

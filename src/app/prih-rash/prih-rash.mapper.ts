@@ -1,16 +1,16 @@
-import {prih_rash} from "./prih_rash";
-import {prih_rash_out} from "./prih_rash_out";
 import {Injectable} from "@angular/core";
 import {KstatsFilialsModel} from "../kstats_filials/kstats_filials.model";
 import {KstatsModel} from "../kstats/kstats.model";
+import {PrihRashModel} from "./prih-rash.model";
+import {PrihRashAg} from "./prih-rash.ag";
 
 @Injectable({
   providedIn: 'root'
 })
-export class Mapper_prih_rash {
+export class PrihRashMapper {
 
-  //функция преобразования prih_rash_out в prih_rash
-  public mapToEntity(out: prih_rash_out): prih_rash {
+  //функция преобразования PrihRashAg в PrihRashModel
+  public mapToEntity(out: PrihRashAg): PrihRashModel {
 
     let Npk = out.kf.npk
     let eKstatId = 0
@@ -22,7 +22,7 @@ export class Mapper_prih_rash {
       eKstatStat = out.kf.stat_cn
     }
 
-    return new prih_rash(
+    return new PrihRashModel(
       out.id,
       out.npo,
       out.pr,
@@ -38,8 +38,8 @@ export class Mapper_prih_rash {
 
   }
 
-  //функция преобразования prih_rash в prih_rash_out
-  public mapToOut(e: prih_rash): prih_rash_out {
+  //функция преобразования PrihRashModel в PrihRashAg
+  public mapToOut(e: PrihRashModel): PrihRashAg {
 
     let outKfId = e.kstat.id
     let outKfNpk = e.npo
@@ -51,7 +51,7 @@ export class Mapper_prih_rash {
       outKfStat_cn = String(e.npk)
     }
 
-    return new prih_rash_out(
+    return new PrihRashAg(
       e.id,
       e.npo,
       e.pr,
@@ -66,9 +66,9 @@ export class Mapper_prih_rash {
 
   }
 
-  //функция преобразования массива prih_rash в массив prih_rash_out
-  public arrayToOut(e: prih_rash[]): prih_rash_out[] {
-    let out: prih_rash_out[] = []
+  //функция преобразования массива PrihRashModel в массив PrihRashAg
+  public arrayToOut(e: PrihRashModel[]): PrihRashAg[] {
+    let out: PrihRashAg[] = []
 
     e.forEach((value) => out.push(this.mapToOut(value)))
 

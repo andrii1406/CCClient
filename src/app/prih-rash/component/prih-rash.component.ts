@@ -1,5 +1,4 @@
 import {Component, ElementRef, ViewChild} from '@angular/core';
-import {prih_rash} from "../../model/prih_rash";
 import {FormControl, FormGroup, Validators} from "@angular/forms";
 import {
   CellClickedEvent,
@@ -14,15 +13,12 @@ import {
   SelectionChangedEvent,
   TabToNextCellParams
 } from "ag-grid-community";
-import {PrihRashService} from "../../services/prih-rash.service";
+import {PrihRashService} from "../prih-rash.service";
 import {PrOperationsService} from "../../pr_operations/pr_operations.service";
 import {KstatsService} from "../../kstats/kstats.service";
 import {CurrenciesService} from "../../currencies/currencies.service";
 import {FilialsService} from "../../filials/filials.service";
-import {prih_rash_out} from "../../model/prih_rash_out";
-import {Mapper_prih_rash} from "../../model/mapper_prih_rash";
 import {SumIntl} from "../../localdata/formats";
-import {prihLocal, rashLocal} from "../../localdata/prih_rash";
 import {PrNewRecService} from "../../services/new-operation/pr-new-rec.service";
 import {PrGridService} from "../../services/ag-grid/pr-grid.service";
 import {FocusService} from "../../services/focus/focus.service";
@@ -40,6 +36,8 @@ import {CurrenciesModel} from "../../currencies/currencies.model";
 import {PrOperationsModel} from "../../pr_operations/pr_operations.model";
 import {KstatsFilialsModel} from "../../kstats_filials/kstats_filials.model";
 import {KstatsFilialsService} from "../../kstats_filials/kstats_filials.service";
+import {PrihRashAg} from "../prih-rash.ag";
+import {PrihRashMapper} from "../prih-rash.mapper";
 
 @Component({
   selector: 'app-prih-rash',
@@ -55,11 +53,11 @@ export class PrihRashComponent {
   kf: KstatsFilialsModel[] = this.kfService.kf
   pr: PrOperationsModel[] = this.opService.pr_op
 
-  public prihRowData:prih_rash_out[] = []
-  public rashRowData:prih_rash_out[] = []
+  public prihRowData:PrihRashAg[] = []
+  public rashRowData:PrihRashAg[] = []
 
-  private prihGridApi!: GridApi<prih_rash_out>
-  private rashGridApi!: GridApi<prih_rash_out>
+  private prihGridApi!: GridApi<PrihRashAg>
+  private rashGridApi!: GridApi<PrihRashAg>
 
   private prihColumnApi!: ColumnApi
   private rashColumnApi!: ColumnApi
@@ -118,7 +116,7 @@ export class PrihRashComponent {
   @ViewChild('cancButton') cancButtonRef: ElementRef | undefined
 
   constructor(
-    private mpr: Mapper_prih_rash,
+    private mpr: PrihRashMapper,
     public prNewRec: PrNewRecService,
     private gridService: PrGridService,
     private prService: PrihRashService,
@@ -191,7 +189,7 @@ export class PrihRashComponent {
       this.formPrihRash.value.dt = this.lpService.dtTm
       this.formPrihRash.value.dts = null
 
-      const prNew = {...<prih_rash_out>this.formPrihRash.value}
+      const prNew = {...<PrihRashAg>this.formPrihRash.value}
       const mode = prNew.pr.id
       const api = mode === 0 ? this.prihGridApi : this.rashGridApi
 
@@ -206,7 +204,7 @@ export class PrihRashComponent {
 
   //изменение операции
   updateOperation() {
-    const prUpd:prih_rash_out = {...<prih_rash_out>this.formPrihRash.value}
+    const prUpd:PrihRashAg = {...<PrihRashAg>this.formPrihRash.value}
     const opOld = this.gridService.lastSelectedRow.pr.id
     const opNew = prUpd.pr.id
     const mode = opOld === opNew ? opNew : 2
@@ -262,12 +260,12 @@ export class PrihRashComponent {
   }
 
   //обновление данных гридов
-  RefreshGridData(mode: number | undefined, api?: GridApi<prih_rash_out> | null, row?: number | undefined, col?: string): void {
+  RefreshGridData(mode: number | undefined, api?: GridApi<PrihRashAg> | null, row?: number | undefined, col?: string): void {
     // 0 - левый грид, 1 - правый грид, 2 - оба
     if (mode === 0 || mode === 2) {
       this.prService.readByPrAndNpoAndDt(0, this.lpService.npo, this.lpService.dtB, this.lpService.dtE).subscribe((httpResponse) => {
         if (httpResponse) {
-          this.prihRowData = this.mpr.arrayToOut(prihLocal)
+          this.prihRowData = this.mpr.arrayToOut(this.prService.prih)
           this.prihGridApi.setRowData(this.prihRowData)
           this.gridService.autoSizeAll(this.prihColumnApi, true)
 
@@ -283,7 +281,7 @@ export class PrihRashComponent {
     if (mode === 1 || mode === 2) {
       this.prService.readByPrAndNpoAndDt(1, this.lpService.npo, this.lpService.dtB, this.lpService.dtE).subscribe((httpResponse) => {
         if (httpResponse) {
-          this.rashRowData = this.mpr.arrayToOut(rashLocal)
+          this.rashRowData = this.mpr.arrayToOut(this.prService.rash)
           this.rashGridApi.setRowData(this.rashRowData)
           this.gridService.autoSizeAll(this.rashColumnApi, true)
 
@@ -327,27 +325,27 @@ export class PrihRashComponent {
   }
 
   //событие изменения выделения приходного грида
-  onPrihSelectionChanged(event: SelectionChangedEvent<prih_rash>) {
+  onPrihSelectionChanged(event: SelectionChangedEvent<PrihRashAg>) {
     this.rememberPrihRowIndex()
   }
 
   //событие клика в ячейку приходного грида
-  onPrihCellClicked(event: CellClickedEvent<prih_rash>) {
+  onPrihCellClicked(event: CellClickedEvent<PrihRashAg>) {
     this.rememberPrihRowIndex()
   }
 
   //событие изменения выделения расходного грида
-  onRashSelectionChanged(event: SelectionChangedEvent<prih_rash>) {
+  onRashSelectionChanged(event: SelectionChangedEvent<PrihRashAg>) {
     this.rememberRashRowIndex()
   }
 
   //событие клика в ячейку расходного грида
-  onRashCellClicked(event: CellClickedEvent<prih_rash_out>) {
+  onRashCellClicked(event: CellClickedEvent<PrihRashAg>) {
     this.rememberRashRowIndex()
   }
 
   //обработчик нажатия клавиш Tab, Home, End, PageUp, PageDown для грида
-  agCellKeyDown($event: CellKeyDownEvent<prih_rash_out> | FullWidthCellKeyDownEvent<prih_rash_out>) {
+  agCellKeyDown($event: CellKeyDownEvent<PrihRashAg> | FullWidthCellKeyDownEvent<PrihRashAg>) {
     const e = <KeyboardEvent>$event.event
     const ek = e.key
     let api = $event.api
@@ -402,20 +400,20 @@ export class PrihRashComponent {
   }
 
   //событие фокусировки ячейки грида - по выбранной ячейке выделить всю строку
-  onCellFocused($event: CellFocusedEvent<prih_rash_out>) {
+  onCellFocused($event: CellFocusedEvent<PrihRashAg>) {
     this.gridService.SelectRow($event.api, $event.rowIndex)
   }
 
   //событие нажатия клавиши Tab в ячейках с данными -
   //переопределить стандартное поведение в гриде
-  tabToNextCell(params: TabToNextCellParams<prih_rash_out>): CellPosition | null {
+  tabToNextCell(params: TabToNextCellParams<PrihRashAg>): CellPosition | null {
     //вернуть фокус в исходное положение
     return params.previousCellPosition
   }
 
   //двойной клик в гриде
-  onRowDoubleClicked(event: RowDoubleClickedEvent<prih_rash_out>) {
-    const lsr = <prih_rash_out>this.gridService.lastSelectedRow
+  onRowDoubleClicked(event: RowDoubleClickedEvent<PrihRashAg>) {
+    const lsr = <PrihRashAg>this.gridService.lastSelectedRow
     //корректная установка значения списка статей
     this.kf.forEach((value) => {if (value.id === lsr.kf.id) lsr.kf = value})
     this.formPrihRash.setValue(lsr)

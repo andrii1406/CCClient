@@ -2,7 +2,7 @@ import {CurrenciesModel} from "../currencies/currencies.model";
 import {PrOperationsModel} from "../pr_operations/pr_operations.model";
 import {KstatsFilialsModel} from "../kstats_filials/kstats_filials.model";
 
-export class prih_rash_out {
+export class PrihRashAg {
 
   id: number
   npo: number
