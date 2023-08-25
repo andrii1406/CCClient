@@ -28,8 +28,8 @@ export class PpKeyDownDirective {
 
   constructor(
     private elemRef: ElementRef,
-    private obService: PpObmensService,
     private ppNewRec: PpNewRecService,
+    private obService: PpObmensService,
     private ppGridService: PpGridService,
     private curService: CurrenciesService,
   ) {}

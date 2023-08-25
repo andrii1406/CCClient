@@ -9,7 +9,7 @@ import {PrihRashAg} from "./prih-rash.ag";
 })
 export class PrihRashMapper {
 
-  //функция преобразования PrihRashAg в PrihRashModel
+  // Convert PrihRashAg into PrihRashModel
   public mapToEntity(out: PrihRashAg): PrihRashModel {
 
     let Npk = out.kf.npk
@@ -38,7 +38,7 @@ export class PrihRashMapper {
 
   }
 
-  //функция преобразования PrihRashModel в PrihRashAg
+  // Convert PrihRashModel into PrihRashAg
   public mapToOut(e: PrihRashModel): PrihRashAg {
 
     let outKfId = e.kstat.id
@@ -66,7 +66,7 @@ export class PrihRashMapper {
 
   }
 
-  //функция преобразования массива PrihRashModel в массив PrihRashAg
+  // Convert PrihRashModel[] into PrihRashAg[]
   public arrayToOut(e: PrihRashModel[]): PrihRashAg[] {
     let out: PrihRashAg[] = []
 

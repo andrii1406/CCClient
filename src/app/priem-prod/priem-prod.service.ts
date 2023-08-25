@@ -1,9 +1,8 @@
 import { Injectable } from '@angular/core';
 import {HttpClient, HttpParams, HttpResponse} from "@angular/common/http";
-import {ErrorService} from "./error/error.service";
-import {priem_prod} from "../model/priem_prod";
+import {ErrorService} from "../services/error/error.service";
+import {PriemProdModel} from "./priem-prod.model";
 import {catchError, Observable, tap} from "rxjs";
-import {priemLocal, prodLocal} from "../localdata/priem_prod";
 import {CurrenciesService} from "../currencies/currencies.service";
 import {PpObmensService} from "../pp_obmens/pp_obmens.service";
 
@@ -12,6 +11,8 @@ import {PpObmensService} from "../pp_obmens/pp_obmens.service";
 })
 export class PriemProdService {
 
+  private _priemLocal: PriemProdModel[] = []
+  private _prodLocal: PriemProdModel[] = []
   private url = 'http://localhost:8080/api/v1/priemprod'
 
   constructor(
@@ -21,8 +22,24 @@ export class PriemProdService {
     private curService: CurrenciesService,
   ) {}
 
-  create(newValue: priem_prod): Observable<HttpResponse<priem_prod>> {
-    return this.http.post<priem_prod>(this.url, newValue, {
+  get priem(): PriemProdModel[] {
+    return this._priemLocal;
+  }
+
+  set priem(value: PriemProdModel[]) {
+    this._priemLocal = value;
+  }
+
+  get prod(): PriemProdModel[] {
+    return this._prodLocal;
+  }
+
+  set prod(value: PriemProdModel[]) {
+    this._prodLocal = value;
+  }
+
+  create(newValue: PriemProdModel): Observable<HttpResponse<PriemProdModel>> {
+    return this.http.post<PriemProdModel>(this.url, newValue, {
       params: new HttpParams({}),
       observe: "response"
     }).pipe(
@@ -31,8 +48,8 @@ export class PriemProdService {
     )
   }
 
-  readByPpAndNpAndDt(ppId: number, np: number, dtB: Date, dtE: Date): Observable<HttpResponse<priem_prod[]>> {
-    return this.http.post<priem_prod[]>(`${this.url}/${ppId}/${np}`, {dtB, dtE}, {
+  readByPpAndNpAndDt(ppId: number, np: number, dtB: Date, dtE: Date): Observable<HttpResponse<PriemProdModel[]>> {
+    return this.http.post<PriemProdModel[]>(`${this.url}/${ppId}/${np}`, {dtB, dtE}, {
       params: new HttpParams({}),
       observe: "response"
     }).pipe(
@@ -40,14 +57,14 @@ export class PriemProdService {
         if (httpResponse) {
           const rb = httpResponse.body
           if (rb) {
-            const ppLocal = ppId === 0 ? priemLocal : prodLocal
-            ppLocal.splice(0)
+            const pp = ppId === 0 ? this.priem : this.prod
+            pp.splice(0)
             rb.forEach((value) => {
               value.pp = this.obService.getPpObLocalById(value.pp)
               value.vl = this.curService.getPpVlLocalById(value.vl)
               value.dt = new Date(value.dt)
               value.dts = new Date(value.dts)
-              ppLocal.push(value)
+              pp.push(value)
             })
           }
         }
@@ -56,8 +73,8 @@ export class PriemProdService {
     )
   }
 
-  update(updValue: priem_prod): Observable<HttpResponse<priem_prod>> {
-    return this.http.put<priem_prod>(`${this.url}/${updValue.id}`, updValue, {
+  update(updValue: PriemProdModel): Observable<HttpResponse<PriemProdModel>> {
+    return this.http.put<PriemProdModel>(`${this.url}/${updValue.id}`, updValue, {
       observe: "response"
     }).pipe(
       tap((httpResponse) => {}),
@@ -65,8 +82,8 @@ export class PriemProdService {
     )
   }
 
-  delete(id: number | undefined | null): Observable<HttpResponse<priem_prod>> {
-    return this.http.delete<priem_prod>(`${this.url}/${id}`,{
+  delete(id: number | undefined | null): Observable<HttpResponse<PriemProdModel>> {
+    return this.http.delete<PriemProdModel>(`${this.url}/${id}`,{
       observe: "response"
     }).pipe(
       tap((httpResponse) => {}),

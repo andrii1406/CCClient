@@ -4,23 +4,21 @@ import {OstatkiRoutingModule} from "./ostatki-routing.module";
 import {OstatkiComponent} from "./component/ostatki.component";
 import {ReactiveFormsModule} from "@angular/forms";
 import {OstKeyDownDirective} from "./ost-key-down.directive";
-import {AppModule} from "../app.module";
-import {ReplaceCommaPipe} from "../pipes/replace-comma.pipe";
+import {ReplaceCommaModule} from "../replace-comma/replace-comma.module";
 
 @NgModule({
   declarations: [
     OstatkiComponent,
     OstKeyDownDirective,
-    ReplaceCommaPipe,
   ],
   exports: [
     OstKeyDownDirective,
-    ReplaceCommaPipe
   ],
   imports: [
     CommonModule,
     OstatkiRoutingModule,
     ReactiveFormsModule,
+    ReplaceCommaModule,
   ]
 })
 export class OstatkiModule { }

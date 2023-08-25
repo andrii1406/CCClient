@@ -1,11 +1,11 @@
 import { Injectable } from '@angular/core';
 import {NewOperationService} from "./new-operation.service";
-import {priem_prod} from "../../model/priem_prod";
+import {PriemProdModel} from "../../priem-prod/priem-prod.model";
 
 @Injectable({
   providedIn: 'root'
 })
-export class PpNewRecService extends NewOperationService<priem_prod>{
+export class PpNewRecService extends NewOperationService<PriemProdModel>{
 
   constructor() {
     super()

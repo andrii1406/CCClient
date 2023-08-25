@@ -16,9 +16,7 @@ import {
 import {PpObmensService} from "../../pp_obmens/pp_obmens.service";
 import {CurrenciesService} from "../../currencies/currencies.service";
 import {KrsIntl, SumIntl} from "../../localdata/formats";
-import {priem_prod} from "../../model/priem_prod";
-import {PriemProdService} from "../../services/priem-prod.service";
-import {priemLocal, prodLocal} from "../../localdata/priem_prod";
+import {PriemProdService} from "../priem-prod.service";
 import {PpNewRecService} from "../../services/new-operation/pp-new-rec.service";
 import {PpGridService} from "../../services/ag-grid/pp-grid.service";
 import {krsRegExp, sumRegExp} from "../../localdata/patterns";
@@ -36,9 +34,10 @@ import {AuthService} from "../../services/jwt/auth.service";
 import {KursesService} from "../../kurses/kurses.service";
 import {CurrenciesModel} from "../../currencies/currencies.model";
 import {PpObmensModel} from "../../pp_obmens/pp_obmens.model";
+import {PriemProdModel} from "../priem-prod.model";
 
 @Component({
-  selector: 'app-priem-prod',
+  selector: 'app-component',
   templateUrl: './priem-prod.component.html',
   styleUrls: ['./priem-prod.component.scss']
 })
@@ -51,11 +50,11 @@ export class PriemProdComponent {
 
   pp: PpObmensModel[] = this.obService.pp_ob
 
-  public priemRowData:priem_prod[] = []
-  public prodRowData:priem_prod[] = []
+  public priemRowData:PriemProdModel[] = []
+  public prodRowData:PriemProdModel[] = []
 
-  private priemGridApi!: GridApi<priem_prod>
-  private prodGridApi!: GridApi<priem_prod>
+  private priemGridApi!: GridApi<PriemProdModel>
+  private prodGridApi!: GridApi<PriemProdModel>
 
   private priemColumnApi!: ColumnApi
   private prodColumnApi!: ColumnApi
@@ -204,7 +203,7 @@ export class PriemProdComponent {
         this.formPriemProd.value.dt = this.lpService.dtTm
         this.formPriemProd.value.dts = null
 
-        const ppNew = {...<priem_prod>this.formPriemProd.value}
+        const ppNew = {...<PriemProdModel>this.formPriemProd.value}
         const mode = ppNew.pp.id
         const api = mode === 0 ? this.priemGridApi : this.prodGridApi
 
@@ -219,7 +218,7 @@ export class PriemProdComponent {
 
   //изменение операции обмена
   updateOperation() {
-    const ppUpd:priem_prod = {...<priem_prod>this.formPriemProd.value}
+    const ppUpd:PriemProdModel = {...<PriemProdModel>this.formPriemProd.value}
     const opOld = this.gridService.lastSelectedRow.pp.id
     const opNew = ppUpd.pp.id
     const mode = opOld === opNew ? opNew : 2
@@ -275,12 +274,12 @@ export class PriemProdComponent {
   }
 
   //обновление данных гридов
-  RefreshGridData(mode: number | undefined, api?: GridApi<priem_prod> | null, row?: number | undefined, col?: string): void {
+  RefreshGridData(mode: number | undefined, api?: GridApi<PriemProdModel> | null, row?: number | undefined, col?: string): void {
     // 0 - левый грид, 1 - правый грид, 2 - оба
     if (mode === 0 || mode === 2) {
       this.ppService.readByPpAndNpAndDt(0, this.lpService.npo, this.lpService.dtB, this.lpService.dtE).subscribe((httpResponse) => {
         if (httpResponse) {
-          this.priemRowData = priemLocal
+          this.priemRowData = this.ppService.priem
           this.priemGridApi.setRowData(this.priemRowData)
           this.gridService.autoSizeAll(this.priemColumnApi, false)
 
@@ -296,7 +295,7 @@ export class PriemProdComponent {
     if (mode === 1 || mode === 2) {
       this.ppService.readByPpAndNpAndDt(1, this.lpService.npo, this.lpService.dtB, this.lpService.dtE).subscribe((httpResponse) => {
         if (httpResponse) {
-          this.prodRowData = prodLocal
+          this.prodRowData = this.ppService.prod
           this.prodGridApi.setRowData(this.prodRowData)
           this.gridService.autoSizeAll(this.prodColumnApi, false)
 
@@ -340,27 +339,27 @@ export class PriemProdComponent {
   }
 
   //событие изменения выделения грида приемов
-  onPriemSelectionChanged(event: SelectionChangedEvent<priem_prod>) {
+  onPriemSelectionChanged(event: SelectionChangedEvent<PriemProdModel>) {
     this.rememberPriemRowIndex()
   }
 
   //событие клика в ячейку грида приемов
-  onPriemCellClicked(event: CellClickedEvent<priem_prod>) {
+  onPriemCellClicked(event: CellClickedEvent<PriemProdModel>) {
     this.rememberPriemRowIndex()
   }
 
   //событие изменения выделения грида продаж
-  onProdSelectionChanged(event: SelectionChangedEvent<priem_prod>) {
+  onProdSelectionChanged(event: SelectionChangedEvent<PriemProdModel>) {
     this.rememberProdRowIndex()
   }
 
   //событие клика в ячейку грида продаж
-  onProdCellClicked(event: CellClickedEvent<priem_prod>) {
+  onProdCellClicked(event: CellClickedEvent<PriemProdModel>) {
     this.rememberProdRowIndex()
   }
 
   //обработчик нажатия клавиш Tab, Home, End, PageUp, PageDown для грида
-  agCellKeyDown($event: CellKeyDownEvent<priem_prod> | FullWidthCellKeyDownEvent<priem_prod>) {
+  agCellKeyDown($event: CellKeyDownEvent<PriemProdModel> | FullWidthCellKeyDownEvent<PriemProdModel>) {
     const e = <KeyboardEvent>$event.event
     const ek = e.key
     let api = $event.api
@@ -414,20 +413,20 @@ export class PriemProdComponent {
   }
 
   //событие фокусировки ячейки грида - по выбранной ячейке выделить всю строку
-  onCellFocused($event: CellFocusedEvent<priem_prod>) {
+  onCellFocused($event: CellFocusedEvent<PriemProdModel>) {
     this.gridService.SelectRow($event.api, $event.rowIndex)
   }
 
   //событие нажатия клавиши Tab в ячейках с данными -
   //переопределить стандартное поведение в гриде
-  tabToNextCell(params: TabToNextCellParams<priem_prod>): CellPosition | null {
+  tabToNextCell(params: TabToNextCellParams<PriemProdModel>): CellPosition | null {
     //вернуть фокус в исходное положение
     return params.previousCellPosition
   }
 
   //двойной клик в гриде
-  onRowDoubleClicked(event: RowDoubleClickedEvent<priem_prod>) {
-    const lsr = <priem_prod>this.gridService.lastSelectedRow
+  onRowDoubleClicked(event: RowDoubleClickedEvent<PriemProdModel>) {
+    const lsr = <PriemProdModel>this.gridService.lastSelectedRow
     this.formPriemProd.setValue(lsr)
     this.ppNewRec.setMode(false)
     this.onSumKrsChange()

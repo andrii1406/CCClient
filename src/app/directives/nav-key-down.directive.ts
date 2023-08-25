@@ -1,5 +1,5 @@
 import {Directive, ElementRef, HostListener, Input} from '@angular/core';
-import {Enter, F1, F2, F3, isKey_Enter_Escape, isKey_F1_F12_Enter_Escape, isKey_F1_F4_Enter} from "../localdata/keys";
+import {Enter, isKey_Enter_Escape, isKey_F1_F12_Enter_Escape} from "../localdata/keys";
 
 @Directive({
   selector: '[navKeyDownDirective]'

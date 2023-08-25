@@ -1,7 +1,7 @@
 import {CurrenciesModel} from "../currencies/currencies.model";
 import {PpObmensModel} from "../pp_obmens/pp_obmens.model";
 
-export class priem_prod {
+export class PriemProdModel {
 
   id: number
   np: number
