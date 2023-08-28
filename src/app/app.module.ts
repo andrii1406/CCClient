@@ -10,8 +10,6 @@ import {httpInterceptorProviders} from "./services/jwt/auth-interceptor";
 import { MainComponent } from './components/main/main.component';
 import {registerLocaleData} from "@angular/common";
 import localeFr from '@angular/common/locales/fr';
-import {NewOperationService} from "./services/new-operation/new-operation.service";
-import {AgGridService} from "./services/ag-grid/ag-grid.service";
 import { NavKeyDownDirective } from './directives/nav-key-down.directive';
 registerLocaleData(localeFr);
 
@@ -33,8 +31,8 @@ registerLocaleData(localeFr);
   providers: [
     {provide: LOCALE_ID, useValue: "fr-FR"},
     httpInterceptorProviders,
-    // NewOperationService,
-    // AgGridService,
+  ],
+  exports: [
   ],
   bootstrap: [AppComponent]
 })

@@ -18,6 +18,7 @@ import {PpObmensModel} from "../../pp_obmens/pp_obmens.model";
 export class KursesComponent {
 
   listRows = 12
+  modalVisible = false
 
   formNewKrs = new FormGroup({
     krs0: new FormControl<KursesModel | null>(null, [Validators.pattern(krsRegExp)]),
@@ -158,6 +159,7 @@ export class KursesComponent {
 
   // Loading of previous rates
   onLoadPrevKurses() {
+    this.modalVisible = true
     let b = true
 
     if (this.krsService.kurses3Local.length > 0)
