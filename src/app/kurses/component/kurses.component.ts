@@ -1,4 +1,4 @@
-import {Component, ElementRef, ViewChild} from '@angular/core';
+import {Component, ElementRef, ViewChild, ViewContainerRef} from '@angular/core';
 import {FormControl, FormGroup, Validators} from "@angular/forms";
 import {krsRegExp} from "../../localdata/patterns";
 import {PpObmensService} from "../../pp_obmens/pp_obmens.service";
@@ -9,6 +9,7 @@ import {KursesModel} from "../kurses.model";
 import {CurrenciesService} from "../../currencies/currencies.service";
 import {CurrenciesModel} from "../../currencies/currencies.model";
 import {PpObmensModel} from "../../pp_obmens/pp_obmens.model";
+import {KursesPrevModalComponent} from "../kurses-prev-modal/kurses-prev-modal.component";
 
 @Component({
   selector: 'app-kurses',
@@ -66,6 +67,9 @@ export class KursesComponent {
   @ViewChild('krsAddButton') krsAddButtonRef: ElementRef | undefined
   @ViewChild('krsUpdButton') krsUpdButtonRef: ElementRef | undefined
   @ViewChild('updKrsEdit') updKrsEditRef: ElementRef | undefined
+
+  @ViewChild('krsPrevModal', { read: ViewContainerRef })
+  private readonly krsPrevViewContainerRef!: ViewContainerRef
 
   constructor(
     public obService: PpObmensService,
@@ -159,31 +163,48 @@ export class KursesComponent {
 
   // Loading of previous rates
   onLoadPrevKurses() {
-    this.modalVisible = true
-    let b = true
+    const dtB = new Date(this.lpService.dtB.getTime() - 86400000)
+    const dtE = new Date(this.lpService.dtE.getTime() - 86400000)
+    this.krsService.readPrevByNpAndDt(this.lpService.npo, dtB, dtE, this.lpService.dtTm).subscribe((httpResponse) => {
+      if (httpResponse) {
+        const rb = httpResponse.body
+        if (rb) {
+          if (rb.length > 0) {
+            console.log(this.krsService.kurses3Local)
+            if (this.krsService.kurses3Local.length > 0) {
 
-    if (this.krsService.kurses3Local.length > 0)
-      if (!confirm("Перезаписать существующие курсы?")) b = false
+              const krsPrevComponentRef = this.krsPrevViewContainerRef.createComponent(KursesPrevModalComponent)
+              const krsPrevInstance = krsPrevComponentRef.instance
 
-    if (b) {
-      const dtB = new Date(this.lpService.dtB.getTime() - 86400000)
-      const dtE = new Date(this.lpService.dtE.getTime() - 86400000)
-      this.krsService.readPrevByNpAndDt(this.lpService.npo, dtB, dtE, this.lpService.dtTm).subscribe((httpResponse) => {
-        if (httpResponse) {
-          const rb = httpResponse.body
-          if (rb) {
-            if (rb.length > 0) {
-              this.krsService.deleteByNpAndDt(this.lpService.npo, this.lpService.dtB, this.lpService.dtE).subscribe(() => {
-                this.krsService.kursesLocalSplice()
-                this.krsService.create(rb).subscribe(() => {
-                  this.formListKrsControlsSetValues(0)
-                })
+              krsPrevInstance.title = 'Перезаписать существующие курсы?'
+
+              krsPrevInstance.modalYes.subscribe(() => {
+                this.setKursesFromModel(rb)
+                this.krsPrevViewContainerRef.clear()
               })
+
+              krsPrevInstance.modalNo.subscribe(() => {
+                this.krsPrevViewContainerRef.clear()
+              })
+
+            } else {
+              this.setKursesFromModel(rb)
             }
           }
         }
+      }
+    })
+  }
+
+  setKursesFromModel(rb: KursesModel[]) {
+    // Delete today currency rates
+    this.krsService.deleteByNpAndDt(this.lpService.npo, this.lpService.dtB, this.lpService.dtE).subscribe(() => {
+      // Set today rates from model
+      this.krsService.kursesLocalSplice()
+      this.krsService.create(rb).subscribe(() => {
+        this.formListKrsControlsSetValues(0)
       })
-    }
+    })
   }
 
   submitKrs() {
