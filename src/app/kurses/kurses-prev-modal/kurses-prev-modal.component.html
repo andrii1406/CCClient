@@ -2,11 +2,47 @@
 
 <div class="divModal">
   <nav class="navbar">
-    <h3 style="text-align: center">{{title}}</h3>
+    <h3 style="text-align: center">Курсы предыдущей рабочей даты</h3>
   </nav>
 
+  <div style="text-align: center">
+
+    <div class="divRow">
+      <select class="kursesListSelect" [size]="listRows">
+        <option *ngFor="let val of data0" [ngValue]="val">
+          {{krsOut(val.krs)}}
+        </option>
+      </select>
+    </div>
+
+    <div class="divRow">
+      <select class="kursesListSelect" [size]="listRows">
+        <option *ngFor="let val of data3" [ngValue]="val">
+          {{val.vl}}
+        </option>
+      </select>
+    </div>
+
+    <div class="divRow">
+      <select class="kursesListSelect" [size]="listRows">
+        <option *ngFor="let val of data1" [ngValue]="val">
+          {{krsOut(val.krs)}}
+        </option>
+      </select>
+    </div>
+
+    <div class="divRow">
+      <select class="kursesListSelect" [size]="listRows">
+        <option *ngFor="let val of data2" [ngValue]="val">
+          {{krsOut(val.krs)}}
+        </option>
+      </select>
+    </div>
+
+  </div>
+
   <div class="divNav">
-    <button (click)="modalYes.emit()">Да</button>
-    <button (click)="modalNo.emit()">Нет</button>
+    <button (click)="modalNo.emit()">Отмена</button>
+    <button (click)="modalYes.emit()">Установить в текущую дату</button>
   </div>
 </div>

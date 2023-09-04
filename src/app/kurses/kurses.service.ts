@@ -16,6 +16,7 @@ export class KursesService {
   private _kurses1Local: KursesModel[] = []
   private _kurses2Local: KursesModel[] = []
   private _kurses3Local: CurrenciesModel[] = []
+
   private url = 'http://localhost:8080/api/v1/kurses'
 
   constructor(
@@ -41,20 +42,29 @@ export class KursesService {
     return this._kurses3Local;
   }
 
-  getArrayPointer (ppId: number | undefined): KursesModel[] | null {
+  getServiceLocalArrayPointer (ppId: number | undefined): KursesModel[] | null {
+    return this.getArrayPointer(ppId, this.kurses0Local, this.kurses1Local, this.kurses2Local)
+  }
+
+  getArrayPointer (ppId: number | undefined, arr0: KursesModel[],
+                   arr1: KursesModel[], arr2: KursesModel[]): KursesModel[] | null {
     let res = null
 
-    if(ppId === 0) res = this.kurses0Local
-    if(ppId === 1) res = this.kurses1Local
-    if(ppId === 2) res = this.kurses2Local
+    if(ppId === 0) res = arr0
+    if(ppId === 1) res = arr1
+    if(ppId === 2) res = arr2
 
     return res
   }
 
   getIndexInVlLocalById (id: number): number {
+    return this.getIndexInVlArrayById(this.kurses3Local, id)
+  }
+
+  getIndexInVlArrayById (arr: CurrenciesModel[], id: number): number {
     let ind = -1
 
-    this.kurses3Local.forEach((value, index) => {
+    arr.forEach((value, index) => {
       if (id === value.id) ind = index
     })
 
@@ -68,30 +78,41 @@ export class KursesService {
     this.kurses2Local.splice(0)
   }
 
-  kursesToLocals (rbA: KursesModel[]): void {
+  kursesModelToServiceLocals (rbA: KursesModel[]) {
+    this.kursesModelToArrays(rbA, this.kurses0Local, this.kurses1Local, this.kurses2Local, this.kurses3Local)
+  }
+
+  kursesModelToArrays (rbA: KursesModel[], arr0: KursesModel[],  arr1: KursesModel[],
+                       arr2: KursesModel[], arr3: CurrenciesModel[]) {
+    const krs_ob = this.obService.krs_ob
     rbA.forEach((rbAValue) => {
-      let ind = this.getIndexInVlLocalById(rbAValue.vl.id)
+      let ind = this.getIndexInVlArrayById(arr3, rbAValue.vl.id)
 
       if (ind < 0) {
-        const pp = rbAValue.pp
         const vl = rbAValue.vl
         const dt = rbAValue.dt
-        rbAValue.pp = this.obService.getKrsObLocalById(pp)
-        rbAValue.vl = this.curService.getPpVlLocalById(vl)
-        rbAValue.dt = new Date(dt)
 
-        const krs_ob = this.obService.krs_ob
-        this.kurses3Local.push(vl)
-        this.kurses0Local.push(new KursesModel(null, 0, 0, krs_ob[0], vl, 0, dt, false))
-        this.kurses1Local.push(new KursesModel(null, 0, 0, krs_ob[1], vl, 0, dt, false))
-        this.kurses2Local.push(new KursesModel(null, 0, 0, krs_ob[2], vl, 0, dt, false))
+        arr3.push(vl)
+        arr0.push(new KursesModel(null, 0, 0, krs_ob[0], vl, 0, dt, false))
+        arr1.push(new KursesModel(null, 0, 0, krs_ob[1], vl, 0, dt, false))
+        arr2.push(new KursesModel(null, 0, 0, krs_ob[2], vl, 0, dt, false))
 
-        ind = this.kurses3Local.length - 1
+        ind = arr3.length - 1
       }
-
-      const ap = this.getArrayPointer(rbAValue.pp.id)
+      const ap = this.getArrayPointer(rbAValue.pp.id, arr0, arr1, arr2)
       if (ap) ap[ind] = rbAValue
     })
+  }
+
+  linkSubObjectsKursesModelArray(rbA: KursesModel[]) {
+    rbA.forEach((rbAValue) => this.linkSubObjectsKursesModelOne(rbAValue))
+  }
+
+  linkSubObjectsKursesModelOne(rb: KursesModel) {
+    rb.pp = this.obService.getKrsObLocalById(rb.pp)
+    rb.vl = this.curService.getPpVlLocalById(rb.vl)
+    rb.dt = new Date(rb.dt)
+    rb.krs = Number(rb.krs)
   }
 
   create(newValue: KursesModel[]): Observable<HttpResponse<KursesModel[]>> {
@@ -102,7 +123,7 @@ export class KursesService {
       tap((httpResponse) => {
         if (httpResponse) {
           const rb = httpResponse.body
-          if (rb) this.kursesToLocals(rb)
+          if (rb) this.kursesModelToServiceLocals(rb)
         }
       }),
       catchError(this.es.handleError<any>('createAKurses'))
@@ -117,7 +138,7 @@ export class KursesService {
         if (httpResponse) {
           const rb = httpResponse.body
           if (rb) {
-            let ap = this.getArrayPointer(rb.pp.id)
+            let ap = this.getServiceLocalArrayPointer(rb.pp.id)
 
             if (ap) {
               let ind = -1
@@ -148,8 +169,9 @@ export class KursesService {
         if (httpResponse) {
           const rb = httpResponse.body
           if (rb) {
+            this.linkSubObjectsKursesModelArray(rb)
             this.kursesLocalSplice()
-            this.kursesToLocals(rb)
+            this.kursesModelToServiceLocals(rb)
           }
         }
       }),
@@ -178,6 +200,7 @@ export class KursesService {
             rb.forEach((value) => {
               value.id = null
               value.dt = dt
+              value.vl = this.curService.getPpVlLocalById(value.vl)
             })
           }
         }

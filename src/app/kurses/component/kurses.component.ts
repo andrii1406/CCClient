@@ -170,23 +170,24 @@ export class KursesComponent {
         const rb = httpResponse.body
         if (rb) {
           if (rb.length > 0) {
-            console.log(this.krsService.kurses3Local)
             if (this.krsService.kurses3Local.length > 0) {
 
               const krsPrevComponentRef = this.krsPrevViewContainerRef.createComponent(KursesPrevModalComponent)
-              const krsPrevInstance = krsPrevComponentRef.instance
+              const kpi = krsPrevComponentRef.instance
 
-              krsPrevInstance.title = 'Перезаписать существующие курсы?'
+              kpi.spliceData()
+              this.krsService.kursesModelToArrays(rb, kpi.data0, kpi.data1, kpi.data2, kpi.data3)
 
-              krsPrevInstance.modalYes.subscribe(() => {
+              kpi.modalYes.subscribe(() => {
                 this.setKursesFromModel(rb)
                 this.krsPrevViewContainerRef.clear()
               })
 
-              krsPrevInstance.modalNo.subscribe(() => {
+              kpi.modalNo.subscribe(() => {
                 this.krsPrevViewContainerRef.clear()
               })
 
+              krsPrevComponentRef.changeDetectorRef.detectChanges()
             } else {
               this.setKursesFromModel(rb)
             }

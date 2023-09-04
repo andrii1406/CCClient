@@ -173,7 +173,7 @@ export class PriemProdComponent {
     if (this.ppNewRec.getMode()) {
       const ppId = this.formPriemProd.controls.pp.value?.id
       const vlId = this.formPriemProd.controls.vl.value?.id
-      const ap = this.krsService.getArrayPointer(ppId)
+      const ap = this.krsService.getServiceLocalArrayPointer(ppId)
       if (ap) {
         let krs: number | null = null
         ap.forEach((value) => {
