@@ -2,37 +2,37 @@
 
 <div class="divModal">
   <nav class="navbar">
-    <h3 style="text-align: center">Курсы предыдущей рабочей даты</h3>
+    <h3 style="text-align: center">Предыдущие курсы</h3>
   </nav>
 
   <div style="text-align: center">
 
-    <div class="divRow">
-      <select class="kursesListSelect" [size]="listRows">
+    <div class="divRow" style="margin-right: 2%;">
+      <select class="kursesListSelect" [size]="listRows" #lKrs0 (change)="listOnChange(lKrs0Ref)">
         <option *ngFor="let val of data0" [ngValue]="val">
           {{krsOut(val.krs)}}
         </option>
       </select>
     </div>
 
-    <div class="divRow">
-      <select class="kursesListSelect" [size]="listRows">
+    <div class="divRow" style="margin-left:2.5%; margin-right: 2%;">
+      <select class="kursesListSelect" [size]="listRows" #lKrs3 (change)="listOnChange(lKrs3Ref)">
         <option *ngFor="let val of data3" [ngValue]="val">
           {{val.vl}}
         </option>
       </select>
     </div>
 
-    <div class="divRow">
-      <select class="kursesListSelect" [size]="listRows">
+    <div class="divRow" style="margin-left:2%; margin-right: 1%;">
+      <select class="kursesListSelect" [size]="listRows" #lKrs1 (change)="listOnChange(lKrs1Ref)">
         <option *ngFor="let val of data1" [ngValue]="val">
           {{krsOut(val.krs)}}
         </option>
       </select>
     </div>
 
-    <div class="divRow">
-      <select class="kursesListSelect" [size]="listRows">
+    <div class="divRow" style="margin-left:9%;">
+      <select class="kursesListSelect" [size]="listRows" #lKrs2 (change)="listOnChange(lKrs2Ref)">
         <option *ngFor="let val of data2" [ngValue]="val">
           {{krsOut(val.krs)}}
         </option>
@@ -42,7 +42,7 @@
   </div>
 
   <div class="divNav">
-    <button (click)="modalNo.emit()">Отмена</button>
-    <button (click)="modalYes.emit()">Установить в текущую дату</button>
+    <button class="btn" (click)="modalNo.emit()">Отмена</button>
+    <button class="btn" (click)="modalYes.emit()">Установить в рабочую дату</button>
   </div>
 </div>

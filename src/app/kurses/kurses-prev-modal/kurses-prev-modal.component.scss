@@ -61,7 +61,7 @@
 
 .btn {
   display: inline-block;
-  background: #333333;
+  background: darkseagreen;
   color: #fff;
   padding: 0.4rem 1.3rem;
   font-size: 1rem;
@@ -79,6 +79,7 @@
 
   &:hover {
     opacity: 0.8;
+    background: #a4a4a4;
   }
 }
 
@@ -89,6 +90,6 @@
 
 .kursesListSelect {
   text-align: center;
-  min-width: 15%;
+  width: 135%;
   overflow: auto;
 }

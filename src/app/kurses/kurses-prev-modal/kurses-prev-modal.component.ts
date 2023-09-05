@@ -1,4 +1,4 @@
-import {Component, EventEmitter, Input, Output} from '@angular/core';
+import {Component, ElementRef, EventEmitter, Input, Output, ViewChild} from '@angular/core';
 import {KursesModel} from "../kurses.model";
 import {CurrenciesModel} from "../../currencies/currencies.model";
 
@@ -17,7 +17,14 @@ export class KursesPrevModalComponent {
   @Output() modalYes = new EventEmitter<void>()
   @Output() modalNo = new EventEmitter<void>()
 
+  @ViewChild('lKrs0') lKrs0Ref: ElementRef | undefined
+  @ViewChild('lKrs1') lKrs1Ref: ElementRef | undefined
+  @ViewChild('lKrs2') lKrs2Ref: ElementRef | undefined
+  @ViewChild('lKrs3') lKrs3Ref: ElementRef | undefined
+
   listRows = 12
+
+  constructor() {}
 
   get data0(): KursesModel[] {
     return this._data0;
@@ -51,8 +58,6 @@ export class KursesPrevModalComponent {
     this._data3 = value;
   }
 
-  constructor() {}
-
   spliceData() {
     this._data0.splice(0)
     this._data1.splice(0)
@@ -62,6 +67,16 @@ export class KursesPrevModalComponent {
 
   krsOut(value: number ): string {
     return value === 0 ? '.' : String(value)
+  }
+
+  listOnChange(ref: ElementRef | undefined) {
+    if (ref) {
+      const ind = ref.nativeElement.selectedIndex
+      if (this.lKrs0Ref) this.lKrs0Ref.nativeElement.selectedIndex = ind
+      if (this.lKrs3Ref) this.lKrs3Ref.nativeElement.selectedIndex = ind
+      if (this.lKrs1Ref) this.lKrs1Ref.nativeElement.selectedIndex = ind
+      if (this.lKrs2Ref) this.lKrs2Ref.nativeElement.selectedIndex = ind
+    }
   }
 
 }
